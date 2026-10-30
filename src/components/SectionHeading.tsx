@@ -1,23 +1,22 @@
 import { Reveal } from "./Reveal";
 
 type Props = {
-  eyebrow: string;
+  eyebrow?: string;
   title: React.ReactNode;
   lead?: React.ReactNode;
   align?: "left" | "center";
-  as?: "h1" | "h2";
+  id?: string;
 };
 
-export function SectionHeading({ eyebrow, title, lead, align = "left", as: Tag = "h2" }: Props) {
+export function SectionHeading({ eyebrow, title, lead, align = "center", id }: Props) {
   const center = align === "center";
   return (
-    <Reveal className={center ? "mx-auto max-w-3xl text-center" : "max-w-4xl"}>
-      <p className={`eyebrow flex items-center gap-4 ${center ? "justify-center" : ""}`}>
-        <span aria-hidden className="h-px w-10 bg-line-strong" />
-        {eyebrow}
-      </p>
-      <Tag className="display mt-6 text-[2.6rem] sm:text-6xl lg:text-7xl">{title}</Tag>
-      {lead && <p className="prose-jp mt-6 max-w-2xl text-[0.95rem] sm:text-base">{lead}</p>}
+    <Reveal className={center ? "mx-auto max-w-3xl text-center" : "max-w-3xl"}>
+      {eyebrow && <p className="eyebrow">{eyebrow}</p>}
+      <h2 id={id} className="headline mt-2 text-[2.25rem] sm:text-5xl lg:text-[3.5rem]">
+        {title}
+      </h2>
+      {lead && <p className={`prose-jp mt-5 text-[0.9375rem] text-muted sm:text-[1.0625rem] ${center ? "mx-auto max-w-2xl" : "max-w-2xl"}`}>{lead}</p>}
     </Reveal>
   );
 }

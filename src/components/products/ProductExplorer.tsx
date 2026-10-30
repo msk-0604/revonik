@@ -52,10 +52,10 @@ export function ProductExplorer() {
 
   return (
     <div>
-      <div className="sticky top-[5.75rem] z-20 -mx-5 border-y border-line bg-ink/85 px-5 py-4 backdrop-blur-xl md:top-[6.75rem] md:-mx-10 md:px-10 xl:-mx-16 xl:px-16">
-        <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
-          <div role="group" aria-label="カテゴリーで絞り込む" className="-mx-5 flex gap-2 overflow-x-auto px-5 pb-1 [scrollbar-width:none] lg:mx-0 lg:px-0 lg:pb-0">
-            {[{ id: "all" as const, label: "ALL" }, ...visibleCategories].map((c) => {
+      <div className="sticky top-[88px] z-20 -mx-5 bg-white/85 px-5 py-3 backdrop-blur-xl backdrop-saturate-150 md:-mx-10 md:px-10">
+        <div className="flex flex-col gap-3 lg:flex-row lg:items-center lg:justify-between">
+          <div role="group" aria-label="カテゴリーで絞り込む" className="-mx-5 flex gap-2 overflow-x-auto px-5 py-1 [scrollbar-width:none] lg:mx-0 lg:flex-wrap lg:px-0">
+            {[{ id: "all" as const, label: "All" }, ...visibleCategories].map((c) => {
               const active = category === c.id;
               return (
                 <button
@@ -63,29 +63,29 @@ export function ProductExplorer() {
                   type="button"
                   onClick={() => setCategory(c.id)}
                   aria-pressed={active}
-                  className={`flex min-h-10 shrink-0 items-center gap-2 border px-4 font-display text-[0.7rem] font-semibold tracking-[0.18em] whitespace-nowrap transition-colors duration-300 ${
-                    active ? "border-fg bg-fg text-ink" : "border-line-strong text-fg/80 hover:border-fg hover:text-fg"
+                  className={`flex min-h-10 shrink-0 items-center gap-1.5 rounded-full px-4 text-[0.8125rem] whitespace-nowrap transition-colors duration-300 ${
+                    active ? "bg-fg text-white" : "bg-bg-alt text-fg hover:bg-line"
                   }`}
                 >
                   {c.label}
-                  <span className={active ? "text-ink/60" : "text-muted"}>{counts.get(c.id)}</span>
+                  <span className={active ? "text-white/60" : "text-muted"}>{counts.get(c.id)}</span>
                 </button>
               );
             })}
           </div>
-          <div className="relative lg:w-80">
+          <div className="relative lg:w-72">
             <label htmlFor="product-search" className="sr-only">
               商品名で検索
             </label>
-            <Search aria-hidden className="pointer-events-none absolute top-1/2 left-4 size-4 -translate-y-1/2 text-muted" />
+            <Search aria-hidden className="pointer-events-none absolute top-1/2 left-3.5 size-4 -translate-y-1/2 text-muted" />
             <input
               id="product-search"
               type="search"
               value={query}
               onChange={(e) => setQuery(e.target.value)}
-              placeholder="商品名で検索（例：SHINDY、サラモア）"
+              placeholder="商品名で検索"
               autoComplete="off"
-              className="h-11 w-full border border-line-strong bg-panel pr-10 pl-11 font-jp text-base text-fg placeholder:text-[0.8rem] placeholder:text-muted focus:border-fg focus:outline-none sm:text-sm [&::-webkit-search-cancel-button]:hidden"
+              className="h-11 w-full rounded-xl border border-transparent bg-bg-alt pr-10 pl-10 font-jp text-base text-fg placeholder:text-[0.8125rem] placeholder:text-muted focus:border-link focus:bg-white focus:outline-none [&::-webkit-search-cancel-button]:hidden"
             />
             {query && (
               <button
@@ -101,23 +101,23 @@ export function ProductExplorer() {
         </div>
       </div>
 
-      <p role="status" aria-live="polite" className="mt-8 font-display text-[0.72rem] font-semibold tracking-[0.2em] text-muted">
-        {filtered.length} PRODUCTS
-        {category !== "all" && <span className="ml-3 font-jp tracking-wider">／ {categories.find((c) => c.id === category)?.labelJa}</span>}
-        {query.trim() && <span className="ml-3 font-jp tracking-wider">／「{query.trim()}」</span>}
+      <p role="status" aria-live="polite" className="mt-8 text-[0.8125rem] text-muted">
+        {filtered.length} 件
+        {category !== "all" && <span className="ml-2 font-jp">／ {categories.find((c) => c.id === category)?.labelJa}</span>}
+        {query.trim() && <span className="ml-2 font-jp">／「{query.trim()}」</span>}
       </p>
 
       {filtered.length > 0 ? (
-        <motion.ul layout className="mt-6 grid gap-5 sm:grid-cols-2 lg:grid-cols-3 lg:gap-6">
+        <motion.ul layout className="mt-8 grid gap-x-6 gap-y-14 min-[480px]:grid-cols-2 lg:grid-cols-3 lg:gap-x-8 lg:gap-y-20">
           <AnimatePresence mode="popLayout" initial={false}>
             {filtered.map((p) => (
               <motion.li
                 key={p.slug}
                 layout
-                initial={{ opacity: 0, scale: 0.97 }}
-                animate={{ opacity: 1, scale: 1 }}
-                exit={{ opacity: 0, scale: 0.97 }}
-                transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                transition={{ duration: 0.35, ease: [0.25, 0.1, 0.25, 1] }}
               >
                 <ProductCard product={p} />
               </motion.li>
@@ -125,15 +125,11 @@ export function ProductExplorer() {
           </AnimatePresence>
         </motion.ul>
       ) : (
-        <div className="mt-6 border border-line bg-panel px-6 py-20 text-center">
-          <p className="font-jp text-base">該当する商品が見つかりませんでした。</p>
+        <div className="mt-8 rounded-[1.25rem] bg-bg-alt px-6 py-20 text-center">
+          <p className="font-jp text-[1.0625rem] font-bold">該当する商品が見つかりませんでした。</p>
           <p className="mt-2 font-jp text-sm text-muted">別のキーワードをお試しいただくか、条件をリセットしてください。</p>
-          <button
-            type="button"
-            onClick={reset}
-            className="mt-8 inline-flex min-h-11 items-center border border-line-strong px-6 font-display text-[0.72rem] font-semibold tracking-[0.22em] hover:border-fg hover:bg-fg hover:text-ink"
-          >
-            RESET
+          <button type="button" onClick={reset} className="mt-6 inline-flex min-h-11 items-center rounded-full bg-link px-6 text-[0.9375rem] text-white hover:bg-link-hover">
+            条件をリセット
           </button>
         </div>
       )}

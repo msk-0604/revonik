@@ -1,15 +1,14 @@
 import type { Metadata, Viewport } from "next";
-import { Archivo, Noto_Sans_JP } from "next/font/google";
+import { Inter, Noto_Sans_JP } from "next/font/google";
 import { Footer } from "@/components/Footer";
 import { Header } from "@/components/Header";
 import { MotionProvider } from "@/components/MotionProvider";
 import { site } from "@/data/site";
 import "./globals.css";
 
-const archivo = Archivo({
+const inter = Inter({
   subsets: ["latin"],
-  axes: ["wdth"],
-  variable: "--font-archivo",
+  variable: "--font-inter",
   display: "swap",
 });
 
@@ -24,7 +23,7 @@ const noto = Noto_Sans_JP({
 export const metadata: Metadata = {
   metadataBase: new URL(site.url),
   title: {
-    default: "REVONIK | ENGINEERED TO PERFORM.（提案用デモ）",
+    default: "REVONIK | The Art of Precision.（提案用デモ）",
     template: "%s | REVONIK（提案用デモ）",
   },
   description: site.description,
@@ -40,7 +39,7 @@ export const metadata: Metadata = {
     type: "website",
     locale: "ja_JP",
     siteName: "REVONIK（提案用デモ）",
-    title: "REVONIK | ENGINEERED TO PERFORM.（提案用デモ）",
+    title: "REVONIK | The Art of Precision.（提案用デモ）",
     description: site.description,
     images: [{ url: "/placeholders/og.png", width: 1200, height: 630, alt: "REVONIK 提案用デモ" }],
   },
@@ -54,17 +53,17 @@ export const metadata: Metadata = {
 };
 
 export const viewport: Viewport = {
-  themeColor: "#08090B",
-  colorScheme: "dark",
+  themeColor: "#FFFFFF",
+  colorScheme: "light",
 };
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html lang="ja" className={`${archivo.variable} ${noto.variable}`}>
+    <html lang="ja" className={`${inter.variable} ${noto.variable}`}>
       <body className="min-h-dvh antialiased">
         <a
           href="#main"
-          className="sr-only z-[100] rounded bg-accent px-4 py-2 text-ink focus:not-sr-only focus:fixed focus:top-3 focus:left-3"
+          className="sr-only z-[100] rounded-full bg-fg px-4 py-2 text-white focus:not-sr-only focus:fixed focus:top-3 focus:left-3"
         >
           本文へスキップ
         </a>

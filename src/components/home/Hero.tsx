@@ -5,94 +5,75 @@ import { motion } from "motion/react";
 import { Button } from "@/components/Button";
 import { siteImages } from "@/data/images";
 
-const ease = [0.16, 1, 0.3, 1] as const;
+const ease = [0.25, 0.1, 0.25, 1] as const;
 
+/** 横長（PC）と横長コンパクト（スマホ）の画像を出し分け。文字とは重ねない */
 function HeroPicture() {
-  const common = { alt: "", sizes: "100vw", quality: 85, fetchPriority: "high" as const, loading: "eager" as const };
+  const common = { alt: siteImages.hero.alt, sizes: "(min-width: 1200px) 1200px, 100vw", quality: 85, fetchPriority: "high" as const, loading: "eager" as const };
   const {
     props: { srcSet: desktop },
-  } = getImageProps({ ...common, src: siteImages.hero.src, width: 2560, height: 1440 });
+  } = getImageProps({ ...common, src: siteImages.hero.src, width: 2400, height: 1200 });
   const {
     props: { srcSet: mobile, ...rest },
-  } = getImageProps({ ...common, src: siteImages.heroMobile.src, width: 1080, height: 1920 });
+  } = getImageProps({ ...common, src: siteImages.heroMobile.src, width: 1200, height: 900 });
   return (
     <picture>
       <source media="(min-width: 768px)" srcSet={desktop} />
       <source srcSet={mobile} />
-      {/* eslint-disable-next-line jsx-a11y/alt-text -- 装飾画像（alt="" は rest に含まれる） */}
-      <img {...rest} className="absolute inset-0 h-full w-full object-cover object-center md:object-[65%_50%]" />
+      {/* eslint-disable-next-line jsx-a11y/alt-text -- alt は rest に含まれる */}
+      <img {...rest} className="aspect-[4/3] h-auto w-full object-contain md:aspect-[2/1]" />
     </picture>
   );
 }
 
 export function Hero() {
   return (
-    <section aria-label="メインビジュアル" className="relative flex min-h-[100svh] items-end overflow-hidden bg-ink">
-      {/* 背景：ゆっくりとしたズーム（CSS アニメーション／reduced-motion で停止） */}
-      <div aria-hidden className="absolute inset-0 animate-hero-zoom">
-        <HeroPicture />
-      </div>
-      <div
-        aria-hidden
-        className="absolute inset-0 bg-gradient-to-t from-ink via-ink/20 to-ink/40 md:bg-gradient-to-r md:from-ink/90 md:via-ink/25 md:to-transparent"
-      />
-      <div aria-hidden className="absolute inset-x-0 bottom-0 h-40 bg-gradient-to-t from-ink to-transparent" />
-
-      <div className="container-x relative pt-40 pb-32 md:pb-36">
+    <section aria-labelledby="hero-title" className="overflow-hidden bg-bg pt-[118px] md:pt-[148px]">
+      <div className="container-x text-center">
         <motion.p
           initial={{ opacity: 0, y: 12 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 1, delay: 0.2, ease }}
-          className="eyebrow"
+          transition={{ duration: 0.8, ease }}
+          className="text-[1rem] font-semibold tracking-[0.3em] text-fg md:text-[1.125rem]"
         >
-          Precision × Innovation × Performance
+          REVONIK
         </motion.p>
-        <h1 className="display mt-6 text-[clamp(2.2rem,10.2vw,10.5rem)] leading-[0.88]">
-          {["ENGINEERED", "TO PERFORM."].map((line, i) => (
-            <span key={line} className="block overflow-hidden pb-[0.06em]">
-              <motion.span
-                className="block"
-                initial={{ y: "105%" }}
-                animate={{ y: 0 }}
-                transition={{ duration: 1.2, delay: 0.35 + i * 0.12, ease }}
-              >
-                {line}
-              </motion.span>
-            </span>
-          ))}
-        </h1>
+        <motion.h1
+          id="hero-title"
+          initial={{ opacity: 0, y: 16 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.9, delay: 0.08, ease }}
+          className="headline mt-3 text-[2.5rem] min-[375px]:text-[2.75rem] sm:text-6xl lg:text-[5rem]"
+        >
+          The Art of Precision.
+        </motion.h1>
         <motion.div
           initial={{ opacity: 0, y: 16 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 1, delay: 0.85, ease }}
-          className="mt-8 flex flex-col gap-8 md:mt-10 md:flex-row md:items-end md:justify-between"
+          transition={{ duration: 0.9, delay: 0.16, ease }}
         >
-          <div>
-            <p className="font-jp text-lg font-medium tracking-[0.12em] text-fg/90 md:text-xl">一投に、さらなる可能性を。</p>
-            <p className="mt-2 font-jp text-[0.68rem] tracking-wider text-muted">
-              ※ デモ用の仮コピーです（REVONIK の公式スローガンではありません）
-            </p>
+          <p className="prose-jp mx-auto mt-5 max-w-[22em] text-[1.0625rem] text-fg/80 md:text-[1.3125rem]">
+            <span className="inline-block">精密な設計から生まれる、</span>
+            <span className="inline-block">新たな釣りの可能性。</span>
+          </p>
+          <div className="mt-8 flex flex-col items-center justify-center gap-3 min-[400px]:flex-row min-[400px]:gap-5">
+            <Button href="/products">製品を見る</Button>
+            <Button href="/about" variant="link">
+              ブランドについて
+            </Button>
           </div>
-          <Button href="/products" className="self-start md:self-auto">
-            Explore Products
-          </Button>
+          <p className="mt-6 font-jp text-[0.6875rem] text-muted">※ キャッチコピーは営業デモ用の仮文章です（REVONIK の公式コピーではありません）</p>
         </motion.div>
       </div>
 
-      <p className="absolute top-36 right-5 font-display text-[0.6rem] font-semibold tracking-[0.3em] text-fg/40 md:top-auto md:right-10 md:bottom-8 xl:right-16">
-        DEMO IMAGE
-      </p>
-
-      {/* スクロール誘導 */}
-      <a
-        href="#featured"
-        className="absolute bottom-5 left-1/2 flex -translate-x-1/2 flex-col items-center gap-3 text-muted transition-colors hover:text-fg"
+      <motion.div
+        initial={{ opacity: 0, y: 40 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 1.2, delay: 0.3, ease }}
+        className="mx-auto mt-6 max-w-[1200px] px-2 md:mt-2"
       >
-        <span className="font-display text-[0.62rem] font-semibold tracking-[0.36em]">SCROLL</span>
-        <span aria-hidden className="relative block h-12 w-px overflow-hidden bg-line">
-          <span className="absolute inset-0 block animate-scroll-cue bg-fg" />
-        </span>
-      </a>
+        <HeroPicture />
+      </motion.div>
     </section>
   );
 }

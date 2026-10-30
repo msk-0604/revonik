@@ -3,35 +3,30 @@ import { MediaCard } from "@/components/MediaCard";
 import { Reveal } from "@/components/Reveal";
 import { SectionHeading } from "@/components/SectionHeading";
 import { media } from "@/data/media";
-import { site } from "@/data/site";
 
 export function MediaSection() {
   return (
-    <section aria-labelledby="media-title" className="container-x py-24 md:py-36">
-      <div className="flex flex-col gap-8 md:flex-row md:items-end md:justify-between">
+    <section aria-labelledby="media-title" className="section-y bg-bg-alt">
+      <div className="container-x">
         <SectionHeading
+          id="media-title"
           eyebrow="Media"
-          title={<span id="media-title">Media</span>}
-          lead="Instagram・動画・メディア掲載への導線。公式に埋め込みが許可されたコンテンツのみ埋め込み、それ以外は外部リンクでご案内します。"
+          title="SNS と動画。"
+          lead="Instagram・動画・メディア掲載への導線です。公式に埋め込みが許可されたコンテンツのみ埋め込み、それ以外は外部リンクでご案内します。"
         />
-        <Reveal>
-          <Button href={site.links.instagram} external variant="outline">
-            Instagram
+        <ul className="mt-12 grid gap-10 sm:grid-cols-2 lg:grid-cols-3 lg:gap-8">
+          {media.slice(0, 3).map((m, i) => (
+            <Reveal as="li" key={m.id} delay={i * 0.06}>
+              <MediaCard item={m} surface="white" />
+            </Reveal>
+          ))}
+        </ul>
+        <div className="mt-10 text-center">
+          <Button href="/media" variant="link">
+            すべてのメディア
           </Button>
-        </Reveal>
+        </div>
       </div>
-      <ul className="mt-14 grid gap-5 sm:grid-cols-2 lg:grid-cols-3 lg:gap-6">
-        {media.slice(0, 3).map((m, i) => (
-          <Reveal as="li" key={m.id} delay={i * 0.08}>
-            <MediaCard item={m} />
-          </Reveal>
-        ))}
-      </ul>
-      <Reveal className="mt-10">
-        <Button href="/media" variant="ghost">
-          View all media
-        </Button>
-      </Reveal>
     </section>
   );
 }

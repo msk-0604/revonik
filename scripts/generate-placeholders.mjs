@@ -1,5 +1,5 @@
 /**
- * オリジナルの仮画像（DEMO IMAGE）を生成する。
+ * オリジナルの仮画像（DEMO IMAGE）を生成する。ホワイト基調のデザインに合わせ、商品画像は透明背景。
  * REVONIK の写真・ロゴは一切使用していない。SVG で描いたイラストを sharp で WebP / PNG に変換する。
  *
  *   npm run images
@@ -16,7 +16,7 @@ const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const out = (p) => path.join(root, "public", "placeholders", p);
 
 const FONT = "Inter, DejaVu Sans, sans-serif";
-const NOTICE = "ORIGINAL PLACEHOLDER — NOT AN OFFICIAL PRODUCT PHOTO";
+const GRAY = "#86868B";
 
 /* ---------- lure shapes (body units: head x=0 → tail x=1000) ---------- */
 const shapes = {
@@ -72,34 +72,34 @@ function hook(ax, ay, k, tail) {
   const dx = tail ? 18 * k : 0;
   return `
   <g stroke-linecap="round" fill="none">
-    <circle cx="${ax}" cy="${ringY}" r="${s(18)}" stroke="#aab1ba" stroke-width="${s(5)}"/>
-    <path d="M${ax + dx},${top} L${ax + dx},${end}" stroke="#c8ced5" stroke-width="${s(6)}"/>
-    <path d="M${ax + dx},${end} C${ax + dx},${ay + 200 * k} ${ax + dx - 56 * k},${ay + 200 * k} ${ax + dx - 60 * k},${end} L${ax + dx - 60 * k},${ay + 122 * k}" stroke="#8d949d" stroke-width="${s(5.5)}"/>
-    <path d="M${ax + dx},${end} C${ax + dx},${ay + 200 * k} ${ax + dx + 56 * k},${ay + 200 * k} ${ax + dx + 60 * k},${end} L${ax + dx + 60 * k},${ay + 122 * k}" stroke="#d7dce2" stroke-width="${s(5.5)}"/>
-    <path d="M${ax + dx + 60 * k},${ay + 124 * k} L${ax + dx + 48 * k},${ay + 140 * k}" stroke="#d7dce2" stroke-width="${s(4)}"/>
-    <path d="M${ax + dx},${end} C${ax + dx + 4 * k},${ay + 186 * k} ${ax + dx + 18 * k},${ay + 194 * k} ${ax + dx + 24 * k},${ay + 172 * k}" stroke="#b3bac2" stroke-width="${s(5)}" opacity="0.8"/>
-    <path d="M${ax + dx + 1.5 * k},${top + 6 * k} L${ax + dx + 1.5 * k},${end - 8 * k}" stroke="#ffffff" stroke-width="${s(1.6)}" opacity="0.55"/>
+    <circle cx="${ax}" cy="${ringY}" r="${s(18)}" stroke="#8E949B" stroke-width="${s(5)}"/>
+    <path d="M${ax + dx},${top} L${ax + dx},${end}" stroke="#7C828A" stroke-width="${s(6)}"/>
+    <path d="M${ax + dx},${end} C${ax + dx},${ay + 200 * k} ${ax + dx - 56 * k},${ay + 200 * k} ${ax + dx - 60 * k},${end} L${ax + dx - 60 * k},${ay + 122 * k}" stroke="#A3A9B0" stroke-width="${s(5.5)}"/>
+    <path d="M${ax + dx},${end} C${ax + dx},${ay + 200 * k} ${ax + dx + 56 * k},${ay + 200 * k} ${ax + dx + 60 * k},${end} L${ax + dx + 60 * k},${ay + 122 * k}" stroke="#6E747C" stroke-width="${s(5.5)}"/>
+    <path d="M${ax + dx + 60 * k},${ay + 124 * k} L${ax + dx + 48 * k},${ay + 140 * k}" stroke="#6E747C" stroke-width="${s(4)}"/>
+    <path d="M${ax + dx},${end} C${ax + dx + 4 * k},${ay + 186 * k} ${ax + dx + 18 * k},${ay + 194 * k} ${ax + dx + 24 * k},${ay + 172 * k}" stroke="#8E949B" stroke-width="${s(5)}" opacity="0.8"/>
+    <path d="M${ax + dx + 1.5 * k},${top + 6 * k} L${ax + dx + 1.5 * k},${end - 8 * k}" stroke="#ffffff" stroke-width="${s(1.6)}" opacity="0.7"/>
   </g>`;
 }
 
-/** ルアー1体を <g> として返す */
-function lure({ shape, palette, x, y, scale, rotate = 0, glow = true }) {
+/** ルアー1体を <g> として返す（明るい背景用：柔らかい接地影） */
+function lure({ shape, palette, x, y, scale, rotate = 0, shadow = true }) {
   const sh = shapes[shape];
   const id = `l${uid++}`;
   const { back, body, belly, accent = body, clear = false } = palette;
   const h = sh.bottom - sh.top;
   const [ex, ey, er] = sh.eye;
-  const bodyOpacity = clear ? 0.78 : 1;
+  const bodyOpacity = clear ? 0.82 : 1;
 
   const lip = sh.lip
-    ? `<path d="${sh.lip}" fill="url(#${id}-lip)" stroke="rgba(255,255,255,0.45)" stroke-width="3"/>`
+    ? `<path d="${sh.lip}" fill="url(#${id}-lip)" stroke="rgba(29,29,31,0.22)" stroke-width="2.5"/>`
     : "";
   const wire = sh.wire
-    ? `<path d="${sh.wire}" fill="none" stroke="#c9cfd6" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/>
-       <path d="${sh.wire}" fill="none" stroke="#ffffff" stroke-width="2" opacity="0.6" stroke-linecap="round"/>`
+    ? `<path d="${sh.wire}" fill="none" stroke="#7C828A" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/>
+       <path d="${sh.wire}" fill="none" stroke="#ffffff" stroke-width="2" opacity="0.7" stroke-linecap="round"/>`
     : "";
   const tie = sh.tie
-    ? `<circle cx="${sh.tie[0]}" cy="${sh.tie[1]}" r="${h * 0.035 + 6}" fill="none" stroke="#c9cfd6" stroke-width="5"/>`
+    ? `<circle cx="${sh.tie[0]}" cy="${sh.tie[1]}" r="${h * 0.035 + 6}" fill="none" stroke="#7C828A" stroke-width="5"/>`
     : "";
 
   return `
@@ -113,78 +113,58 @@ function lure({ shape, palette, x, y, scale, rotate = 0, glow = true }) {
         <stop offset="1" stop-color="${belly}"/>
       </linearGradient>
       <linearGradient id="${id}-lip" x1="0" y1="0" x2="1" y2="1">
-        <stop offset="0" stop-color="#ffffff" stop-opacity="0.32"/>
-        <stop offset="1" stop-color="#9fb0c0" stop-opacity="0.12"/>
+        <stop offset="0" stop-color="#C9D3DC" stop-opacity="0.55"/>
+        <stop offset="1" stop-color="#E9EEF2" stop-opacity="0.35"/>
       </linearGradient>
       <radialGradient id="${id}-hl" cx="0.45" cy="0.18" r="0.6">
-        <stop offset="0" stop-color="#ffffff" stop-opacity="0.55"/>
+        <stop offset="0" stop-color="#ffffff" stop-opacity="0.65"/>
         <stop offset="1" stop-color="#ffffff" stop-opacity="0"/>
       </radialGradient>
       <linearGradient id="${id}-sh" x1="0" y1="0" x2="1" y2="0">
         <stop offset="0" stop-color="#000" stop-opacity="0"/>
-        <stop offset="0.7" stop-color="#000" stop-opacity="0"/>
-        <stop offset="1" stop-color="#000" stop-opacity="0.45"/>
+        <stop offset="0.72" stop-color="#000" stop-opacity="0"/>
+        <stop offset="1" stop-color="#000" stop-opacity="0.22"/>
       </linearGradient>
       <pattern id="${id}-sc" width="44" height="30" patternUnits="userSpaceOnUse">
         <path d="M0,30 C10,10 34,10 44,30 M-22,15 C-12,-5 12,-5 22,15 M22,15 C32,-5 56,-5 66,15" fill="none" stroke="#ffffff" stroke-width="1.6"/>
       </pattern>
       <clipPath id="${id}-c"><path d="${sh.body}"/></clipPath>
-      <filter id="${id}-b" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation="${h * 0.06}"/></filter>
+      <filter id="${id}-b" x="-50%" y="-200%" width="200%" height="500%"><feGaussianBlur stdDeviation="${h * 0.07}"/></filter>
     </defs>
-    ${glow ? `<ellipse cx="500" cy="${sh.bottom + h * 0.55}" rx="560" ry="${h * 0.12}" fill="#000" opacity="0.55" filter="url(#${id}-b)"/>` : ""}
+    ${shadow ? `<ellipse cx="520" cy="${sh.bottom + h * 0.62}" rx="520" ry="${h * 0.07}" fill="#1D1D1F" opacity="0.16" filter="url(#${id}-b)"/>` : ""}
     ${sh.hooks.map(([hx, hy, k], i) => hook(hx, hy, k, i === sh.hooks.length - 1 && hx >= 1000)).join("")}
     ${wire}
     ${lip}
     <path d="${sh.body}" fill="url(#${id}-g)" opacity="${bodyOpacity}"/>
     <g clip-path="url(#${id}-c)">
-      <rect x="-50" y="${sh.top}" width="1100" height="${h}" fill="url(#${id}-sc)" opacity="0.16"/>
+      <rect x="-50" y="${sh.top}" width="1100" height="${h}" fill="url(#${id}-sc)" opacity="0.14"/>
       <ellipse cx="560" cy="${sh.top + h * 0.5}" rx="520" ry="${h * 0.07}" fill="${accent}" opacity="0.42"/>
       <ellipse cx="470" cy="${sh.top + h * 0.2}" rx="420" ry="${h * 0.2}" fill="url(#${id}-hl)"/>
       <rect x="-50" y="${sh.top}" width="1100" height="${h}" fill="url(#${id}-sh)"/>
-      <ellipse cx="520" cy="${sh.bottom}" rx="560" ry="${h * 0.16}" fill="#000" opacity="0.18"/>
-      <path d="${sh.gill}" fill="none" stroke="rgba(0,0,0,0.35)" stroke-width="5"/>
-      <path d="${sh.gill}" transform="translate(6 0)" fill="none" stroke="rgba(255,255,255,0.2)" stroke-width="2"/>
+      <ellipse cx="520" cy="${sh.bottom}" rx="560" ry="${h * 0.16}" fill="#000" opacity="0.1"/>
+      <path d="${sh.gill}" fill="none" stroke="rgba(0,0,0,0.25)" stroke-width="4"/>
+      <path d="${sh.gill}" transform="translate(6 0)" fill="none" stroke="rgba(255,255,255,0.35)" stroke-width="2"/>
     </g>
-    <path d="${sh.body}" fill="none" stroke="rgba(255,255,255,0.22)" stroke-width="2.5"/>
-    <circle cx="${ex}" cy="${ey}" r="${er}" fill="#e9ecef"/>
-    <circle cx="${ex}" cy="${ey}" r="${er * 0.86}" fill="#c9a43a"/>
-    <circle cx="${ex - er * 0.08}" cy="${ey}" r="${er * 0.5}" fill="#0b0c0e"/>
-    <circle cx="${ex - er * 0.3}" cy="${ey - er * 0.32}" r="${er * 0.2}" fill="#ffffff" opacity="0.9"/>
+    <path d="${sh.body}" fill="none" stroke="rgba(29,29,31,0.12)" stroke-width="2.5"/>
+    <circle cx="${ex}" cy="${ey}" r="${er}" fill="#F2F2F2" stroke="rgba(0,0,0,0.12)" stroke-width="2"/>
+    <circle cx="${ex}" cy="${ey}" r="${er * 0.86}" fill="#C9A43A"/>
+    <circle cx="${ex - er * 0.08}" cy="${ey}" r="${er * 0.5}" fill="#111214"/>
+    <circle cx="${ex - er * 0.3}" cy="${ey - er * 0.32}" r="${er * 0.2}" fill="#ffffff" opacity="0.95"/>
     ${tie}
   </g>`;
 }
 
-const label = (x, y, text, { size = 22, anchor = "start", opacity = 0.75, weight = 600, spacing = 4 } = {}) =>
-  `<text x="${x}" y="${y}" font-family="${FONT}" font-size="${size}" font-weight="${weight}" letter-spacing="${spacing}" fill="#F5F5F5" fill-opacity="${opacity}" text-anchor="${anchor}">${text}</text>`;
-
-function stage(w, h, { spotX = 0.5, spotY = 0.48, grid = true } = {}) {
-  const gridLines = [];
-  if (grid) {
-    const step = Math.round(Math.min(w, h) / 12);
-    for (let gx = step; gx < w; gx += step) gridLines.push(`<line x1="${gx}" y1="0" x2="${gx}" y2="${h}"/>`);
-    for (let gy = step; gy < h; gy += step) gridLines.push(`<line x1="0" y1="${gy}" x2="${w}" y2="${gy}"/>`);
-  }
-  return `
-  <defs>
-    <radialGradient id="spot" cx="${spotX}" cy="${spotY}" r="0.62">
-      <stop offset="0" stop-color="#2a2e34"/>
-      <stop offset="0.45" stop-color="#15171A"/>
-      <stop offset="1" stop-color="#08090B"/>
-    </radialGradient>
-  </defs>
-  <rect width="${w}" height="${h}" fill="#08090B"/>
-  <rect width="${w}" height="${h}" fill="url(#spot)"/>
-  <g stroke="#DCE1E5" stroke-opacity="0.035" stroke-width="1">${gridLines.join("")}</g>`;
-}
+const label = (x, y, text, { size = 22, anchor = "start", opacity = 1, weight = 500, spacing = 3, color = GRAY } = {}) =>
+  `<text x="${x}" y="${y}" font-family="${FONT}" font-size="${size}" font-weight="${weight}" letter-spacing="${spacing}" fill="${color}" fill-opacity="${opacity}" text-anchor="${anchor}">${text}</text>`;
 
 const svg = (w, h, inner) =>
   `<svg xmlns="http://www.w3.org/2000/svg" width="${w}" height="${h}" viewBox="0 0 ${w} ${h}">${inner}</svg>`;
 
-async function render(file, w, h, inner, { format = "webp", quality = 86 } = {}) {
+async function render(file, w, h, inner, { format = "webp", quality = 88 } = {}) {
   const target = out(file);
   await mkdir(path.dirname(target), { recursive: true });
   let img = sharp(Buffer.from(svg(w, h, inner)));
-  img = format === "png" ? img.png() : img.webp({ quality });
+  img = format === "png" ? img.png() : img.webp({ quality, alphaQuality: 90 });
   await writeFile(target, await img.toBuffer());
   console.log("  ✓", file);
 }
@@ -194,187 +174,137 @@ function fitScale(shape, maxW, maxH) {
   const sh = shapes[shape];
   const h = sh.bottom - sh.top;
   const lureW = 1000 + 170 + 80;
-  const lureH = h + 200 * sh.hooks[0][2];
+  const lureH = Math.max(h + 200 * sh.hooks[0][2], h * 1.7);
   return Math.min(maxW / lureW, maxH / lureH);
 }
 
-/* ---------- product images ---------- */
+/** ルアーを中央に配置（全商品で大きさ・位置を統一）。フックと接地影まで含めた見た目の範囲で中央揃え */
+function centered(shape, palette, W, H, maxW, maxH, rotate = -4, dy = 0) {
+  const sh = shapes[shape];
+  const scale = fitScale(shape, maxW, maxH);
+  const h = sh.bottom - sh.top;
+  const visualTop = sh.top - 30;
+  const visualBottom = Math.max(sh.bottom + 200 * sh.hooks[0][2], sh.bottom + h * 0.7);
+  const cy = H / 2 - ((visualTop + visualBottom) / 2) * scale + dy;
+  return lure({ shape, palette, x: W / 2 + 40 * scale, y: cy, scale, rotate });
+}
+
+const demoMark = (W, H, text = "DEMO IMAGE") => label(W / 2, H - 40, text, { size: 18, anchor: "middle", opacity: 0.9, spacing: 5 });
+
+/* ---------- product images（透明背景・統一サイズ） ---------- */
 async function productImages() {
   const W = 1600;
   const H = 1200;
   for (const p of products) {
     for (const c of p.colors) {
-      const scale = fitScale(p.shape, 1080, 720);
-      const sh = shapes[p.shape];
-      const cy = H * 0.5 - ((sh.bottom + sh.top) / 2) * scale - 60 * scale;
-      const inner = `
-        ${stage(W, H)}
-        ${lure({ shape: p.shape, palette: c.palette, x: W / 2 + 60 * scale, y: cy, scale, rotate: -6 })}
-        <line x1="64" y1="64" x2="64" y2="110" stroke="#DCE1E5" stroke-opacity="0.6" stroke-width="2"/>
-        ${label(84, 84, "DEMO IMAGE", { size: 22 })}
-        ${label(84, 112, NOTICE, { size: 13, opacity: 0.45, weight: 500, spacing: 2 })}
-        ${label(W - 64, 96, p.name, { size: 28, anchor: "end", opacity: 0.55, weight: 800, spacing: 6 })}
-        ${label(64, H - 64, "STARK LAB / PROPOSAL", { size: 14, opacity: 0.35, weight: 500 })}`;
+      const inner = `${centered(p.shape, c.palette, W, H, 1320, 860, -4, -30)}${demoMark(W, H, "DEMO IMAGE — ORIGINAL PLACEHOLDER")}`;
       await render(`products/${p.slug}/${c.id}.webp`, W, H, inner);
     }
   }
 }
 
 /* ---------- site images ---------- */
-const heroPalette = { back: "#111316", body: "#7c8591", belly: "#e6e9ec", accent: "#DCE1E5" };
+const heroPalette = { back: "#2B2F36", body: "#9AA3AE", belly: "#F1F3F5", accent: "#C9D1D9" };
 
-function caustics(w, h, count, seed = 1) {
-  let s = seed;
-  const rnd = () => ((s = (s * 9301 + 49297) % 233280) / 233280);
-  const lines = [];
-  for (let i = 0; i < count; i++) {
-    const y = rnd() * h;
-    const amp = 10 + rnd() * 40;
-    const len = w * (0.3 + rnd() * 0.7);
-    const x0 = rnd() * w * 0.6 - w * 0.1;
-    lines.push(
-      `<path d="M${x0},${y} C${x0 + len * 0.3},${y - amp} ${x0 + len * 0.6},${y + amp} ${x0 + len},${y}" stroke="#DCE1E5" stroke-opacity="${(0.02 + rnd() * 0.06).toFixed(3)}" stroke-width="${(1 + rnd() * 2).toFixed(1)}" fill="none"/>`,
-    );
-  }
-  return lines.join("");
+function rings(cx, cy, count, rx0, step, color = "#1D1D1F", max = 0.14) {
+  return Array.from({ length: count }, (_, i) => {
+    const r = rx0 + i * step;
+    return `<ellipse cx="${cx}" cy="${cy}" rx="${r * 1.7}" ry="${r * 0.42}" fill="none" stroke="${color}" stroke-opacity="${(max - (i * max) / (count + 1)).toFixed(3)}" stroke-width="2"/>`;
+  }).join("");
 }
 
 async function siteImages() {
-  // HERO (desktop)
+  // HERO — 透明背景の大きなルアー（文字とは重ねずに配置）
   {
-    const W = 2560;
-    const H = 1440;
-    const inner = `
-      ${stage(W, H, { spotX: 0.62, spotY: 0.5, grid: false })}
-      ${caustics(W, H, 70, 7)}
-      ${lure({ shape: "minnow", palette: heroPalette, x: W * 0.62, y: H * 0.5, scale: 1.45, rotate: -10 })}
-      `;
-    await render("hero.webp", W, H, inner, { quality: 82 });
+    const W = 2400;
+    const H = 1200;
+    await render("hero.webp", W, H, `${centered("minnow", heroPalette, W, H, 2100, 900, -6, -20)}${demoMark(W, H)}`, { quality: 90 });
   }
-  // HERO (mobile)
   {
-    const W = 1080;
-    const H = 1920;
-    const inner = `
-      ${stage(W, H, { spotX: 0.5, spotY: 0.62, grid: false })}
-      ${caustics(W, H, 50, 3)}
-      ${lure({ shape: "minnow", palette: heroPalette, x: W * 0.54, y: H * 0.3, scale: 0.8, rotate: -14 })}
-      `;
-    await render("hero-mobile.webp", W, H, inner, { quality: 82 });
+    const W = 1200;
+    const H = 900;
+    await render("hero-mobile.webp", W, H, `${centered("minnow", heroPalette, W, H, 1120, 640, -8, -10)}${demoMark(W, H)}`, { quality: 90 });
   }
-  // PHILOSOPHY — 水面
+  // PHILOSOPHY — 水面の波紋（ライトグレー）
   {
     const W = 1800;
     const H = 1200;
-    const bands = Array.from({ length: 46 }, (_, i) => {
-      const y = H * 0.38 + Math.pow(i / 46, 1.6) * H * 0.62;
-      const op = 0.03 + (i / 46) * 0.12;
-      return `<path d="M0,${y} C${W * 0.25},${y - 6 - i * 0.3} ${W * 0.5},${y + 8 + i * 0.4} ${W},${y - 4}" stroke="#DCE1E5" stroke-opacity="${op.toFixed(3)}" stroke-width="${1 + i * 0.05}" fill="none"/>`;
-    }).join("");
-    const inner = `
-      <defs><linearGradient id="sky" x1="0" y1="0" x2="0" y2="1">
-        <stop offset="0" stop-color="#08090B"/><stop offset="0.36" stop-color="#1b1e22"/><stop offset="0.4" stop-color="#2b2f35"/><stop offset="1" stop-color="#08090B"/>
-      </linearGradient></defs>
-      <rect width="${W}" height="${H}" fill="url(#sky)"/>
-      ${bands}
-      <rect x="0" y="${H * 0.385}" width="${W}" height="2" fill="#DCE1E5" fill-opacity="0.25"/>
-      ${label(64, H - 64, "DEMO IMAGE", { size: 18, opacity: 0.4 })}`;
+    const inner = `<rect width="${W}" height="${H}" fill="#F5F5F7"/>${rings(W * 0.5, H * 0.56, 12, 50, 72)}${demoMark(W, H)}`;
     await render("philosophy.webp", W, H, inner);
   }
-  // WATER — 波紋
   {
     const W = 1800;
     const H = 1200;
-    const rings = Array.from({ length: 14 }, (_, i) => {
-      const r = 40 + i * 70;
-      return `<ellipse cx="${W * 0.55}" cy="${H * 0.55}" rx="${r * 1.6}" ry="${r * 0.5}" fill="none" stroke="#DCE1E5" stroke-opacity="${(0.22 - i * 0.014).toFixed(3)}" stroke-width="${2.5 - i * 0.12}"/>`;
-    }).join("");
-    const inner = `${stage(W, H, { spotX: 0.55, spotY: 0.55, grid: false })}${rings}${label(64, H - 64, "DEMO IMAGE", { size: 18, opacity: 0.4 })}`;
+    const inner = `<rect width="${W}" height="${H}" fill="#FFFFFF"/>${rings(W * 0.5, H * 0.5, 10, 60, 80, "#1D1D1F", 0.1)}${demoMark(W, H)}`;
     await render("water.webp", W, H, inner);
   }
-  // BLUEPRINT — 設計図
+  // BLUEPRINT — 設計図風の線画
   {
     const W = 1800;
-    const H = 1200;
+    const H = 1000;
     const sh = shapes.minnow;
-    const sc = 1.05;
-    const ox = 360;
-    const oy = 560;
-    const tr = `translate(${ox} ${oy}) scale(${sc})`;
+    const sc = 1.08;
+    const ox = 330;
+    const oy = 500;
+    const ln = (o = 0.5) => `stroke="#1D1D1F" stroke-opacity="${o}"`;
     const dim = (x1, x2, y, text) => `
-      <line x1="${x1}" y1="${y}" x2="${x2}" y2="${y}" stroke="#DCE1E5" stroke-opacity="0.5" stroke-width="1.5"/>
-      <line x1="${x1}" y1="${y - 14}" x2="${x1}" y2="${y + 14}" stroke="#DCE1E5" stroke-opacity="0.5" stroke-width="1.5"/>
-      <line x1="${x2}" y1="${y - 14}" x2="${x2}" y2="${y + 14}" stroke="#DCE1E5" stroke-opacity="0.5" stroke-width="1.5"/>
-      ${label((x1 + x2) / 2, y - 18, text, { size: 16, anchor: "middle", opacity: 0.6, weight: 500, spacing: 3 })}`;
+      <line x1="${x1}" y1="${y}" x2="${x2}" y2="${y}" ${ln(0.35)} stroke-width="1.5"/>
+      <line x1="${x1}" y1="${y - 12}" x2="${x1}" y2="${y + 12}" ${ln(0.35)} stroke-width="1.5"/>
+      <line x1="${x2}" y1="${y - 12}" x2="${x2}" y2="${y + 12}" ${ln(0.35)} stroke-width="1.5"/>
+      ${label((x1 + x2) / 2, y - 16, text, { size: 16, anchor: "middle" })}`;
     const inner = `
-      ${stage(W, H, { spotX: 0.5, spotY: 0.5 })}
-      <g transform="${tr}" fill="none" stroke="#DCE1E5" stroke-width="${2 / sc}">
-        <path d="${sh.body}" stroke-opacity="0.85"/>
-        <path d="${sh.lip}" stroke-opacity="0.55"/>
-        <path d="${sh.gill}" stroke-opacity="0.45"/>
-        <circle cx="${sh.eye[0]}" cy="${sh.eye[1]}" r="${sh.eye[2]}" stroke-opacity="0.6"/>
-        <line x1="-200" y1="0" x2="1100" y2="0" stroke-opacity="0.25" stroke-dasharray="12 10"/>
-        <line x1="450" y1="-180" x2="450" y2="180" stroke-opacity="0.25" stroke-dasharray="12 10"/>
-        <circle cx="330" cy="92" r="10" stroke-opacity="0.6"/><circle cx="700" cy="80" r="10" stroke-opacity="0.6"/>
-        <ellipse cx="560" cy="0" rx="90" ry="34" stroke-opacity="0.35"/>
+      <rect width="${W}" height="${H}" fill="#F5F5F7"/>
+      <g transform="translate(${ox} ${oy}) scale(${sc})" fill="none" stroke-width="${2 / sc}">
+        <path d="${sh.body}" ${ln(0.75)}/>
+        <path d="${sh.lip}" ${ln(0.45)}/>
+        <path d="${sh.gill}" ${ln(0.35)}/>
+        <circle cx="${sh.eye[0]}" cy="${sh.eye[1]}" r="${sh.eye[2]}" ${ln(0.5)}/>
+        <line x1="-200" y1="0" x2="1100" y2="0" ${ln(0.18)} stroke-dasharray="12 10"/>
+        <line x1="450" y1="-180" x2="450" y2="180" ${ln(0.18)} stroke-dasharray="12 10"/>
+        <circle cx="330" cy="92" r="10" ${ln(0.5)}/><circle cx="700" cy="80" r="10" ${ln(0.5)}/>
+        <ellipse cx="560" cy="0" rx="90" ry="34" ${ln(0.3)}/>
       </g>
-      ${dim(ox, ox + 1000 * sc, oy - 210, "L  ———  mm (DEMO)")}
-      ${dim(ox + 330 * sc, ox + 700 * sc, oy + 200, "HOOK PITCH (DEMO)")}
-      ${label(ox + 560 * sc, oy - 60, "WEIGHT CHAMBER", { size: 13, anchor: "middle", opacity: 0.45, weight: 500, spacing: 3 })}
-      <line x1="64" y1="64" x2="64" y2="110" stroke="#DCE1E5" stroke-opacity="0.6" stroke-width="2"/>
-      ${label(84, 84, "DEMO IMAGE", { size: 22 })}
-      ${label(84, 112, "CONCEPT DRAWING — NOT AN ACTUAL DESIGN DOCUMENT", { size: 13, opacity: 0.45, weight: 500, spacing: 2 })}`;
+      ${dim(ox, ox + 1000 * sc, oy - 200, "LENGTH (DEMO)")}
+      ${dim(ox + 330 * sc, ox + 700 * sc, oy + 190, "HOOK PITCH (DEMO)")}
+      ${demoMark(W, H, "DEMO IMAGE — CONCEPT DRAWING, NOT AN ACTUAL DESIGN DOCUMENT")}`;
     await render("blueprint.webp", W, H, inner);
   }
-  // VIDEO
+  // VIDEO — 文字を重ねるため、ルアーは描かず波紋のみ
   {
     const W = 1920;
     const H = 1080;
-    const inner = `
-      ${stage(W, H, { spotX: 0.5, spotY: 0.5, grid: false })}
-      ${caustics(W, H, 40, 11)}
-      ${lure({ shape: "shad", palette: { back: "#1c2128", body: "#8d98aa", belly: "#f1f3f5", accent: "#c9d36a" }, x: W * 0.5, y: H * 0.5, scale: 0.72, rotate: -4 })}
-      <rect width="${W}" height="${H}" fill="#08090B" fill-opacity="0.35"/>
-      ${label(64, H - 64, "DEMO IMAGE — VIDEO THUMBNAIL", { size: 18, opacity: 0.45 })}`;
-    await render("video.webp", W, H, inner);
+    await render("video.webp", W, H, `<rect width="${W}" height="${H}" fill="#F5F5F7"/>${rings(W * 0.5, H * 0.5, 9, 60, 80, "#1D1D1F", 0.08)}${demoMark(W, H, "DEMO IMAGE — VIDEO THUMBNAIL")}`);
   }
-  // NEWS thumbnails
+  // NEWS
   const newsShapes = { PRODUCT: "crankbait", EVENT: "vibration", BRAND: "shad", MEDIA: "minnow" };
   for (const [cat, shape] of Object.entries(newsShapes)) {
     const W = 1600;
     const H = 1000;
-    const inner = `
-      ${stage(W, H, { spotX: 0.66, spotY: 0.5 })}
-      ${label(72, H * 0.58, cat, { size: 190, opacity: 0.06, weight: 900, spacing: 0 })}
-      ${lure({ shape, palette: heroPalette, x: W * 0.62, y: H * 0.46, scale: fitScale(shape, 900, 620), rotate: -8 })}
-      ${label(72, 96, "DEMO IMAGE", { size: 22 })}
-      ${label(72, 124, "SAMPLE ARTICLE THUMBNAIL", { size: 13, opacity: 0.45, weight: 500, spacing: 2 })}`;
-    await render(`news-${cat.toLowerCase()}.webp`, W, H, inner);
+    await render(`news-${cat.toLowerCase()}.webp`, W, H, `<rect width="${W}" height="${H}" fill="#F5F5F7"/>${centered(shape, heroPalette, W, H, 900, 560)}${demoMark(W, H, "DEMO IMAGE — SAMPLE")}`);
   }
-  // MEDIA thumbnails
+  // MEDIA（透明背景：カード側の地色で表示）
+  const st = `fill="none" stroke="#1D1D1F" stroke-opacity="0.8" stroke-width="14"`;
   const mediaArt = {
-    instagram: `<rect x="650" y="350" width="300" height="300" rx="80" fill="none" stroke="#DCE1E5" stroke-opacity="0.7" stroke-width="16"/><circle cx="800" cy="500" r="72" fill="none" stroke="#DCE1E5" stroke-opacity="0.7" stroke-width="16"/><circle cx="890" cy="410" r="14" fill="#DCE1E5" fill-opacity="0.7"/>`,
-    youtube: `<rect x="620" y="380" width="360" height="240" rx="60" fill="none" stroke="#DCE1E5" stroke-opacity="0.7" stroke-width="16"/><path d="M760,440 L870,500 L760,560 Z" fill="#DCE1E5" fill-opacity="0.75"/>`,
-    store: `<path d="M640,420 L960,420 L930,640 L670,640 Z" fill="none" stroke="#DCE1E5" stroke-opacity="0.7" stroke-width="16" stroke-linejoin="round"/><path d="M720,420 C720,330 880,330 880,420" fill="none" stroke="#DCE1E5" stroke-opacity="0.7" stroke-width="16"/>`,
-    article: `<rect x="650" y="330" width="300" height="360" rx="20" fill="none" stroke="#DCE1E5" stroke-opacity="0.7" stroke-width="16"/>${[420, 480, 540, 600].map((y) => `<line x1="700" y1="${y}" x2="${y === 600 ? 820 : 900}" y2="${y}" stroke="#DCE1E5" stroke-opacity="0.5" stroke-width="12" stroke-linecap="round"/>`).join("")}`,
+    instagram: `<rect x="650" y="350" width="300" height="300" rx="80" ${st}/><circle cx="800" cy="500" r="72" ${st}/><circle cx="890" cy="410" r="14" fill="#1D1D1F" fill-opacity="0.8"/>`,
+    youtube: `<rect x="620" y="380" width="360" height="240" rx="60" ${st}/><path d="M760,440 L870,500 L760,560 Z" fill="#1D1D1F" fill-opacity="0.8"/>`,
+    store: `<path d="M640,420 L960,420 L930,640 L670,640 Z" ${st} stroke-linejoin="round"/><path d="M720,420 C720,330 880,330 880,420" ${st}/>`,
+    article: `<rect x="650" y="330" width="300" height="360" rx="20" ${st}/>${[420, 480, 540, 600].map((y) => `<line x1="700" y1="${y}" x2="${y === 600 ? 820 : 900}" y2="${y}" stroke="#1D1D1F" stroke-opacity="0.5" stroke-width="12" stroke-linecap="round"/>`).join("")}`,
   };
   for (const [kind, art] of Object.entries(mediaArt)) {
     const W = 1600;
     const H = 1000;
-    const inner = `${stage(W, H)}${caustics(W, H, 30, kind.length)}${art}${label(72, 96, "DEMO IMAGE", { size: 22 })}`;
-    await render(`media-${kind}.webp`, W, H, inner);
+    await render(`media-${kind}.webp`, W, H, `${art}${demoMark(W, H)}`);
   }
   // OGP
   {
     const W = 1200;
     const H = 630;
     const inner = `
-      ${stage(W, H, { spotX: 0.68, spotY: 0.5, grid: false })}
-      ${caustics(W, H, 30, 5)}
-      ${lure({ shape: "minnow", palette: heroPalette, x: W * 0.7, y: H * 0.5, scale: 0.56, rotate: -10 })}
-      ${label(72, 290, "REVONIK", { size: 92, opacity: 1, weight: 900, spacing: 10 })}
-      ${label(76, 340, "ENGINEERED TO PERFORM.", { size: 26, opacity: 0.8, weight: 600, spacing: 6 })}
-      ${label(76, H - 56, "UNOFFICIAL PROPOSAL DEMO — STARK LAB", { size: 16, opacity: 0.55, weight: 500, spacing: 3 })}`;
+      <rect width="${W}" height="${H}" fill="#FFFFFF"/>
+      ${label(W / 2, 150, "REVONIK", { size: 30, anchor: "middle", color: "#1D1D1F", weight: 600, spacing: 10 })}
+      ${label(W / 2, 222, "The Art of Precision.", { size: 58, anchor: "middle", color: "#1D1D1F", weight: 600, spacing: -1 })}
+      ${centered("minnow", heroPalette, W, H, 760, 300, -6, 120)}
+      ${label(W / 2, H - 28, "UNOFFICIAL PROPOSAL DEMO — STARK LAB", { size: 14, anchor: "middle", spacing: 3 })}`;
     await render("og.png", W, H, inner, { format: "png" });
   }
 }

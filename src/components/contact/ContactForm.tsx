@@ -16,9 +16,9 @@ const topics = ["製品について", "取扱店・購入について", "取材�
 type Errors = Partial<Record<"topic" | "name" | "email" | "message" | "agree", string>>;
 
 const field =
-  "mt-2 block w-full border border-line-strong bg-panel px-4 py-3.5 font-jp text-base text-fg placeholder:text-muted/70 transition-colors focus:border-fg focus:outline-none aria-[invalid=true]:border-red-300/70";
-const labelCls = "flex items-center gap-2 font-jp text-[0.85rem]";
-const req = <span className="font-display text-[0.6rem] font-semibold tracking-[0.18em] text-muted">REQUIRED</span>;
+  "mt-2 block w-full rounded-xl border border-[#d2d2d7] bg-white px-4 py-3.5 font-jp text-base text-fg placeholder:text-muted/70 transition-colors focus:border-link focus:outline-none aria-[invalid=true]:border-[#e30000]";
+const labelCls = "flex items-center gap-2 font-jp text-[0.875rem]";
+const req = <span className="font-jp text-[0.6875rem] text-muted">必須</span>;
 
 export function ContactForm() {
   const formRef = useRef<HTMLFormElement>(null);
@@ -50,7 +50,7 @@ export function ContactForm() {
 
   const err = (k: keyof Errors) =>
     errors[k] ? (
-      <p id={`c-${k}-error`} className="mt-2 font-jp text-[0.75rem] text-red-200/90">
+      <p id={`c-${k}-error`} className="mt-2 font-jp text-[0.75rem] text-[#e30000]">
         {errors[k]}
       </p>
     ) : null;
@@ -61,9 +61,9 @@ export function ContactForm() {
 
   return (
     <div>
-      <div role="note" className="flex gap-3 border border-amber-200/25 bg-amber-100/[0.04] p-4 md:p-5">
-        <Info aria-hidden className="mt-0.5 size-5 shrink-0 text-amber-100/80" />
-        <p className="font-jp text-[0.82rem] leading-relaxed text-fg/85">
+      <div role="note" className="flex gap-3 rounded-[1rem] bg-bg-alt p-4 md:p-5">
+        <Info aria-hidden className="mt-0.5 size-5 shrink-0 text-muted" />
+        <p className="font-jp text-[0.8125rem] leading-relaxed text-fg/85">
           営業提案用デモのため、<strong className="font-bold">送信機能は無効</strong>
           です。入力内容は送信・保存されません。実際の個人情報は入力しないでください。
         </p>
@@ -103,7 +103,7 @@ export function ContactForm() {
         </div>
         <div>
           <label htmlFor="c-agree" className="flex cursor-pointer items-start gap-3 font-jp text-[0.85rem] leading-relaxed">
-            <input id="c-agree" type="checkbox" className="mt-1 size-4 shrink-0 accent-[#DCE1E5]" {...a11y("agree")} />
+            <input id="c-agree" type="checkbox" className="mt-1 size-4 shrink-0 accent-[#0071E3]" {...a11y("agree")} />
             デモであり送信されないことを理解しました
           </label>
           {err("agree")}
@@ -111,9 +111,9 @@ export function ContactForm() {
         <div>
           <button
             type="submit"
-            className="group inline-flex min-h-14 w-full items-center justify-center gap-3 bg-fg px-10 font-display text-[0.8rem] font-semibold tracking-[0.24em] text-ink transition-colors duration-500 hover:bg-accent sm:w-auto"
+            className="inline-flex min-h-12 w-full items-center justify-center rounded-full bg-link px-8 text-[1rem] text-white transition-colors duration-300 hover:bg-link-hover sm:w-auto"
           >
-            SEND（DEMO）
+            送信する（デモ）
           </button>
         </div>
       </form>
@@ -125,7 +125,7 @@ export function ContactForm() {
             initial={{ opacity: 0, y: 12 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0 }}
-            className="mt-8 flex gap-3 border border-line-strong bg-panel p-5"
+            className="mt-8 flex gap-3 rounded-[1rem] bg-bg-alt p-5"
           >
             <Check aria-hidden className="mt-0.5 size-5 shrink-0" />
             <div>
@@ -133,8 +133,8 @@ export function ContactForm() {
               <p className="mt-1 font-jp text-[0.8rem] leading-relaxed text-muted">
                 入力内容は破棄しました。正式運用時は、ここでメール送信と自動返信を行います。
               </p>
-              <button type="button" onClick={() => setDone(false)} className="mt-3 font-display text-[0.7rem] font-semibold tracking-[0.2em] underline underline-offset-4">
-                CLOSE
+              <button type="button" onClick={() => setDone(false)} className="mt-2 min-h-11 text-[0.9375rem] text-link hover:underline underline-offset-4">
+                閉じる
               </button>
             </div>
           </motion.div>

@@ -23,10 +23,10 @@ export const site = {
 } as const;
 
 export const navItems = [
-  { href: "/", label: "HOME" },
-  { href: "/products", label: "PRODUCTS" },
-  { href: "/about", label: "ABOUT" },
-  { href: "/media", label: "MEDIA" },
-  { href: "/news", label: "NEWS" },
-  { href: "/contact", label: "CONTACT" },
+  { href: "/", label: "Home" },
+  { href: "/products", label: "Products" },
+  { href: "/about", label: "About" },
+  { href: "/media", label: "Media" },
+  { href: "/news", label: "News" },
+  { href: "/contact", label: "Contact" },
 ] as const;

@@ -9,6 +9,23 @@
 - 全ページの上部とフッターに「非公式・営業提案用デモ／制作：Stark Lab」を表示
 - 検索エンジン対策：`<meta name="robots" content="noindex, nofollow">`、`X-Robots-Tag` ヘッダー、`robots.txt`（`Disallow: /`）の3重で設定
 
+## デザイン方針
+
+白い背景にルアーが浮かび上がる、余白とタイポグラフィ中心のミニマルなデザインです（特定企業のロゴ・画像・文章・固有レイアウトは複製していません）。
+
+| トークン | 値 | 用途 |
+| --- | --- | --- |
+| `bg` | `#FFFFFF` | メイン背景 |
+| `bg-alt` | `#F5F5F7` | セカンダリ背景（セクションを白と交互に） |
+| `fg` | `#1D1D1F` | メイン文字 |
+| `muted` | `#6E6E73` | サブ文字 |
+| `line` | `#E5E5E7` | 境界線（必要な箇所のみ） |
+| `link` | `#0071E3` | リンク・主要アクションのみ |
+
+- 色・余白・見出しのルールは `src/app/globals.css`（`@theme` と `headline` / `section-y` などのユーティリティ）に集約
+- 商品画像は透明背景・統一サイズ（1600×1200）。白・グレーどちらのセクションにも同じ見え方で配置
+- アニメーションはフェードインと軽いスライドのみ。`prefers-reduced-motion` で停止
+
 ## 技術構成
 
 | 項目 | 内容 |
@@ -18,7 +35,7 @@
 | スタイル | Tailwind CSS v4 |
 | アニメーション | Motion（`motion/react`）＋ CSS。`prefers-reduced-motion` に対応 |
 | アイコン | Lucide |
-| フォント | Archivo（英字見出し）・Noto Sans JP（日本語本文）／`next/font` |
+| フォント | Inter（英字）・Noto Sans JP（日本語本文）／`next/font` |
 | 画像 | `next/image`（AVIF / WebP 自動変換）、仮画像は `sharp` で生成 |
 
 ## はじめに
@@ -107,11 +124,11 @@ npx next start -p 3100 &
 BASE_URL=http://localhost:3100 npm run verify
 ```
 
-PC（1440×900）とスマートフォン（390×844）で全12ページを開き、以下を自動確認して `screenshots/` に保存します。
+PC（1440×900）とスマートフォン（390×844）で全12ページを開き、以下を自動確認して `screenshots/` に保存します。320 / 375 / 430 / 768px でも TOP・商品一覧・商品詳細の横スクロールと文字のはみ出しを確認します。
 
 - HTTP 200 / 存在しない商品は 404
 - noindex（meta・ヘッダー・robots.txt）と非公式デモ表示
-- 横スクロールが発生しないこと、画像の読み込み
+- 横スクロールが発生しないこと、文字が画面からはみ出さないこと、画像の読み込み
 - アクセシビリティの基本（`lang`、h1 が1つ、画像の alt、ボタン名）
 - 外部リンクが新しいタブ + `noopener` で開くこと
 - 商品のカテゴリー絞り込み・検索・0件表示・リセット・詳細への遷移
@@ -143,7 +160,7 @@ REVONIK 公式オンラインストア（revonik.stores.jp）と公式 Instagram
 | Dot SIX | ver1.5 7+：59mm・約9.5g／肉厚約0.6mmの薄肉構造／カラー4色 | タイプ・潜行深度・推奨ライン・フック |
 | Ramzy / Shekiller78 | 販売店の取扱一覧で名称のみ確認 | すべて |
 
-**仮データの箇所**：キャッチコピー（ENGINEERED TO PERFORM.／一投に、さらなる可能性を。）、BRAND PHILOSOPHY と ABOUT の「開発に対する考え方」の文章、ニュース記事（全件サンプル）、SHINDY・Ramzy・Shekiller78 のカラー（DEMO COLOR）、全画像、色見本の色味、個別の商品ページURL（現在はストアTOPへ誘導）。
+**仮データの箇所**：キャッチコピー（The Art of Precision.／精密な設計から生まれる、新たな釣りの可能性。／Built for the water. ほか）、BRAND PHILOSOPHY と ABOUT の「開発に対する考え方」の文章、ニュース記事（全件サンプル）、SHINDY・Ramzy・Shekiller78 のカラー（DEMO COLOR）、全画像、色見本の色味、個別の商品ページURL（現在はストアTOPへ誘導）。
 
 ## 正式契約後に必要な作業
 

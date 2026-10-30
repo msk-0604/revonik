@@ -1,46 +1,33 @@
 import Image from "next/image";
-import { ArrowUpRight, AtSign, Newspaper, PlayCircle, ShoppingBag } from "lucide-react";
+import { ArrowUpRight } from "lucide-react";
 import { mediaImages } from "@/data/images";
 import type { MediaItem } from "@/types";
 
-const icons = { instagram: AtSign, youtube: PlayCircle, store: ShoppingBag, article: Newspaper };
-const kindLabel = { instagram: "INSTAGRAM", youtube: "YOUTUBE", store: "ONLINE STORE", article: "ARTICLE" };
+const kindLabel = { instagram: "Instagram", youtube: "YouTube", store: "Online Store", article: "Article" };
 
-export function MediaCard({ item }: { item: MediaItem }) {
-  const Icon = icons[item.kind];
+export function MediaCard({ item, surface = "gray" }: { item: MediaItem; surface?: "gray" | "white" }) {
   return (
-    <a
-      href={item.url}
-      target="_blank"
-      rel="noopener noreferrer"
-      className="group flex h-full flex-col border border-line bg-panel transition-colors duration-500 hover:border-line-strong"
-    >
-      <div className="relative aspect-[16/10] overflow-hidden bg-ink">
+    <a href={item.url} target="_blank" rel="noopener noreferrer" className="group flex h-full flex-col">
+      <div className={`relative aspect-[16/10] overflow-hidden rounded-[1.25rem] ${surface === "white" ? "bg-white" : "bg-bg-alt"}`}>
         <Image
           src={item.image ?? mediaImages[item.kind]}
           alt=""
           fill
-          sizes="(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw"
-          className="object-cover transition-transform duration-[1.2s] ease-out-expo group-hover:scale-[1.05]"
+          sizes="(min-width: 1024px) 380px, (min-width: 640px) 50vw, 100vw"
+          className="object-contain transition-transform duration-700 ease-out-soft group-hover:scale-[1.03]"
         />
-        <span className="absolute top-4 left-4 inline-flex items-center gap-2 border border-line-strong bg-ink/70 px-2.5 py-1 font-display text-[0.62rem] font-semibold tracking-[0.2em] backdrop-blur">
-          <Icon aria-hidden className="size-3.5" />
-          {kindLabel[item.kind]}
-        </span>
       </div>
-      <div className="flex flex-1 flex-col gap-3 p-5 md:p-6">
-        <p className="font-jp text-[0.7rem] tracking-wider text-muted">
-          {item.source}
-          {item.thirdParty && "（外部サイト・第三者）"}
-        </p>
-        <h3 className="font-jp text-base font-bold leading-snug">{item.title}</h3>
-        <p className="font-jp text-[0.82rem] leading-relaxed text-muted">{item.description}</p>
-        <span className="mt-auto inline-flex items-center gap-1.5 pt-2 font-display text-[0.7rem] font-semibold tracking-[0.22em]">
-          OPEN
-          <ArrowUpRight aria-hidden className="size-4 transition-transform duration-500 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
-          <span className="sr-only">（新しいタブで開きます）</span>
-        </span>
-      </div>
+      <p className="mt-4 text-[0.75rem] font-medium tracking-[0.04em] text-muted">
+        {kindLabel[item.kind]} · {item.source}
+        {item.thirdParty && <span className="font-jp">（外部・第三者）</span>}
+      </p>
+      <h3 className="mt-1 font-jp text-[1.0625rem] font-bold leading-snug">{item.title}</h3>
+      <p className="mt-1.5 font-jp text-[0.8125rem] leading-relaxed text-muted">{item.description}</p>
+      <span className="mt-2 inline-flex items-center gap-0.5 text-[0.9375rem] text-link group-hover:underline underline-offset-4">
+        開く
+        <ArrowUpRight aria-hidden className="size-4" />
+        <span className="sr-only">（新しいタブで開きます）</span>
+      </span>
     </a>
   );
 }

@@ -16,10 +16,10 @@ export default function ProductsPage() {
         title="Products"
         lead="カテゴリーと商品名で絞り込めます。スペックは販売店・釣りメディアの掲載値をもとにした仮データで、公式情報との照合後に確定します。"
       />
-      <section aria-label="商品一覧" className="container-x pb-24 md:pb-36">
+      <section aria-label="商品一覧" className="container-x pb-24 md:pb-32">
         <ProductExplorer />
       </section>
-      <StoreCta />
+      <StoreCta tone="gray" />
     </>
   );
 }

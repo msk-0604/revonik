@@ -1,36 +1,42 @@
 import Link from "next/link";
-import { ArrowRight, ArrowUpRight } from "lucide-react";
+import { ArrowUpRight, ChevronRight } from "lucide-react";
 
 type Props = {
   href: string;
   children: React.ReactNode;
-  variant?: "solid" | "outline" | "ghost";
+  /** primary：青の主要アクション／secondary：控えめな枠線／link：青のテキストリンク */
+  variant?: "primary" | "secondary" | "link";
   external?: boolean;
   className?: string;
 };
 
-const base =
-  "group relative inline-flex min-h-12 items-center justify-center gap-3 overflow-hidden px-7 font-display text-[0.78rem] font-semibold tracking-[0.24em] uppercase transition-[color,background-color,border-color] duration-500 ease-out-expo";
-
 const variants = {
-  solid: "bg-fg text-ink hover:bg-accent",
-  outline: "border border-line-strong text-fg hover:border-fg hover:bg-fg hover:text-ink",
-  ghost: "px-0 text-fg hover:text-accent",
+  primary:
+    "min-h-11 rounded-full bg-link px-6 text-[0.9375rem] text-white hover:bg-link-hover",
+  secondary:
+    "min-h-11 rounded-full border border-fg/15 px-6 text-[0.9375rem] text-fg hover:border-fg/40",
+  link: "min-h-11 text-[1.0625rem] text-link hover:underline underline-offset-4",
 };
 
-export function Button({ href, children, variant = "solid", external, className = "" }: Props) {
-  const Icon = external ? ArrowUpRight : ArrowRight;
+export function Button({ href, children, variant = "primary", external, className = "" }: Props) {
+  const cls = `group inline-flex items-center justify-center gap-1 font-normal transition-colors duration-300 ${variants[variant]} ${className}`;
+  const icon =
+    variant === "link" ? (
+      external ? (
+        <ArrowUpRight aria-hidden className="size-4" />
+      ) : (
+        <ChevronRight aria-hidden className="size-4 transition-transform duration-300 group-hover:translate-x-0.5" />
+      )
+    ) : external ? (
+      <ArrowUpRight aria-hidden className="size-4" />
+    ) : null;
   const content = (
     <>
       <span>{children}</span>
-      <Icon
-        aria-hidden
-        className="size-4 transition-transform duration-500 ease-out-expo group-hover:translate-x-1 group-hover:-translate-y-px"
-      />
+      {icon}
       {external && <span className="sr-only">（外部サイト・新しいタブで開きます）</span>}
     </>
   );
-  const cls = `${base} ${variants[variant]} ${className}`;
   if (external) {
     return (
       <a href={href} target="_blank" rel="noopener noreferrer" className={cls}>

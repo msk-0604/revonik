@@ -4,9 +4,11 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import { AnimatePresence, motion } from "motion/react";
-import { ArrowUpRight, Menu, X } from "lucide-react";
+import { ArrowUpRight } from "lucide-react";
 import { navItems, site } from "@/data/site";
 import { Logo } from "./Logo";
+
+const ease = [0.25, 0.1, 0.25, 1] as const;
 
 export function Header() {
   const pathname = usePathname();
@@ -15,7 +17,7 @@ export function Header() {
   const toggleRef = useRef<HTMLButtonElement>(null);
 
   useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 24);
+    const onScroll = () => setScrolled(window.scrollY > 8);
     onScroll();
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
@@ -45,43 +47,34 @@ export function Header() {
     };
   }, [open]);
 
+  const links = navItems.filter((i) => i.href !== "/");
   const isActive = (href: string) => (href === "/" ? pathname === "/" : pathname.startsWith(href));
-  const solid = scrolled || open;
 
   return (
     <header className="fixed inset-x-0 top-0 z-50">
       {/* 非公式デモ表示（全ページ共通） */}
-      <div className="relative z-10 border-b border-line bg-ink">
-        <p className="container-x flex h-7 items-center justify-center gap-2 text-center font-jp text-[0.66rem] tracking-wider text-muted sm:text-[0.7rem]">
-          <span aria-hidden className="size-1 rounded-full bg-muted" />
-          {site.demoNotice}
-        </p>
-      </div>
+      <p className="relative z-10 flex h-7 items-center justify-center bg-bg-alt px-4 text-center font-jp text-[0.6875rem] text-muted">
+        {site.demoNotice}
+      </p>
 
       <div
-        className={`relative z-10 transition-[background-color,border-color,backdrop-filter] duration-500 ${
-          solid ? "border-b border-line bg-ink/75 backdrop-blur-xl" : "border-b border-transparent bg-transparent"
+        className={`relative z-10 border-b transition-colors duration-300 ${
+          scrolled && !open ? "border-line bg-white/80 backdrop-blur-xl backdrop-saturate-150" : "border-line/70 bg-white"
         }`}
       >
-        <div className="container-x flex h-16 items-center justify-between md:h-20">
+        <div className="container-x flex h-[60px] items-center justify-between">
           <Logo />
 
-          <nav aria-label="メインナビゲーション" className="hidden lg:block">
-            <ul className="flex items-center gap-8 xl:gap-10">
-              {navItems.map((item) => (
+          <nav aria-label="メインナビゲーション" className="hidden md:block">
+            <ul className="flex items-center gap-7 lg:gap-9">
+              {links.map((item) => (
                 <li key={item.href}>
                   <Link
                     href={item.href}
                     aria-current={isActive(item.href) ? "page" : undefined}
-                    className="group relative py-2 font-display text-[0.74rem] font-semibold tracking-[0.22em] text-fg/80 transition-colors hover:text-fg aria-[current=page]:text-fg"
+                    className="py-2 text-[0.8125rem] text-fg/70 transition-colors hover:text-fg aria-[current=page]:text-fg"
                   >
                     {item.label}
-                    <span
-                      aria-hidden
-                      className={`absolute -bottom-0.5 left-0 h-px bg-fg transition-all duration-500 ease-out-expo ${
-                        isActive(item.href) ? "w-full" : "w-0 group-hover:w-full"
-                      }`}
-                    />
                   </Link>
                 </li>
               ))}
@@ -90,9 +83,9 @@ export function Header() {
                   href={site.links.store}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="inline-flex items-center gap-2 border border-line-strong px-4 py-2.5 font-display text-[0.72rem] font-semibold tracking-[0.22em] transition-colors duration-500 hover:border-fg hover:bg-fg hover:text-ink"
+                  className="inline-flex items-center gap-0.5 py-2 text-[0.8125rem] text-link hover:underline underline-offset-4"
                 >
-                  ONLINE STORE
+                  Online Store
                   <ArrowUpRight aria-hidden className="size-3.5" />
                   <span className="sr-only">（外部サイト）</span>
                 </a>
@@ -107,9 +100,20 @@ export function Header() {
             aria-expanded={open}
             aria-controls="mobile-menu"
             aria-label={open ? "メニューを閉じる" : "メニューを開く"}
-            className="-mr-2 grid size-11 place-items-center lg:hidden"
+            className="-mr-2.5 grid size-11 place-items-center md:hidden"
           >
-            {open ? <X className="size-6" aria-hidden /> : <Menu className="size-6" aria-hidden />}
+            <span aria-hidden className="relative block h-3 w-[18px]">
+              <span
+                className={`absolute left-0 block h-[1.5px] w-full bg-fg transition-transform duration-300 ${
+                  open ? "top-[5px] rotate-45" : "top-0"
+                }`}
+              />
+              <span
+                className={`absolute left-0 block h-[1.5px] w-full bg-fg transition-transform duration-300 ${
+                  open ? "top-[5px] -rotate-45" : "top-[10px]"
+                }`}
+              />
+            </span>
           </button>
         </div>
       </div>
@@ -122,29 +126,25 @@ export function Header() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            transition={{ duration: 0.35 }}
-            className="fixed inset-0 z-0 overflow-y-auto bg-ink/97 pt-28 backdrop-blur-xl lg:hidden"
+            transition={{ duration: 0.3, ease }}
+            className="fixed inset-0 z-0 overflow-y-auto bg-white pt-[88px] md:hidden"
           >
-            <nav aria-label="モバイルナビゲーション" className="container-x flex min-h-full flex-col pb-10">
-              <ul className="border-t border-line">
+            <nav aria-label="モバイルナビゲーション" className="container-x pt-6 pb-12">
+              <ul>
                 {navItems.map((item, i) => (
                   <motion.li
                     key={item.href}
-                    initial={{ opacity: 0, y: 16 }}
+                    initial={{ opacity: 0, y: -8 }}
                     animate={{ opacity: 1, y: 0 }}
-                    transition={{ delay: 0.05 + i * 0.045, duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
-                    className="border-b border-line"
+                    transition={{ delay: 0.04 + i * 0.03, duration: 0.35, ease }}
                   >
                     <Link
                       href={item.href}
                       onClick={() => setOpen(false)}
                       aria-current={isActive(item.href) ? "page" : undefined}
-                      className="flex items-center justify-between py-5 display text-[2rem] text-fg/85 aria-[current=page]:text-fg"
+                      className="block py-2.5 text-[1.75rem] font-semibold tracking-tight text-fg/85 aria-[current=page]:text-fg"
                     >
                       {item.label}
-                      <span className="font-display text-xs font-medium tracking-[0.2em] text-muted">
-                        {String(i + 1).padStart(2, "0")}
-                      </span>
                     </Link>
                   </motion.li>
                 ))}
@@ -152,28 +152,29 @@ export function Header() {
               <motion.div
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
-                transition={{ delay: 0.4 }}
-                className="mt-10 flex flex-col gap-3"
+                transition={{ delay: 0.25, duration: 0.35 }}
+                className="mt-8 border-t border-line pt-6"
               >
-                <a
-                  href={site.links.store}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="flex min-h-14 items-center justify-center gap-2 bg-fg font-display text-sm font-semibold tracking-[0.24em] text-ink"
-                >
-                  ONLINE STORE <ArrowUpRight aria-hidden className="size-4" />
-                  <span className="sr-only">（外部サイト）</span>
-                </a>
-                <a
-                  href={site.links.instagram}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="flex min-h-14 items-center justify-center gap-2 border border-line-strong font-display text-sm font-semibold tracking-[0.24em]"
-                >
-                  INSTAGRAM <ArrowUpRight aria-hidden className="size-4" />
-                  <span className="sr-only">（外部サイト）</span>
-                </a>
-                <p className="mt-6 font-jp text-xs leading-relaxed text-muted">{site.demoNotice}</p>
+                <ul className="space-y-1">
+                  {[
+                    { href: site.links.store, label: "Online Store" },
+                    { href: site.links.instagram, label: "Instagram" },
+                  ].map((l) => (
+                    <li key={l.href}>
+                      <a
+                        href={l.href}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="inline-flex min-h-11 items-center gap-1 text-[1.0625rem] text-link"
+                      >
+                        {l.label}
+                        <ArrowUpRight aria-hidden className="size-4" />
+                        <span className="sr-only">（外部サイト）</span>
+                      </a>
+                    </li>
+                  ))}
+                </ul>
+                <p className="mt-8 font-jp text-xs leading-relaxed text-muted">{site.demoNotice}</p>
               </motion.div>
             </nav>
           </motion.div>

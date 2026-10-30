@@ -1,74 +1,46 @@
 @import "tailwindcss";
 
 @theme {
-  --color-ink: #08090b;
-  --color-panel: #15171a;
-  --color-panel-2: #1c1f23;
-  --color-fg: #f5f5f5;
-  --color-muted: #9a9ea4;
-  --color-accent: #dce1e5;
-  --color-line: rgb(220 225 229 / 0.12);
-  --color-line-strong: rgb(220 225 229 / 0.24);
+  /* ホワイト基調のミニマルなパレット。青（link）はリンクと主要アクションのみに使用 */
+  --color-bg: #ffffff;
+  --color-bg-alt: #f5f5f7;
+  --color-fg: #1d1d1f;
+  --color-muted: #6e6e73;
+  --color-line: #e5e5e7;
+  --color-link: #0071e3;
+  --color-link-hover: #0077ed;
 
-  --font-display: var(--font-archivo), "Helvetica Neue", Arial, sans-serif;
-  --font-sans: var(--font-archivo), var(--font-noto), "Hiragino Sans", "Hiragino Kaku Gothic ProN", Meiryo, sans-serif;
+  --font-sans: var(--font-inter), var(--font-noto), -apple-system, BlinkMacSystemFont, "Hiragino Sans", "Hiragino Kaku Gothic ProN", Meiryo, sans-serif;
   --font-jp: var(--font-noto), "Hiragino Sans", "Hiragino Kaku Gothic ProN", Meiryo, sans-serif;
 
-  --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
-
-  --animate-hero-zoom: hero-zoom 18s var(--ease-out-expo) both;
-  --animate-scroll-cue: scroll-cue 2.4s ease-in-out infinite;
-
-  @keyframes hero-zoom {
-    from {
-      transform: scale(1.14);
-    }
-    to {
-      transform: scale(1);
-    }
-  }
-  @keyframes scroll-cue {
-    0% {
-      transform: scaleY(0);
-      transform-origin: top;
-    }
-    45% {
-      transform: scaleY(1);
-      transform-origin: top;
-    }
-    55% {
-      transform: scaleY(1);
-      transform-origin: bottom;
-    }
-    100% {
-      transform: scaleY(0);
-      transform-origin: bottom;
-    }
-  }
+  --ease-out-soft: cubic-bezier(0.25, 0.1, 0.25, 1);
 }
 
 @layer base {
   html {
-    background: var(--color-ink);
-    color-scheme: dark;
+    background: var(--color-bg);
+    color-scheme: light;
     -webkit-text-size-adjust: 100%;
     scroll-padding-top: 6rem;
   }
   body {
-    background: var(--color-ink);
+    background: var(--color-bg);
     color: var(--color-fg);
     font-family: var(--font-sans);
     font-feature-settings: "palt" 1;
+    letter-spacing: 0.01em;
+    /* 日本語を文節で改行（対応ブラウザ）＋ 行末の1文字残りを避ける */
+    word-break: auto-phrase;
+    text-wrap: pretty;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     overflow-x: clip;
   }
   ::selection {
-    background: var(--color-accent);
-    color: var(--color-ink);
+    background: #b3d7ff;
   }
   :focus-visible {
-    outline: 2px solid var(--color-accent);
+    outline: 2px solid var(--color-link);
     outline-offset: 3px;
   }
 }
@@ -76,41 +48,41 @@
 @utility container-x {
   width: 100%;
   margin-inline: auto;
-  max-width: 1440px;
+  max-width: 1200px;
   padding-inline: 1.25rem;
   @media (width >= 48rem) {
     padding-inline: 2.5rem;
   }
-  @media (width >= 80rem) {
-    padding-inline: 4rem;
-  }
 }
 
-/* 英字の見出し：太めのワイドなサンセリフ */
-@utility display {
-  font-family: var(--font-display);
-  font-weight: 800;
-  font-stretch: 112%;
-  letter-spacing: -0.01em;
-  line-height: 0.95;
-  text-transform: uppercase;
+/* 見出し：詰め気味のセミボールド（大文字化しない） */
+@utility headline {
+  text-wrap: balance;
+  font-weight: 600;
+  letter-spacing: -0.022em;
+  line-height: 1.07;
 }
 
 @utility eyebrow {
-  font-family: var(--font-display);
-  font-size: 0.72rem;
+  font-size: 0.8125rem;
   font-weight: 600;
-  letter-spacing: 0.32em;
-  text-transform: uppercase;
+  letter-spacing: 0.02em;
   color: var(--color-muted);
 }
 
 /* 日本語本文：可読性優先 */
 @utility prose-jp {
   font-family: var(--font-jp);
-  line-height: 2;
-  letter-spacing: 0.04em;
-  color: rgb(245 245 245 / 0.82);
+  line-height: 1.85;
+  letter-spacing: 0.03em;
+}
+
+/* 標準の余白（セクション上下） */
+@utility section-y {
+  padding-block: 5rem;
+  @media (width >= 48rem) {
+    padding-block: 7.5rem;
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {
