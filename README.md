@@ -146,6 +146,8 @@ PC（1440×900）とスマートフォン（390×844）で全12ページを開�
 
 ## Vercel へのデプロイ
 
+> 本番（Production）は `main` ブランチを追跡します。`main` に push すると自動で本番デプロイされます。
+
 1. [Vercel](https://vercel.com/) にログインし **Add New… → Project** からこのリポジトリ（`msk-0604/revonik`）を Import
 2. Framework Preset は **Next.js**（自動検出）。Build Command・Output は既定のまま
 3. 必要に応じて Environment Variables に `NEXT_PUBLIC_SITE_URL`（例：`https://revonik-demo.vercel.app`）を設定（OGP の絶対URLに使用）
