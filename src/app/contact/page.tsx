@@ -18,12 +18,11 @@ export default function ContactPage() {
           <div>
             <h2 className="headline text-[1.5rem]">お問い合わせの前に</h2>
             <p className="prose-jp mt-3 text-[0.9375rem] text-muted">
-              製品の在庫・価格・配送については、オンラインストアの各ページもあわせてご確認ください。
+              新製品やカラーの最新情報は、公式 Instagram でもご確認いただけます。
             </p>
           </div>
           <ul className="divide-y divide-line border-y border-line">
             {[
-              { href: site.links.store, label: "Online Store", sub: "revonik.stores.jp" },
               { href: site.links.instagram, label: "Instagram", sub: site.links.instagramHandle },
             ].map((l) => (
               <li key={l.href}>

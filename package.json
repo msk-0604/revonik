@@ -8,7 +8,7 @@
     "start": "next start",
     "lint": "eslint",
     "typecheck": "next typegen && tsc --noEmit",
-    "images": "node scripts/generate-placeholders.mjs",
+    "images": "node scripts/generate-placeholders.mjs && node scripts/render-lures.mjs",
     "verify": "node scripts/verify.mjs"
   },
   "dependencies": {
@@ -27,6 +27,7 @@
     "eslint-config-next": "^16.2.12",
     "sharp": "^0.35.5",
     "tailwindcss": "^4.3.3",
+    "three": "^0.170.0",
     "typescript": "^6.0.3"
   },
   "type": "module"

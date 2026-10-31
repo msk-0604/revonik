@@ -78,18 +78,6 @@ export function Header() {
                   </Link>
                 </li>
               ))}
-              <li>
-                <a
-                  href={site.links.store}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-flex items-center gap-0.5 py-2 text-[0.8125rem] text-link hover:underline underline-offset-4"
-                >
-                  Online Store
-                  <ArrowUpRight aria-hidden className="size-3.5" />
-                  <span className="sr-only">（外部サイト）</span>
-                </a>
-              </li>
             </ul>
           </nav>
 
@@ -156,10 +144,7 @@ export function Header() {
                 className="mt-8 border-t border-line pt-6"
               >
                 <ul className="space-y-1">
-                  {[
-                    { href: site.links.store, label: "Online Store" },
-                    { href: site.links.instagram, label: "Instagram" },
-                  ].map((l) => (
+                  {[{ href: site.links.instagram, label: "Instagram" }].map((l) => (
                     <li key={l.href}>
                       <a
                         href={l.href}

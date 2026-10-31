@@ -24,6 +24,9 @@
 
 - 色・余白・見出しのルールは `src/app/globals.css`（`@theme` と `headline` / `section-y` などのユーティリティ）に集約
 - 商品画像は透明背景・統一サイズ（1600×1200）。白・グレーどちらのセクションにも同じ見え方で配置
+- ルアー画像は `scripts/render-lures.mjs` が Three.js（ヘッドレス Chromium の WebGL）で3Dレンダリング。カテゴリーごとの一般的な形状から作ったオリジナルモデルで、REVONIK 製品の形状を再現したものではない
+- 引用・ステートメントのみ明朝体（Noto Serif JP）をアクセントに使用
+- **購入は促さない方針**：オンラインストアへのボタン・リンクは置かず、製品紹介（カラー・スペック）、ニュース／メディア、ルアーデザイナーの開発思想を中心に構成
 - アニメーションはフェードインと軽いスライドのみ。`prefers-reduced-motion` で停止
 
 ## 技術構成
@@ -50,7 +53,7 @@ npm run dev        # http://localhost:3000
 | `npm run build` | 本番ビルド（全ページを静的生成） |
 | `npm run typecheck` | ルート型の生成 + TypeScript 型チェック |
 | `npm run lint` | ESLint |
-| `npm run images` | 仮画像（DEMO IMAGE）を再生成 |
+| `npm run images` | 仮画像（DEMO IMAGE）を再生成（背景・図版は SVG、ルアーは Three.js の3Dレンダリング） |
 | `npm run verify` | Playwright による動作検証とスクリーンショット取得（下記） |
 
 ## ページ構成
@@ -76,7 +79,8 @@ src/
     categories.ts   カテゴリー
     news.ts         ニュース記事
     media.ts        メディア導線
-    about.ts        ABOUT ページの内容
+    about.ts        ABOUT ページのブランド概要・あゆみ
+    designer.ts     ルアーデザイナー加藤誠司氏の経歴・開発思想（出典付き）
     images.ts       サイト共通の画像パス
     site.ts         ブランド名・外部URL・デモ表記
   lib/            データ取得・整形ヘルパー
@@ -85,7 +89,9 @@ public/
   images/         ★ 許諾済みの正式画像を置く場所
   placeholders/   自動生成の仮画像（DEMO IMAGE）
 scripts/
-  generate-placeholders.mjs   仮画像の生成
+  generate-placeholders.mjs   背景・図版の仮画像（SVG）
+  render-lures.mjs            ルアーの3D仮画像（Three.js）
+  lure-render/lure.js         ルアー3Dモデルの生成・描画（ブラウザ側）
   verify.mjs                  Playwright 動作検証
 ```
 
@@ -158,7 +164,11 @@ REVONIK 公式オンラインストア（revonik.stores.jp）と公式 Instagram
 | SHINDY 110 | 110SF-M：110mm・15g・SF・約1.5m／110SS：110mm・14g・SF・約30〜50cm／110SP-M（品名のみ） | 推奨ライン・フック・カラー名 |
 | SaraMoa | 58mm・8.5g・F・約1.5m／PORO：50mm・約5.5g／カラー4色 | 推奨ライン・フック |
 | Dot SIX | ver1.5 7+：59mm・約9.5g／肉厚約0.6mmの薄肉構造／カラー4色 | タイプ・潜行深度・推奨ライン・フック |
-| Ramzy / Shekiller78 | 販売店の取扱一覧で名称のみ確認 | すべて |
+| Ramzy | 58mm・約9.3g・肉厚0.75mm／SaraMoa ベースの障害物回避型シャロークランク | タイプ・潜行深度・ライン・フック・カラー名 |
+| Shekiller78 | 78SF：78mm・約8.3g・SF・約2.5〜3m／カラー2色 | ライン・フック |
+| Dispa 118SF | 3〜5mレンジのジャークベイト（2026年9月） | 全長・重量・ライン・フック・カラー名 |
+
+**ルアーデザイナー（ABOUT／TOP）**：経歴・開発思想は釣りメディアの公開記事にもとづき、出典を併記。本人の発言として扱うのは記事見出しで本人の言葉として紹介された一文（「自分だけが釣れるルアーを作らない」）のみで、開発思想の各項目は Stark Lab による要約と明記しています。
 
 **仮データの箇所**：キャッチコピー（The Art of Precision.／精密な設計から生まれる、新たな釣りの可能性。／Built for the water. ほか）、BRAND PHILOSOPHY と ABOUT の「開発に対する考え方」の文章、ニュース記事（全件サンプル）、SHINDY・Ramzy・Shekiller78 のカラー（DEMO COLOR）、全画像、色見本の色味、個別の商品ページURL（現在はストアTOPへ誘導）。
 
@@ -166,8 +176,8 @@ REVONIK 公式オンラインストア（revonik.stores.jp）と公式 Instagram
 
 1. **素材の受領と差し替え**：正式ロゴ（SVG）、商品写真（カラー別・ギャラリー）、メインビジュアル、ブランド写真、動画の使用許諾
 2. **商品情報の確定**：全商品のスペック（全長・重量・タイプ・潜行深度・推奨ライン・フック）、カラーの全ラインナップと正式名称、価格表示の要否、廃番・限定品の扱い
-3. **文章の確定**：ブランド紹介・開発理念・年表を REVONIK 監修のもとで作成（仮文章の削除）
-4. **ストア連携**：各商品の個別ページURL（`storeUrl`）を設定
+3. **文章の確定**：加藤誠司氏への取材・監修のうえで、開発思想・経歴・年表を確定（要約・仮文章の差し替え）
+4. **ストア導線の方針確認**：現在は購入を促さない構成。必要になった場合のみ `storeUrl`（データに保持済み）で導線を追加
 5. **SNS・動画**：公式 YouTube の有無確認、Instagram 埋め込みの方針決定
 6. **ニュース運用**：サンプル記事の削除、更新方法の決定（データファイル更新／microCMS 等のヘッドレス CMS 連携）
 7. **お問い合わせ**：Server Action + メール送信（Resend 等）、スパム対策（Turnstile 等）、自動返信、プライバシーポリシー

@@ -5,10 +5,10 @@ import { formatDate } from "@/lib/format";
 import type { NewsArticle } from "@/types";
 import { SampleBadge } from "./DemoBadge";
 
-export function NewsCard({ article }: { article: NewsArticle }) {
+export function NewsCard({ article, surface = "gray" }: { article: NewsArticle; surface?: "gray" | "white" }) {
   return (
     <Link href={`/news/${article.slug}`} className="group flex h-full flex-col">
-      <div className="relative aspect-[16/10] overflow-hidden rounded-[1.25rem] bg-bg-alt">
+      <div className={`relative aspect-[16/10] overflow-hidden rounded-[1.25rem] ${surface === "white" ? "bg-white" : "bg-bg-alt"}`}>
         <Image
           src={article.image ?? newsImages[article.category]}
           alt=""

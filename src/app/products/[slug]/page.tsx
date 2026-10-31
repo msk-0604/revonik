@@ -10,8 +10,8 @@ import { ColorGallery, ProductColorProvider, ProductStage } from "@/components/p
 import { SpecTable } from "@/components/products/SpecTable";
 import { Reveal } from "@/components/Reveal";
 import { products } from "@/data/products";
-import { site } from "@/data/site";
-import { getCategory, getProduct, mainImage, relatedProducts, storeLink } from "@/lib/products";
+import { designer } from "@/data/designer";
+import { getCategory, getProduct, mainImage, relatedProducts } from "@/lib/products";
 
 export const dynamicParams = false;
 
@@ -48,7 +48,6 @@ export default async function ProductDetailPage({ params }: PageProps<"/products
 
   const category = getCategory(product.category);
   const related = relatedProducts(product);
-  const storeHref = storeLink(product, site.links.store);
 
   return (
     <ProductColorProvider product={product}>
@@ -104,9 +103,9 @@ export default async function ProductDetailPage({ params }: PageProps<"/products
               ※ 販売店・釣りメディアの掲載情報を Stark Lab が要約した文章です（公式の文言ではありません）。
             </p>
           )}
-          <div className="mt-8 flex flex-col items-center justify-center gap-3 min-[400px]:flex-row min-[400px]:gap-5">
-            <Button href={storeHref} external>
-              購入する
+          <div className="mt-6 flex flex-wrap items-center justify-center gap-x-7">
+            <Button href="#colors-section" variant="link">
+              カラーを見る
             </Button>
             <Button href="#specs" variant="link">
               スペックを見る
@@ -135,7 +134,7 @@ export default async function ProductDetailPage({ params }: PageProps<"/products
       </section>
 
       {/* 5. カラーバリエーション */}
-      <section aria-labelledby="colors" className="section-y">
+      <section id="colors-section" aria-labelledby="colors" className="section-y scroll-mt-24">
         <div className="container-x">
           <Heading id="colors" eyebrow="Colors" title="カラーバリエーション" />
           <div className="mx-auto mt-12 max-w-5xl">
@@ -172,22 +171,28 @@ export default async function ProductDetailPage({ params }: PageProps<"/products
         </div>
       </section>
 
-      {/* 8. オンラインストア */}
-      <section aria-labelledby="buy" className="section-y bg-bg-alt text-center">
+      {/* 開発者の言葉 */}
+      <section aria-labelledby="designer-note" className="section-y bg-bg-alt text-center">
         <Reveal className="container-x">
-          <p className="eyebrow">Online Store</p>
-          <h2 id="buy" className="headline mt-2 text-[2.25rem] sm:text-5xl">
-            {product.name} を手に入れる。
+          <p className="index-label">Designer</p>
+          <h2 id="designer-note" className="sr-only">
+            ルアーデザイナーの言葉
           </h2>
-          <p className="mt-4 font-jp text-[0.9375rem] text-muted">在庫・価格は公式オンラインストアでご確認ください。</p>
-          <div className="mt-8">
-            <Button href={storeHref} external>
-              オンラインストアで見る
+          <p className="statement mx-auto mt-6 max-w-3xl text-[1.5rem] sm:text-[2.25rem]">「{designer.quote.text}」</p>
+          <p className="mt-6 font-jp text-[0.9375rem] tracking-[0.2em]">{designer.name}</p>
+          <a
+            href={designer.quote.source.url}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="mt-2 inline-block font-jp text-[0.6875rem] text-muted hover:text-fg hover:underline"
+          >
+            出典：{designer.quote.source.label} 記事見出しより<span className="sr-only">（外部サイト）</span>
+          </a>
+          <div className="mt-6">
+            <Button href="/about" variant="link">
+              ルアー開発への考え方
             </Button>
           </div>
-          {!product.storeUrl && (
-            <p className="mt-4 font-jp text-[0.75rem] text-muted">※ 個別の商品ページURLは未確認のため、ストアのトップへご案内します。</p>
-          )}
         </Reveal>
       </section>
 

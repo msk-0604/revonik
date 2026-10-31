@@ -11,6 +11,7 @@
   --color-link-hover: #0077ed;
 
   --font-sans: var(--font-inter), var(--font-noto), -apple-system, BlinkMacSystemFont, "Hiragino Sans", "Hiragino Kaku Gothic ProN", Meiryo, sans-serif;
+  --font-serif: var(--font-serif), "Hiragino Mincho ProN", "Yu Mincho", serif;
   --font-jp: var(--font-noto), "Hiragino Sans", "Hiragino Kaku Gothic ProN", Meiryo, sans-serif;
 
   --ease-out-soft: cubic-bezier(0.25, 0.1, 0.25, 1);
@@ -68,6 +69,26 @@
   font-weight: 600;
   letter-spacing: 0.02em;
   color: var(--color-muted);
+}
+
+/* 引用・ステートメント（明朝のアクセント） */
+@utility statement {
+  font-family: var(--font-serif);
+  font-weight: 400;
+  letter-spacing: 0.06em;
+  line-height: 1.6;
+}
+
+/* 小さな番号ラベル（01 — Products など） */
+@utility index-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.75rem;
+  font-size: 0.75rem;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  color: var(--color-muted);
+  font-variant-numeric: tabular-nums;
 }
 
 /* 日本語本文：可読性優先 */

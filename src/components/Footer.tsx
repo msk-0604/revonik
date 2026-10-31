@@ -9,10 +9,7 @@ const internal = [
   { href: "/contact", label: "Contact" },
 ];
 
-const external = [
-  { href: site.links.instagram, label: "Instagram" },
-  { href: site.links.store, label: "Online Store" },
-];
+const external = [{ href: site.links.instagram, label: "Instagram" }];
 
 export function Footer() {
   return (
@@ -46,7 +43,7 @@ export function Footer() {
             </ul>
           </nav>
           <nav aria-label="外部リンク">
-            <p className="font-semibold text-fg">Follow &amp; Shop</p>
+            <p className="font-semibold text-fg">Follow</p>
             <ul className="mt-3 space-y-0.5">
               {external.map((l) => (
                 <li key={l.href}>

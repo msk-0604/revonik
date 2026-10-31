@@ -62,6 +62,17 @@ export function matchesQuery(product: Product, query: string): boolean {
   return haystack.includes(q);
 }
 
-export function storeLink(product: Product, fallback: string) {
-  return product.storeUrl ?? fallback;
+/** 一覧・TOPで見せる主要スペック（確認できた値のみ、最大3項目） */
+export function keySpecs(product: Product, max = 3) {
+  const v = product.variants[0];
+  const items = [
+    { label: "全長", value: v.specs.length },
+    { label: "重量", value: v.specs.weight },
+    { label: "タイプ", value: v.specs.type },
+    { label: "潜行深度", value: v.specs.depth },
+  ];
+  return items
+    .filter((i): i is { label: string; value: string } => Boolean(i.value))
+    .map((i) => ({ ...i, value: i.value.replace(/（.*?）/g, "") }))
+    .slice(0, max);
 }

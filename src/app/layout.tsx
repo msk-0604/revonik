@@ -1,5 +1,5 @@
 import type { Metadata, Viewport } from "next";
-import { Inter, Noto_Sans_JP } from "next/font/google";
+import { Inter, Noto_Sans_JP, Noto_Serif_JP } from "next/font/google";
 import { Footer } from "@/components/Footer";
 import { Header } from "@/components/Header";
 import { MotionProvider } from "@/components/MotionProvider";
@@ -16,6 +16,15 @@ const noto = Noto_Sans_JP({
   subsets: ["latin"],
   weight: ["400", "500", "700"],
   variable: "--font-noto",
+  display: "swap",
+  preload: false,
+});
+
+// 引用・ステートメント用のアクセント書体
+const serif = Noto_Serif_JP({
+  subsets: ["latin"],
+  weight: ["400", "600"],
+  variable: "--font-serif",
   display: "swap",
   preload: false,
 });
@@ -59,7 +68,7 @@ export const viewport: Viewport = {
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html lang="ja" className={`${inter.variable} ${noto.variable}`}>
+    <html lang="ja" className={`${inter.variable} ${noto.variable} ${serif.variable}`}>
       <body className="min-h-dvh antialiased">
         <a
           href="#main"

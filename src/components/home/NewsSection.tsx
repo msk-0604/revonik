@@ -4,9 +4,9 @@ import { Reveal } from "@/components/Reveal";
 import { SectionHeading } from "@/components/SectionHeading";
 import { sortedNews } from "@/data/news";
 
-export function NewsSection() {
+export function NewsSection({ tone = "white" }: { tone?: "white" | "gray" }) {
   return (
-    <section aria-labelledby="news-title" className="section-y bg-bg">
+    <section aria-labelledby="news-title" className={`section-y ${tone === "gray" ? "bg-bg-alt" : "bg-bg"}`}>
       <div className="container-x">
         <SectionHeading
           id="news-title"
@@ -17,7 +17,7 @@ export function NewsSection() {
         <ul className="mt-12 grid gap-10 sm:grid-cols-2 lg:grid-cols-3 lg:gap-8">
           {sortedNews.slice(0, 3).map((a, i) => (
             <Reveal as="li" key={a.slug} delay={i * 0.06}>
-              <NewsCard article={a} />
+              <NewsCard article={a} surface={tone === "gray" ? "white" : "gray"} />
             </Reveal>
           ))}
         </ul>

@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import { PageHeader } from "@/components/PageHeader";
 import { ProductExplorer } from "@/components/products/ProductExplorer";
-import { StoreCta } from "@/components/StoreCta";
 
 export const metadata: Metadata = {
   title: "PRODUCTS",
@@ -19,7 +18,6 @@ export default function ProductsPage() {
       <section aria-label="商品一覧" className="container-x pb-24 md:pb-32">
         <ProductExplorer />
       </section>
-      <StoreCta tone="gray" />
     </>
   );
 }
