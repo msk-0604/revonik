@@ -12,6 +12,10 @@ export const siteImages = {
   blueprint: { src: "/placeholders/blueprint.webp", alt: "ルアーの設計図のイメージ（DEMO IMAGE）" },
   water: { src: "/placeholders/water.webp", alt: "水面の波紋のイメージ（DEMO IMAGE）" },
   video: { src: "/placeholders/video.webp", alt: "動画サムネイルの仮画像（DEMO IMAGE）" },
+  // 水中シーン（3DCG）。許諾済みのフィールド写真を受領したら差し替える
+  sceneHero: { src: "/placeholders/scene-hero.webp", alt: "水中を泳ぐルアーのイメージ（DEMO IMAGE・CG）" },
+  sceneHeroMobile: { src: "/placeholders/scene-hero-mobile.webp", alt: "水中を泳ぐルアーのイメージ（DEMO IMAGE・CG）" },
+  sceneTech: { src: "/placeholders/scene-tech.webp", alt: "水中のクランクベイトのイメージ（DEMO IMAGE・CG）" },
 } as const;
 
 export const newsImages: Record<string, string> = {

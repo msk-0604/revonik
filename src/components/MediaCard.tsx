@@ -1,5 +1,5 @@
 import Image from "next/image";
-import { ArrowUpRight } from "lucide-react";
+import { ArrowUpRight, Play } from "lucide-react";
 import { mediaImages } from "@/data/images";
 import type { MediaItem } from "@/types";
 
@@ -14,8 +14,15 @@ export function MediaCard({ item, surface = "gray" }: { item: MediaItem; surface
           alt=""
           fill
           sizes="(min-width: 1024px) 380px, (min-width: 640px) 50vw, 100vw"
-          className="object-contain transition-transform duration-700 ease-out-soft group-hover:scale-[1.03]"
+          className={`${item.image ? "object-cover" : "object-contain"} transition-transform duration-700 ease-out-soft group-hover:scale-[1.03]`}
         />
+        {item.kind === "youtube" && (
+          <span aria-hidden className="absolute inset-0 grid place-items-center">
+            <span className="grid size-14 place-items-center rounded-full bg-white/90 text-fg shadow-sm transition-transform duration-300 group-hover:scale-105">
+              <Play className="ml-0.5 size-5 fill-current" />
+            </span>
+          </span>
+        )}
       </div>
       <p className="mt-4 text-[0.75rem] font-medium tracking-[0.04em] text-muted">
         {kindLabel[item.kind]} · {item.source}

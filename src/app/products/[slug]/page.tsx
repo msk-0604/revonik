@@ -11,6 +11,8 @@ import { SpecTable } from "@/components/products/SpecTable";
 import { Reveal } from "@/components/Reveal";
 import { products } from "@/data/products";
 import { designer } from "@/data/designer";
+import { releases } from "@/data/releases";
+import { technologiesFor } from "@/data/technology";
 import { getCategory, getProduct, mainImage, relatedProducts } from "@/lib/products";
 
 export const dynamicParams = false;
@@ -48,6 +50,8 @@ export default async function ProductDetailPage({ params }: PageProps<"/products
 
   const category = getCategory(product.category);
   const related = relatedProducts(product);
+  const techs = technologiesFor(product.slug);
+  const release = releases.filter((r) => r.slug === product.slug);
 
   return (
     <ProductColorProvider product={product}>
@@ -76,7 +80,14 @@ export default async function ProductDetailPage({ params }: PageProps<"/products
               {product.name}
             </h1>
             {product.nameKana && <p className="mt-2 font-jp text-[0.875rem] tracking-[0.15em] text-muted">{product.nameKana}</p>}
-            <VerificationBadge status={product.verification} className="mt-4" />
+            <div className="mt-4 flex flex-wrap items-center justify-center gap-2">
+              {release.map((r) => (
+                <span key={r.name} className="rounded-full bg-fg px-3 py-1 text-[0.75rem] font-medium text-white">
+                  NEW · {r.name} {r.date}
+                </span>
+              ))}
+              <VerificationBadge status={product.verification} />
+            </div>
           </Reveal>
         </div>
       </section>
@@ -129,6 +140,25 @@ export default async function ProductDetailPage({ params }: PageProps<"/products
             </ol>
           ) : (
             <p className="mt-10 text-center font-jp text-muted">情報未登録（公式情報の受領後に掲載します）</p>
+          )}
+          {techs.length > 0 && (
+            <Reveal className="mx-auto mt-10 max-w-5xl">
+              <p className="text-center text-[0.8125rem] font-semibold text-muted">搭載テクノロジー</p>
+              <ul className="mt-4 grid gap-3 sm:grid-cols-2">
+                {techs.map((t) => (
+                  <li key={t.id} className="rounded-[1rem] border border-line bg-white/60 p-5">
+                    <p className="text-[0.6875rem] font-semibold tracking-[0.12em] text-muted">{t.en}</p>
+                    <p className="mt-1 font-jp text-[1rem] font-bold">{t.title}</p>
+                    <p className="mt-2 font-jp text-[0.8125rem] leading-relaxed text-fg/75">{t.text}</p>
+                  </li>
+                ))}
+              </ul>
+              <p className="mt-4 text-center">
+                <Link href="/#technology" className="text-[0.9375rem] text-link hover:underline underline-offset-4">
+                  テクノロジーについて ›
+                </Link>
+              </p>
+            </Reveal>
           )}
         </div>
       </section>

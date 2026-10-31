@@ -13,7 +13,7 @@ const external = [{ href: site.links.instagram, label: "Instagram" }];
 
 export function Footer() {
   return (
-    <footer className="bg-bg-alt text-[0.75rem] text-muted">
+    <footer className="border-t border-line bg-bg-alt text-[0.75rem] text-muted">
       <div className="container-x py-10 md:py-14">
         <div className="border-b border-line pb-6 font-jp leading-[1.8]">
           <p>{site.demoNoticeLong}</p>

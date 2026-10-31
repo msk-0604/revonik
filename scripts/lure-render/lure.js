@@ -473,12 +473,12 @@ window.renderLure = function renderLure(spec) {
   const size = box.getSize(new THREE.Vector3());
   const center = box.getCenter(new THREE.Vector3());
 
-  // 接地影
+  // 接地影（水中シーン用は shadow: false で省略）
   const ground = new THREE.Mesh(new THREE.CircleGeometry(220, 64), new THREE.ShadowMaterial({ opacity: 0.16 }));
   ground.rotation.x = -Math.PI / 2;
   ground.position.y = box.min.y - size.y * 0.12;
   ground.receiveShadow = true;
-  scene.add(ground);
+  if (spec.shadow !== false) scene.add(ground);
 
   const key = new THREE.DirectionalLight(0xffffff, 1.6);
   key.position.set(center.x - 30, center.y + 220, center.z + 60);

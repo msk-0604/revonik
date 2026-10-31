@@ -1,6 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { ChevronRight } from "lucide-react";
+import { newSlugs } from "@/data/releases";
 import { getCategory, mainImage } from "@/lib/products";
 import type { Product } from "@/types";
 
@@ -22,6 +23,9 @@ export function ProductCard({ product, sizes = "(min-width: 1024px) 380px, (min-
           sizes={sizes}
           className="object-contain p-4 transition-transform duration-700 ease-out-soft group-hover:scale-[1.03]"
         />
+        {newSlugs.has(product.slug) && (
+          <span className="absolute top-3 left-3 rounded-full bg-white px-2.5 py-1 text-[0.6875rem] font-semibold tracking-wide">NEW</span>
+        )}
       </div>
       <p className="mt-5 text-[0.75rem] font-medium tracking-[0.06em] text-muted">{category.label}</p>
       <h3 className="headline mt-1 text-[1.5rem] sm:text-[1.75rem]">{product.name}</h3>
