@@ -1,59 +1,90 @@
 import type { NewsArticle } from "@/types";
 
 /**
- * ニュースデータ
- * 現在の記事はすべてデモ用サンプル（sample: true）。REVONIK の実際の発表ではない。
- * 正式運用時は sample: false の記事に差し替える（CMS連携も可能）。
+ * ニュース
+ * 釣りメディアで報じられた出来事をもとにした記事（本文は Stark Lab による要約）。出典は source に記録（画面には表示しない）。
+ * 日付は報道ベースの年月。正式運用時は REVONIK の発表にもとづく記事に置き換える。
  */
 export const news: NewsArticle[] = [
   {
-    slug: "sample-new-product",
-    date: "2026-10-20",
+    slug: "dispa-118sf",
+    date: "2026-09",
     category: "PRODUCT",
-    title: "【サンプル】新製品情報の掲載イメージ",
-    excerpt: "新製品の発売日・スペック・カラーラインナップをお知らせする記事の掲載例です。",
+    title: "Dispa 118SF 発売",
+    excerpt: "3〜5mレンジを攻略する、食わせ系ジャークベイト。",
     body: [
-      "この記事はサイトの使い方をご確認いただくためのサンプルです。REVONIKの実際の発表ではありません。",
-      "新製品の発表時には、発売時期、スペック、カラーラインナップ、取扱店情報をまとめて掲載できます。商品データと連動させることで、商品詳細ページへの導線も自動で表示できます。",
-      "写真や動画を記事内に配置し、オンラインストアの商品ページへ直接ご案内することも可能です。",
+      "3〜5mのレンジを自在に攻められるジャークベイト「Dispa 118SF」が登場しました。",
+      "足かけ2年の開発期間を経て完成したモデルです。",
     ],
-    sample: true,
+    related: "dispa-118",
+    source: { label: "ルアーニュースR", url: "https://www.lurenewsr.com/448387" },
+    sample: false,
   },
   {
-    slug: "sample-event",
-    date: "2026-10-05",
-    category: "EVENT",
-    title: "【サンプル】フィッシングショー出展のお知らせ（掲載例）",
-    excerpt: "展示会やイベントへの出展情報を告知する記事の掲載例です。",
+    slug: "shindy-110sf-m-drybone",
+    date: "2026-09",
+    category: "PRODUCT",
+    title: "SHINDY 110SF-M ドライボーン 登場",
+    excerpt: "硬質素材「ドライボーン」とガラスラトルを採用。",
     body: [
-      "この記事はイベント告知の掲載イメージです。実在のイベントへの出展を示すものではありません。",
-      "会場・日時・ブース番号・展示予定の製品などを記載し、来場者への案内として活用できます。",
+      "SHINDY 110SF-M に、独自の硬質素材「ドライボーン」を採用したモデルが登場しました。",
+      "軽いガラスラトルが硬いボディ壁に当たり、高い音を生むのが特長です。",
     ],
-    sample: true,
+    related: "shindy-110",
+    source: { label: "ルアーニュースR", url: "https://www.lurenewsr.com/448811" },
+    sample: false,
   },
   {
-    slug: "sample-restock",
-    date: "2026-09-18",
+    slug: "shekiller-78",
+    date: "2026-01",
+    category: "PRODUCT",
+    title: "Shekiller78 発売",
+    excerpt: "日本のベイトフィッシュに合わせた、巻きで使うクランキングミノー。",
+    body: [
+      "巻きの釣りにこだわったクランキングミノー「Shekiller78」が登場しました。",
+      "日本の主要なベイトフィッシュに合うサイズとシルエット。樹脂タングステン球の重心移動で、飛距離とアクションバランスを両立しています。",
+    ],
+    related: "shekiller-78",
+    source: { label: "ルアーニュースR", url: "https://www.lurenewsr.com/414368/" },
+    sample: false,
+  },
+  {
+    slug: "ramzy",
+    date: "2026",
+    category: "PRODUCT",
+    title: "Ramzy 登場",
+    excerpt: "SaraMoa をベースに、障害物の回避性能を高めたシャロークランク。",
+    body: [
+      "障害物に当たっても弾かれすぎず、吸いつくようにかわしていくシャロークランク「Ramzy」が登場しました。",
+      "肉厚0.75mmの薄肉ボディ。ドライボーンモデルも展開されています。",
+    ],
+    related: "ramzy",
+    source: { label: "ルアーニュースR", url: "https://www.lurenewsr.com/414411/" },
+    sample: false,
+  },
+  {
+    slug: "saramoa",
+    date: "2025-02",
+    category: "PRODUCT",
+    title: "SaraMoa 発売",
+    excerpt: "フラットサイドクランクとシャッドの中間を狙った、フラットサイドシャッド。",
+    body: [
+      "薄肉設計によるハイピッチでタイトなアクションと、低音ラトルを備えたフラットサイドシャッド「SaraMoa」が登場しました。",
+      "あわせて、SHINDY シリーズに新サイズの 94SF-S も加わりました。",
+    ],
+    related: "saramoa",
+    source: { label: "ルアーニュースR", url: "https://www.lurenewsr.com/354587/" },
+    sample: false,
+  },
+  {
+    slug: "studio-otsu",
+    date: "2023-12",
     category: "BRAND",
-    title: "【サンプル】再入荷・追加カラーのご案内（掲載例）",
-    excerpt: "再入荷や追加カラーの情報をまとめてお知らせする記事の掲載例です。",
-    body: [
-      "この記事は再入荷情報の掲載イメージです。実際の入荷状況を示すものではありません。",
-      "再入荷のタイミングや追加カラーを一覧で掲載し、オンラインストアの在庫ページへご案内できます。",
-    ],
-    sample: true,
-  },
-  {
-    slug: "sample-media",
-    date: "2026-09-01",
-    category: "MEDIA",
-    title: "【サンプル】メディア掲載情報（掲載例）",
-    excerpt: "雑誌・Web メディア・動画での紹介情報をお知らせする記事の掲載例です。",
-    body: [
-      "この記事はメディア掲載情報の掲載イメージです。",
-      "掲載媒体・掲載日・記事へのリンクをまとめて紹介できます。外部記事は新しいタブで開く設計です。",
-    ],
-    sample: true,
+    title: "大津市に工房をオープン",
+    excerpt: "工房のグランドオープンにあわせ、新作の先行販売も行われました。",
+    body: ["滋賀県大津市に REVONIK の工房がグランドオープンしました。オープンにあわせて新作ルアーの先行販売も行われました。"],
+    source: { label: "ルアマガプラス", url: "https://plus.luremaga.jp/2023/12/21/315724/" },
+    sample: false,
   },
 ];
 

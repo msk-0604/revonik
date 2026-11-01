@@ -71,7 +71,7 @@ async function renderPng(spec) {
 const GRAY = "#86868B";
 const label = (W, H, text, y = H - 40) =>
   Buffer.from(
-    `<svg xmlns="http://www.w3.org/2000/svg" width="${W}" height="${H}"><text x="${W / 2}" y="${y}" font-family="Inter, DejaVu Sans, sans-serif" font-size="18" font-weight="500" letter-spacing="5" fill="${GRAY}" text-anchor="middle">${text}</text></svg>`,
+    `<svg xmlns="http://www.w3.org/2000/svg" width="${W}" height="${H}"><text x="${W / 2}" y="${y}" font-family="Inter, DejaVu Sans, sans-serif" font-size="15" font-weight="500" letter-spacing="4" fill="${GRAY}" fill-opacity="0.7" text-anchor="middle">${text}</text></svg>`,
   );
 
 async function save(file, buf, { format = "webp", quality = 90 } = {}) {
@@ -100,7 +100,7 @@ for (const p of products) {
     const W = 1600;
     const H = 1200;
     const png = await renderPng({ shape: p.shape, palette: c.palette, width: W, height: H, fill: 0.74 });
-    await save(`products/${p.slug}/${c.id}.webp`, await withLabel(png, W, H, "DEMO IMAGE — ORIGINAL 3D PLACEHOLDER"));
+    await save(`products/${p.slug}/${c.id}.webp`, await withLabel(png, W, H, "CONCEPT VISUAL"));
   }
 }
 
@@ -112,13 +112,13 @@ if (!only) {
     const W = 2400;
     const H = 1200;
     const png = await renderPng({ shape: "minnow", palette: heroPalette, width: W, height: H, fill: 0.8, rotZ: 6, yaw: 22, elev: 8 });
-    await save("hero.webp", await withLabel(png, W, H, "DEMO IMAGE"));
+    await save("hero.webp", await withLabel(png, W, H, "CONCEPT VISUAL"));
   }
   {
     const W = 1200;
     const H = 900;
     const png = await renderPng({ shape: "minnow", palette: heroPalette, width: W, height: H, fill: 0.86, rotZ: 6, yaw: 22, elev: 8 });
-    await save("hero-mobile.webp", await withLabel(png, W, H, "DEMO IMAGE"));
+    await save("hero-mobile.webp", await withLabel(png, W, H, "CONCEPT VISUAL"));
   }
 
   /* ---------- ニュースのサムネイル（ライトグレー背景） ---------- */
@@ -127,7 +127,7 @@ if (!only) {
     const W = 1600;
     const H = 1000;
     const png = await renderPng({ shape, palette: heroPalette, width: W, height: H, fill: 0.62 });
-    await save(`news-${cat}.webp`, await withLabel(png, W, H, "DEMO IMAGE — SAMPLE", "#F5F5F7"));
+    await save(`news-${cat}.webp`, await withLabel(png, W, H, "CONCEPT VISUAL", "#F5F5F7"));
   }
 
   /* ---------- OGP ---------- */
@@ -207,7 +207,7 @@ if (!only || only === "scenes") {
       .png()
       .toBuffer();
     const label = Buffer.from(
-      `<svg xmlns="http://www.w3.org/2000/svg" width="${W}" height="${H}"><text x="${W - 36}" y="${H - 30}" font-family="Inter, sans-serif" font-size="${Math.round(W / 110)}" font-weight="500" letter-spacing="4" fill="#ffffff" fill-opacity="0.7" text-anchor="end">DEMO IMAGE — CG</text></svg>`,
+      `<svg xmlns="http://www.w3.org/2000/svg" width="${W}" height="${H}"><text x="${W - 36}" y="${H - 30}" font-family="Inter, sans-serif" font-size="${Math.round(W / 110)}" font-weight="500" letter-spacing="4" fill="#ffffff" fill-opacity="0.7" text-anchor="end">CONCEPT VISUAL — CG</text></svg>`,
     );
     const outBuf = await sharp(back)
       .composite([

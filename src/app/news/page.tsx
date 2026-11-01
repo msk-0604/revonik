@@ -15,7 +15,7 @@ export default function NewsPage() {
       <PageHeader
         eyebrow="Information"
         title="News"
-        lead="新製品情報・イベント・ブランドニュースを掲載するページです。現在の記事はすべてデモ用のサンプルで、REVONIK の実際の発表ではありません。"
+        lead="新製品やブランドの最新情報。"
       />
       <section aria-label="記事一覧" className="container-x pb-24 md:pb-32">
         <ul className="grid gap-x-6 gap-y-14 sm:grid-cols-2 lg:grid-cols-3 lg:gap-x-8">

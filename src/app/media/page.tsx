@@ -2,7 +2,11 @@ import type { Metadata } from "next";
 import { MediaCard } from "@/components/MediaCard";
 import { PageHeader } from "@/components/PageHeader";
 import { Reveal } from "@/components/Reveal";
+import Link from "next/link";
+import { categories } from "@/data/categories";
 import { media } from "@/data/media";
+import { site } from "@/data/site";
+import { getProduct } from "@/lib/products";
 import type { MediaItem } from "@/types";
 
 export const metadata: Metadata = {
@@ -22,11 +26,32 @@ function Group({ id, title, lead, items, tone }: { id: string; title: string; le
           {items.map((m, i) => (
             <Reveal as="li" key={m.id} delay={i * 0.06}>
               <MediaCard item={m} surface={tone === "gray" ? "white" : "gray"} />
+              <RelatedLinks item={m} />
             </Reveal>
           ))}
         </ul>
       </div>
     </section>
+  );
+}
+
+function RelatedLinks({ item }: { item: MediaItem }) {
+  const products = (item.related ?? []).map((s) => getProduct(s)).filter((p) => p !== undefined);
+  const cat = item.relatedCategory ? categories.find((c) => c.id === item.relatedCategory) : undefined;
+  if (products.length === 0 && !cat) return null;
+  return (
+    <p className="mt-3 flex flex-wrap gap-x-4 gap-y-1 border-t border-line pt-3 text-[0.875rem]">
+      {products.map((p) => (
+        <Link key={p.slug} href={`/products/${p.slug}`} data-track="select_item" data-track-item={p.slug} data-track-list="media" className="text-link hover:underline">
+          {p.name} を見る ›
+        </Link>
+      ))}
+      {cat && (
+        <Link href={`/products?category=${cat.id}`} className="text-link hover:underline">
+          {cat.label} を見る ›
+        </Link>
+      )}
+    </p>
   );
 }
 
@@ -36,23 +61,35 @@ export default function MediaPage() {
       <PageHeader
         eyebrow="Movies & Articles"
         title="Media"
-        lead="加藤誠司氏が語る動画やインタビュー記事、公式SNSへの導線です。埋め込みは公式の許諾が確認できたコンテンツのみとし、現時点ではすべて外部リンクでご案内します。"
+        lead="動画と記事で、ルアーの動きと考え方を。"
       />
       <Group
         id="media-videos"
         tone="gray"
         title="動画"
-        lead="YouTube に公開されている動画へのリンクです（外部サイト）。"
+        lead="公式チャンネルと、加藤誠司氏が語る動画。"
         items={media.filter((m) => m.kind === "youtube")}
       />
       <Group
         id="media-articles"
         tone="white"
         title="記事・インタビュー"
-        lead="釣りメディアの記事へのリンクです。REVONIK 公式のコンテンツではありません。"
+        lead="釣りメディアに掲載されたインタビュー・記事。"
         items={media.filter((m) => m.kind === "article")}
       />
       <Group id="media-social" tone="gray" title="公式SNS" items={media.filter((m) => m.kind === "instagram")} />
+      <section className="section-y text-center">
+        <a
+          href={site.links.youtube}
+          target="_blank"
+          rel="noopener noreferrer"
+          data-track="video_click"
+          data-track-video="channel"
+          className="inline-flex min-h-12 items-center rounded-full bg-fg px-7 text-[1rem] text-white hover:bg-fg/80"
+        >
+          公式 YouTube チャンネルへ ↗<span className="sr-only">（外部サイト）</span>
+        </a>
+      </section>
     </>
   );
 }

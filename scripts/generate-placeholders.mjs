@@ -76,7 +76,7 @@ async function render(file, w, h, inner, { format = "webp", quality = 88 } = {})
   console.log("  ✓", file);
 }
 
-const demoMark = (W, H, text = "DEMO IMAGE") => label(W / 2, H - 40, text, { size: 18, anchor: "middle", opacity: 0.9, spacing: 5 });
+const demoMark = (W, H, text = "CONCEPT VISUAL") => label(W / 2, H - 40, text, { size: 18, anchor: "middle", opacity: 0.9, spacing: 5 });
 
 /* ---------- site images ---------- */
 function rings(cx, cy, count, rx0, step, color = "#1D1D1F", max = 0.14) {
@@ -126,16 +126,16 @@ async function siteImages() {
         <circle cx="330" cy="92" r="10" ${ln(0.5)}/><circle cx="700" cy="80" r="10" ${ln(0.5)}/>
         <ellipse cx="560" cy="0" rx="90" ry="34" ${ln(0.3)}/>
       </g>
-      ${dim(ox, ox + 1000 * sc, oy - 200, "LENGTH (DEMO)")}
-      ${dim(ox + 330 * sc, ox + 700 * sc, oy + 190, "HOOK PITCH (DEMO)")}
-      ${demoMark(W, H, "DEMO IMAGE — CONCEPT DRAWING, NOT AN ACTUAL DESIGN DOCUMENT")}`;
+      ${dim(ox, ox + 1000 * sc, oy - 200, "LENGTH")}
+      ${dim(ox + 330 * sc, ox + 700 * sc, oy + 190, "HOOK PITCH")}
+      ${demoMark(W, H, "CONCEPT VISUAL — NOT AN ACTUAL DESIGN DOCUMENT")}`;
     await render("blueprint.webp", W, H, inner);
   }
   // VIDEO — 文字を重ねるため、ルアーは描かず波紋のみ
   {
     const W = 1920;
     const H = 1080;
-    await render("video.webp", W, H, `<rect width="${W}" height="${H}" fill="#F5F5F7"/>${rings(W * 0.5, H * 0.5, 9, 60, 80, "#1D1D1F", 0.08)}${demoMark(W, H, "DEMO IMAGE — VIDEO THUMBNAIL")}`);
+    await render("video.webp", W, H, `<rect width="${W}" height="${H}" fill="#F5F5F7"/>${rings(W * 0.5, H * 0.5, 9, 60, 80, "#1D1D1F", 0.08)}${demoMark(W, H, "CONCEPT VISUAL")}`);
   }
   // MEDIA（透明背景：カード側の地色で表示）
   const st = `fill="none" stroke="#1D1D1F" stroke-opacity="0.8" stroke-width="14"`;

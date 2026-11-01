@@ -31,7 +31,7 @@ const pages = [
   "/about",
   "/media",
   "/news",
-  "/news/sample-new-product",
+  "/news/dispa-118sf",
   "/contact",
 ];
 const mobile = { isMobile: true, hasTouch: true, deviceScaleFactor: 2 };
@@ -138,7 +138,7 @@ for (const [vpName, vp] of Object.entries(viewports)) {
   // ---- インタラクション ----
   console.log(`\n[${vpName}] interactions`);
   await page.goto(BASE + "/products", { waitUntil: "networkidle" });
-  const cards = () => page.locator('main a[href^="/products/"]').count();
+  const cards = () => page.locator('main a[data-track="select_item"][href^="/products/"]').count();
   const total = await cards();
   await page.getByRole("button", { name: /^Shad/ }).click();
   await page.waitForTimeout(700);
@@ -168,7 +168,9 @@ for (const [vpName, vp] of Object.entries(viewports)) {
   ok((await page.getByRole("radio", { name: "キンクロ" }).getAttribute("aria-checked")) === "true", "カラー選択");
   await page.getByRole("tab", { name: "70S" }).click();
   ok(await page.getByRole("cell", { name: "69mm" }).isVisible(), "スペックのモデル切り替え（70S → 69mm）");
-  ok((await page.getByText("情報未登録").count()) > 0, "不明スペックは「情報未登録」");
+  ok(await page.getByText("「—」の項目は確認中です。").first().isVisible(), "不明スペックは「—」＋説明");
+  const storeLinks = page.locator('a[data-track="store_click"][href^="https://revonik.stores.jp"]');
+  ok((await storeLinks.count()) >= 2, `商品詳細のストア導線 (${await storeLinks.count()} 件)`);
   await page.screenshot({ path: `screenshots/${vpName}_interaction_volbeat.png` });
 
   if (vpName === "sp") {

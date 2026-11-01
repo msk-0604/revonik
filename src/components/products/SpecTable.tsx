@@ -58,7 +58,7 @@ export function SpecTable({ product }: { product: Product }) {
             ))}
           </tbody>
         </table>
-        {variant.note && <p className="mt-4 font-jp text-[0.75rem] leading-relaxed text-muted">※ {variant.note}</p>}
+        <p className="mt-4 font-jp text-[0.75rem] leading-relaxed text-muted">「—」の項目は確認中です。</p>
       </div>
     </div>
   );

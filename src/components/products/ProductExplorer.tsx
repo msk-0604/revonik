@@ -5,6 +5,7 @@ import { AnimatePresence, motion } from "motion/react";
 import { Search, X } from "lucide-react";
 import { ProductCard } from "@/components/ProductCard";
 import { categories } from "@/data/categories";
+import { experience, sceneLabels, type Scene } from "@/data/experience";
 import { products } from "@/data/products";
 import { matchesQuery } from "@/lib/products";
 import type { CategoryId } from "@/types";
@@ -14,6 +15,7 @@ type Filter = CategoryId | "all";
 export function ProductExplorer() {
   const [category, setCategory] = useState<Filter>("all");
   const [query, setQuery] = useState("");
+  const [scene, setScene] = useState<Scene | "all">("all");
   const [ready, setReady] = useState(false);
 
   // URL（?category= & ?q=）から初期状態を復元（共有・戻る操作に対応）
@@ -23,6 +25,8 @@ export function ProductExplorer() {
     /* eslint-disable react-hooks/set-state-in-effect -- マウント時に一度だけ URL から復元する */
     if (c && categories.some((x) => x.id === c)) setCategory(c as CategoryId);
     setQuery(params.get("q") ?? "");
+    const sc = params.get("scene");
+    if (sc && sc in sceneLabels) setScene(sc as Scene);
     setReady(true);
     /* eslint-enable react-hooks/set-state-in-effect */
   }, []);
@@ -31,10 +35,11 @@ export function ProductExplorer() {
     if (!ready) return;
     const params = new URLSearchParams();
     if (category !== "all") params.set("category", category);
+    if (scene !== "all") params.set("scene", scene);
     if (query.trim()) params.set("q", query.trim());
     const qs = params.toString();
     window.history.replaceState(null, "", qs ? `?${qs}` : window.location.pathname);
-  }, [category, query, ready]);
+  }, [category, scene, query, ready]);
 
   const counts = useMemo(() => {
     const map = new Map<Filter, number>([["all", products.length]]);
@@ -43,16 +48,22 @@ export function ProductExplorer() {
   }, []);
 
   const visibleCategories = categories.filter((c) => counts.get(c.id));
-  const filtered = products.filter((p) => (category === "all" || p.category === category) && matchesQuery(p, query));
+  const filtered = products.filter(
+    (p) =>
+      (category === "all" || p.category === category) &&
+      (scene === "all" || experience[p.slug]?.scenes.includes(scene)) &&
+      matchesQuery(p, query),
+  );
 
   const reset = () => {
     setCategory("all");
+    setScene("all");
     setQuery("");
   };
 
   return (
     <div>
-      <div className="sticky top-[88px] z-20 -mx-5 bg-white/85 px-5 py-3 backdrop-blur-xl backdrop-saturate-150 md:-mx-10 md:px-10">
+      <div className="sticky top-[60px] z-20 -mx-5 bg-white/85 px-5 py-3 backdrop-blur-xl backdrop-saturate-150 md:-mx-10 md:px-10">
         <div className="flex flex-col gap-3 lg:flex-row lg:items-center lg:justify-between">
           <div role="group" aria-label="カテゴリーで絞り込む" className="-mx-5 flex gap-2 overflow-x-auto px-5 py-1 [scrollbar-width:none] lg:mx-0 lg:flex-wrap lg:px-0">
             {[{ id: "all" as const, label: "All" }, ...visibleCategories].map((c) => {
@@ -101,9 +112,30 @@ export function ProductExplorer() {
         </div>
       </div>
 
+      <div role="group" aria-label="シーンで探す" className="mt-6 flex flex-wrap items-center gap-2">
+        <span className="mr-1 font-jp text-[0.8125rem] font-medium text-muted">シーンで探す</span>
+        {(["all", ...Object.keys(sceneLabels)] as (Scene | "all")[]).map((sc) => {
+          const active = scene === sc;
+          return (
+            <button
+              key={sc}
+              type="button"
+              onClick={() => setScene(sc)}
+              aria-pressed={active}
+              className={`min-h-9 rounded-full border px-3.5 font-jp text-[0.8125rem] transition-colors ${
+                active ? "border-fg bg-white text-fg" : "border-line text-fg/75 hover:border-fg/40"
+              }`}
+            >
+              {sc === "all" ? "すべて" : sceneLabels[sc].label}
+            </button>
+          );
+        })}
+      </div>
+
       <p role="status" aria-live="polite" className="mt-8 text-[0.8125rem] text-muted">
         {filtered.length} 件
         {category !== "all" && <span className="ml-2 font-jp">／ {categories.find((c) => c.id === category)?.labelJa}</span>}
+        {scene !== "all" && <span className="ml-2 font-jp">／ {sceneLabels[scene].label}</span>}
         {query.trim() && <span className="ml-2 font-jp">／「{query.trim()}」</span>}
       </p>
 

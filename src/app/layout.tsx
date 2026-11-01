@@ -1,5 +1,6 @@
 import type { Metadata, Viewport } from "next";
-import { Inter, Noto_Sans_JP, Noto_Serif_JP } from "next/font/google";
+import { Inter } from "next/font/google";
+import { AnalyticsListener } from "@/components/AnalyticsListener";
 import { Footer } from "@/components/Footer";
 import { Header } from "@/components/Header";
 import { MotionProvider } from "@/components/MotionProvider";
@@ -12,22 +13,8 @@ const inter = Inter({
   display: "swap",
 });
 
-const noto = Noto_Sans_JP({
-  subsets: ["latin"],
-  weight: ["400", "500", "700"],
-  variable: "--font-noto",
-  display: "swap",
-  preload: false,
-});
-
-// 引用・ステートメント用のアクセント書体
-const serif = Noto_Serif_JP({
-  subsets: ["latin"],
-  weight: ["400", "600"],
-  variable: "--font-serif",
-  display: "swap",
-  preload: false,
-});
+// 日本語は端末のシステムフォント（ヒラギノ／游ゴシック／Noto など）を使用。
+// Web フォントの日本語サブセットは CSS とフォントの転送量が大きく、表示速度を優先して読み込まない。
 
 export const metadata: Metadata = {
   metadataBase: new URL(site.url),
@@ -68,7 +55,7 @@ export const viewport: Viewport = {
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html lang="ja" className={`${inter.variable} ${noto.variable} ${serif.variable}`}>
+    <html lang="ja" className={inter.variable}>
       <body className="min-h-dvh antialiased">
         <a
           href="#main"
@@ -80,6 +67,7 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
           <Header />
           <main id="main">{children}</main>
           <Footer />
+          <AnalyticsListener />
         </MotionProvider>
       </body>
     </html>

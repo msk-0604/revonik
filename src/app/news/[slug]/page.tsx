@@ -3,9 +3,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { ChevronLeft } from "lucide-react";
-import { SampleBadge } from "@/components/DemoBadge";
-import { NewsCard } from "@/components/NewsCard";
-import { newsImages } from "@/data/images";
+import { NewsCard, newsImage } from "@/components/NewsCard";
 import { news, sortedNews } from "@/data/news";
 import { formatDate } from "@/lib/format";
 
@@ -39,22 +37,29 @@ export default async function NewsDetailPage({ params }: PageProps<"/news/[slug]
             <time dateTime={article.date}>{formatDate(article.date)}</time>
             <span aria-hidden>·</span>
             <span>{article.category}</span>
-            {article.sample && <SampleBadge />}
           </div>
           <h1 className="mt-4 font-jp text-[1.75rem] leading-[1.5] font-bold md:text-[2.5rem] md:leading-[1.4]">{article.title}</h1>
-          {article.sample && (
-            <p className="mt-6 rounded-xl bg-bg-alt px-4 py-3 font-jp text-[0.8125rem] leading-relaxed text-muted">
-              この記事はデモ用のサンプルです。REVONIK の実際のニュース・発表ではありません。
-            </p>
-          )}
         </div>
         <div className="relative mx-auto mt-12 aspect-[16/9] max-w-5xl overflow-hidden rounded-[1.5rem] bg-bg-alt">
-          <Image src={article.image ?? newsImages[article.category]} alt="記事の仮画像（DEMO IMAGE）" fill preload sizes="(min-width: 1024px) 64rem, 100vw" className="object-cover" />
+          <Image src={newsImage(article)} alt="記事（コンセプトビジュアル）" fill preload sizes="(min-width: 1024px) 64rem, 100vw" className={article.related ? "object-contain p-6" : "object-cover"} />
         </div>
         <div className="mx-auto mt-12 max-w-3xl">
           {article.body.map((p) => (
             <p key={p} className="prose-jp mt-6 text-[1.0625rem] first:mt-0">{p}</p>
           ))}
+          {article.related && (
+            <p className="mt-10">
+              <Link
+                href={`/products/${article.related}`}
+                data-track="select_item"
+                data-track-item={article.related}
+                data-track-list="news"
+                className="inline-flex min-h-11 items-center rounded-full bg-fg px-6 text-[0.9375rem] text-white hover:bg-fg/80"
+              >
+                製品を見る ›
+              </Link>
+            </p>
+          )}
         </div>
       </article>
       <section aria-labelledby="other-news" className="section-y bg-bg-alt">

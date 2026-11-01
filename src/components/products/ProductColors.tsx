@@ -67,7 +67,7 @@ export function ProductStage() {
           >
             <Image
               src={colorImage(product, color)}
-              alt={`${product.name}（${color.name}）の仮画像（DEMO IMAGE）`}
+              alt={`${product.name}（${color.name}）（コンセプトビジュアル）`}
               fill
               preload={index === 0}
               draggable={false}
@@ -102,7 +102,6 @@ export function ProductStage() {
       <div className="mt-4 text-center">
         <p className="font-jp text-[0.9375rem]" aria-live="polite">
           {color.name}
-          {!color.verified && <span className="ml-1 text-[0.75rem] text-muted">（仮）</span>}
           <span className="sr-only">
             （{index + 1} / {colors.length}）
           </span>
@@ -167,7 +166,6 @@ export function ColorGallery() {
             </span>
             <span className="mt-3 block font-jp text-[0.8125rem]">
               {c.name}
-              {!c.verified && <span className="ml-1 text-[0.6875rem] text-muted">（仮）</span>}
             </span>
           </button>
         </li>

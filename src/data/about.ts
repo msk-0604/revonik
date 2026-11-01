@@ -10,13 +10,13 @@ export const brandFacts: { label: string; value: string; status: VerificationSta
   { label: "主なカテゴリー", value: "バス用ハードルアー（バイブレーション／クランクベイト／シャッド／ミノー）", status: "retailer" },
   {
     label: "ルアーデザイン",
-    value: "ルアーデザイナー加藤誠司氏が手がけるブランドとして、釣りメディアで紹介されています。",
+    value: "ルアーデザイナー・加藤誠司",
     status: "retailer",
     source: { label: "ルアーニュースR", url: "https://www.lurenewsr.com/354587/" },
   },
   {
     label: "設立",
-    value: "2023年（株式会社レヴォニック）と紹介されています。",
+    value: "2023年（株式会社レヴォニック）",
     status: "retailer",
     source: { label: "ルアーショップB.B（Yahoo!ショッピング）", url: "https://store.shopping.yahoo.co.jp/lure-shop-bb/revonik.html" },
   },
@@ -38,7 +38,7 @@ export const history: { period: string; title: string; text: string; status: Ver
     source: { label: "ルアマガプラス", url: "https://plus.luremaga.jp/2023/12/21/315724/" },
   },
   {
-    period: "—",
+    period: "初期",
     title: "VOLBEAT／Dot SIX／SHINDY 110SF",
     text: "初期のラインナップとして順次発売（Dot SIX はブランド第2弾、SHINDY 110SF は第3弾と紹介）。",
     status: "retailer",

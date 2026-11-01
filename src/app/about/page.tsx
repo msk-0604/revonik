@@ -1,33 +1,15 @@
 import type { Metadata } from "next";
 import Image from "next/image";
-import { ArrowUpRight } from "lucide-react";
 import { Button } from "@/components/Button";
 import { Reveal } from "@/components/Reveal";
 import { brandFacts, history } from "@/data/about";
 import { designer, principles } from "@/data/designer";
 import { siteImages } from "@/data/images";
-import type { SourceLink } from "@/types";
 
 export const metadata: Metadata = {
   title: "ABOUT",
   description: "ルアーデザイナー加藤誠司氏のルアー開発への考え方と、REVONIK のあゆみ（提案用デモ）。",
 };
-
-function Source({ source, suffix = "" }: { source: SourceLink; suffix?: string }) {
-  return (
-    <a
-      href={source.url}
-      target="_blank"
-      rel="noopener noreferrer"
-      className="inline-flex items-center gap-0.5 font-jp text-[0.6875rem] text-muted hover:text-fg hover:underline"
-    >
-      出典：{source.label}
-      {suffix}
-      <ArrowUpRight aria-hidden className="size-3" />
-      <span className="sr-only">（外部サイト）</span>
-    </a>
-  );
-}
 
 export default function AboutPage() {
   return (
@@ -51,9 +33,7 @@ export default function AboutPage() {
             <blockquote>
               <p className="statement text-[1.75rem] min-[375px]:text-[2rem] sm:text-[2.75rem] lg:text-[3.25rem]">「{designer.quote.text}」</p>
             </blockquote>
-            <figcaption className="mt-6">
-              <Source source={designer.quote.source} suffix=" 記事見出しより" />
-            </figcaption>
+            <figcaption className="mt-6 text-[0.75rem] text-muted">— {designer.name}（ルアマガプラス掲載記事より）</figcaption>
           </figure>
         </Reveal>
       </section>
@@ -72,11 +52,6 @@ export default function AboutPage() {
             数々のルアーを生んだ手から。
           </h2>
           <p className="prose-jp mx-auto mt-8 max-w-[34em] text-[1rem] text-fg/80 md:text-[1.0625rem]">{designer.career.text}</p>
-          <div className="mt-5 flex flex-wrap justify-center gap-x-5 gap-y-1">
-            {designer.career.sources.map((s) => (
-              <Source key={s.url} source={s} />
-            ))}
-          </div>
         </Reveal>
       </section>
 
@@ -88,9 +63,7 @@ export default function AboutPage() {
             <h2 id="principles" className="headline mt-2 text-[2.25rem] sm:text-5xl">
               ルアー開発への考え方。
             </h2>
-            <p className="prose-jp mx-auto mt-5 max-w-[32em] text-[0.875rem] text-muted">
-              公開インタビュー・記事で紹介された内容を、営業提案用に要約したものです（ご本人の言葉ではありません）。
-            </p>
+            <p className="prose-jp mx-auto mt-5 max-w-[32em] text-[0.875rem] text-muted">インタビューや記事で紹介されてきた、ものづくりの考え方。</p>
           </Reveal>
           <ol className="mx-auto mt-14 max-w-5xl md:mt-20">
             {principles.map((p) => (
@@ -110,9 +83,6 @@ export default function AboutPage() {
                 <div className="md:pt-8">
                   <p className="prose-jp text-[0.9375rem] text-fg/80 md:text-[1rem]">{p.text}</p>
                   <p className="mt-4 rounded-xl bg-white px-4 py-3 font-jp text-[0.8125rem] leading-relaxed text-fg/75">{p.example}</p>
-                  <div className="mt-3">
-                    <Source source={p.source} />
-                  </div>
                 </div>
               </Reveal>
             ))}
@@ -135,11 +105,6 @@ export default function AboutPage() {
               <div>
                 <h3 className="text-[1.1875rem] font-semibold tracking-tight">{h.title}</h3>
                 <p className="mt-1 font-jp text-[0.875rem] leading-relaxed text-fg/75">{h.text}</p>
-                {h.source && (
-                  <p className="mt-1">
-                    <Source source={h.source} />
-                  </p>
-                )}
               </div>
             </Reveal>
           ))}
@@ -162,18 +127,10 @@ export default function AboutPage() {
                   <dt className="font-jp text-[0.875rem] text-muted">{f.label}</dt>
                   <dd className="font-jp text-[0.9375rem] leading-relaxed">
                     {f.value}
-                    {f.source && (
-                      <span className="mt-1 block">
-                        <Source source={f.source} />
-                      </span>
-                    )}
                   </dd>
                 </div>
               ))}
             </dl>
-            <p className="mt-5 font-jp text-[0.75rem] leading-relaxed text-muted">
-              ※ 本ページの内容は釣りメディア・販売店の公開情報にもとづくもので、REVONIK 公式とは未照合です。正式公開時は、加藤誠司氏への取材・監修のうえで内容を確定します。
-            </p>
             <div className="mt-10 text-center">
               <Button href="/products" variant="link">
                 製品を見る

@@ -1,78 +1,52 @@
-"use client";
-
 import Link from "next/link";
 import { getImageProps } from "next/image";
-import { motion } from "motion/react";
-import { ChevronRight } from "lucide-react";
 import { siteImages } from "@/data/images";
 
-const ease = [0.25, 0.1, 0.25, 1] as const;
-
-/** 水中シーン（CG）を全面に。ルアーは画像の下側に配置されているため、上部の文字とは重ならない */
 function HeroPicture() {
-  const common = { alt: siteImages.sceneHero.alt, sizes: "100vw", quality: 85, fetchPriority: "high" as const, loading: "eager" as const };
+  const common = { alt: siteImages.hero.alt, sizes: "(min-width: 1200px) 1200px, 100vw", quality: 85, fetchPriority: "high" as const, loading: "eager" as const };
   const {
     props: { srcSet: desktop },
-  } = getImageProps({ ...common, src: siteImages.sceneHero.src, width: 2400, height: 1350 });
+  } = getImageProps({ ...common, src: siteImages.hero.src, width: 2400, height: 1200 });
   const {
     props: { srcSet: mobile, ...rest },
-  } = getImageProps({ ...common, src: siteImages.sceneHeroMobile.src, width: 1200, height: 2400 });
+  } = getImageProps({ ...common, src: siteImages.heroMobile.src, width: 1200, height: 900 });
   return (
     <picture>
       <source media="(min-width: 768px)" srcSet={desktop} />
       <source srcSet={mobile} />
       {/* eslint-disable-next-line jsx-a11y/alt-text -- alt は rest に含まれる */}
-      <img {...rest} className="absolute inset-0 h-full w-full object-cover object-bottom" />
+      <img {...rest} className="aspect-[4/3] h-auto w-full object-contain md:aspect-[2/1]" />
     </picture>
   );
 }
 
+/** SECTION 01 — HERO：白背景・中央の大きなルアー。情報は最小限 */
 export function Hero() {
   return (
-    <section
-      aria-labelledby="hero-title"
-      className="relative flex min-h-[860px] flex-col overflow-hidden bg-[#0d2a33] text-white md:aspect-[16/9] md:min-h-[680px] md:max-h-[920px]"
-    >
-      <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 1.4, ease }} className="absolute inset-0">
-        <HeroPicture />
-      </motion.div>
-      <div className="container-x relative pt-[124px] text-center md:pt-[150px]">
-        <motion.p
-          initial={{ opacity: 0, y: 12 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 0.2, ease }}
-          className="text-[1rem] font-semibold tracking-[0.3em] md:text-[1.125rem]"
-        >
-          REVONIK
-        </motion.p>
-        <motion.h1
+    <section aria-labelledby="hero-title" className="overflow-hidden bg-bg pt-[92px] md:pt-[120px]">
+      <div className="container-x text-center">
+        <p className="animate-fade-up text-[0.9375rem] font-semibold tracking-[0.32em] md:text-[1.0625rem]">REVONIK</p>
+        <h1
           id="hero-title"
-          initial={{ opacity: 0, y: 16 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.9, delay: 0.3, ease }}
-          className="headline mt-3 text-[2.5rem] min-[375px]:text-[2.75rem] sm:text-6xl lg:text-[5rem]"
+          className="headline mt-3 animate-fade-up text-[2.5rem] [animation-delay:80ms] min-[375px]:text-[2.75rem] sm:text-6xl lg:text-[5.25rem]"
         >
-          The Art of Precision.
-        </motion.h1>
-        <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.9, delay: 0.4, ease }}>
-          <p className="prose-jp mx-auto mt-5 max-w-[22em] text-[1.0625rem] text-white/85 md:text-[1.3125rem]">
-            <span className="inline-block">精密な設計から生まれる、</span>
-            <span className="inline-block">新たな釣りの可能性。</span>
-          </p>
-          <div className="mt-8 flex flex-col items-center justify-center gap-3 min-[400px]:flex-row min-[400px]:gap-5">
-            <Link
-              href="/products"
-              className="inline-flex min-h-11 items-center rounded-full bg-white px-6 text-[0.9375rem] text-fg transition-colors hover:bg-white/85"
-            >
-              製品を見る
-            </Link>
-            <Link href="/about" className="group inline-flex min-h-11 items-center gap-0.5 text-[1.0625rem] text-white hover:underline underline-offset-4">
-              ブランドについて
-              <ChevronRight aria-hidden className="size-4 transition-transform group-hover:translate-x-0.5" />
-            </Link>
-          </div>
-          <p className="mt-5 font-jp text-[0.6875rem] text-white/60">※ キャッチコピーは営業デモ用の仮文章です（REVONIK の公式コピーではありません）</p>
-        </motion.div>
+          Precision in Every Cast.
+        </h1>
+        <p className="statement mt-4 animate-fade-up text-[1.125rem] text-fg/85 [animation-delay:160ms] md:text-[1.5rem]">その一投に、理由がある。</p>
+        <div className="mt-8 animate-fade-up [animation-delay:240ms]">
+          <Link
+            href="/products"
+            data-track="select_item"
+            data-track-list="hero"
+            className="inline-flex min-h-12 items-center rounded-full bg-fg px-8 text-[1rem] text-white transition-colors hover:bg-fg/80"
+          >
+            製品を見る
+          </Link>
+        </div>
+      </div>
+      {/* 最大要素（LCP）のため、画像はアニメーションで隠さずに表示 */}
+      <div className="mx-auto mt-2 max-w-[1200px] px-1 md:-mt-2">
+        <HeroPicture />
       </div>
     </section>
   );

@@ -2,7 +2,8 @@ import { categories } from "@/data/categories";
 import { products } from "@/data/products";
 import type { CategoryId, Product, ProductColor, ProductSpecs, ProductVariant } from "@/types";
 
-export const UNREGISTERED = "情報未登録";
+/** 確認できていないスペック項目の表示 */
+export const UNREGISTERED = "—";
 
 export function getProduct(slug: string): Product | undefined {
   return products.find((p) => p.slug === slug);
@@ -39,7 +40,7 @@ export function specRows(product: Product, variant: ProductVariant) {
   return specLabels.map(({ key, label, en }) => {
     let value = variant.specs[key];
     if (key === "colors" && !value && verifiedColors > 0) {
-      value = `${verifiedColors}色を確認（販売店掲載・全色ではない可能性あり）`;
+      value = `${verifiedColors}色`;
     }
     return { key, label, en, value: value ?? UNREGISTERED, missing: !value };
   });
@@ -75,4 +76,9 @@ export function keySpecs(product: Product, max = 3) {
     .filter((i): i is { label: string; value: string } => Boolean(i.value))
     .map((i) => ({ ...i, value: i.value.replace(/（.*?）/g, "") }))
     .slice(0, max);
+}
+
+/** 公式ストアの個別商品ページ。未確認の場合はストアトップ */
+export function storeLink(product: Product, fallback: string) {
+  return product.storeUrl ?? fallback;
 }

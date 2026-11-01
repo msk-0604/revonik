@@ -96,6 +96,10 @@ export interface NewsArticle {
   excerpt: string;
   body: string[];
   image?: string;
+  /** 関連製品（slug） */
+  related?: string;
+  /** 出典（非表示・データ管理用） */
+  source?: SourceLink;
   /** true の場合はデモ用サンプル記事 */
   sample: boolean;
 }
@@ -114,5 +118,9 @@ export interface MediaItem {
   embeddable: boolean;
   /** 第三者メディア（REVONIK 公式ではない） */
   thirdParty: boolean;
+  /** 関連が確認できた製品（slug） */
+  related?: string[];
+  /** 関連するカテゴリー（製品一覧の絞り込みへ誘導） */
+  relatedCategory?: CategoryId;
   date?: string;
 }

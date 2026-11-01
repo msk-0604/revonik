@@ -7,7 +7,14 @@ const kindLabel = { instagram: "Instagram", youtube: "YouTube", store: "Online S
 
 export function MediaCard({ item, surface = "gray" }: { item: MediaItem; surface?: "gray" | "white" }) {
   return (
-    <a href={item.url} target="_blank" rel="noopener noreferrer" className="group flex h-full flex-col">
+    <a
+      href={item.url}
+      target="_blank"
+      rel="noopener noreferrer"
+      data-track={item.kind === "youtube" ? "video_click" : item.kind === "instagram" ? "social_click" : undefined}
+      data-track-video={item.kind === "youtube" ? item.id : undefined}
+      className="group flex flex-col"
+    >
       <div className={`relative aspect-[16/10] overflow-hidden rounded-[1.25rem] ${surface === "white" ? "bg-white" : "bg-bg-alt"}`}>
         <Image
           src={item.image ?? mediaImages[item.kind]}
@@ -26,7 +33,6 @@ export function MediaCard({ item, surface = "gray" }: { item: MediaItem; surface
       </div>
       <p className="mt-4 text-[0.75rem] font-medium tracking-[0.04em] text-muted">
         {kindLabel[item.kind]} · {item.source}
-        {item.thirdParty && <span className="font-jp">（外部・第三者）</span>}
       </p>
       <h3 className="mt-1 font-jp text-[1.0625rem] font-bold leading-snug">{item.title}</h3>
       <p className="mt-1.5 font-jp text-[0.8125rem] leading-relaxed text-muted">{item.description}</p>

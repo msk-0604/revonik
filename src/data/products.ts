@@ -125,9 +125,9 @@ export const products: Product[] = [
       },
     ],
     colors: [
-      { id: "demo-01", name: "DEMO COLOR 01", verified: false, palette: { back: "#1b2a3a", body: "#9fb3c4", belly: "#f2f4f6", accent: "#d5dde4" } },
-      { id: "demo-02", name: "DEMO COLOR 02", verified: false, palette: { back: "#3a3f22", body: "#a2a36a", belly: "#efe6c8", accent: "#c6b874" } },
-      { id: "demo-03", name: "DEMO COLOR 03", verified: false, palette: { back: "#0f1012", body: "#5b5f66", belly: "#c9ccd1", accent: "#e6e8eb" } },
+      { id: "demo-01", name: "Color 01", verified: false, palette: { back: "#1b2a3a", body: "#9fb3c4", belly: "#f2f4f6", accent: "#d5dde4" } },
+      { id: "demo-02", name: "Color 02", verified: false, palette: { back: "#3a3f22", body: "#a2a36a", belly: "#efe6c8", accent: "#c6b874" } },
+      { id: "demo-03", name: "Color 03", verified: false, palette: { back: "#0f1012", body: "#5b5f66", belly: "#c9ccd1", accent: "#e6e8eb" } },
     ],
     youtubeId: null,
     storeUrl: null,
@@ -247,8 +247,8 @@ export const products: Product[] = [
       { id: "default", label: "Ramzy", specs: spec({ length: "58mm", weight: "約9.3g" }) },
     ],
     colors: [
-      { id: "demo-01", name: "DEMO COLOR 01", verified: false, palette: { back: "#2a3a2c", body: "#8a9a7a", belly: "#ecebd8", accent: "#c9c58f" } },
-      { id: "demo-02", name: "DEMO COLOR 02", verified: false, palette: { back: "#4a2a1c", body: "#b9703a", belly: "#f0d29a", accent: "#e09a4a" } },
+      { id: "demo-01", name: "Color 01", verified: false, palette: { back: "#2a3a2c", body: "#8a9a7a", belly: "#ecebd8", accent: "#c9c58f" } },
+      { id: "demo-02", name: "Color 02", verified: false, palette: { back: "#4a2a1c", body: "#b9703a", belly: "#f0d29a", accent: "#e09a4a" } },
     ],
     youtubeId: null,
     storeUrl: null,
@@ -287,7 +287,7 @@ export const products: Product[] = [
     colors: [
       { id: "ghost-shrimp", name: "ゴーストシュリンプ", verified: true, palette: { back: "#c9b8a6", body: "#e6d9cc", belly: "#f6efe8", accent: "#f0a888", clear: true } },
       { id: "magma-hl-champagne", name: "マグマHLシャンパン", verified: true, palette: { back: "#3a2a1a", body: "#c8a46a", belly: "#f2e2bc", accent: "#e8c27a" } },
-      { id: "demo-01", name: "DEMO COLOR 01", verified: false, palette: { back: "#1b2a3a", body: "#9fb3c4", belly: "#f2f4f6", accent: "#d5dde4" } },
+      { id: "demo-01", name: "Color 01", verified: false, palette: { back: "#1b2a3a", body: "#9fb3c4", belly: "#f2f4f6", accent: "#d5dde4" } },
     ],
     youtubeId: null,
     storeUrl: null,
@@ -313,8 +313,8 @@ export const products: Product[] = [
     featuresStatus: "retailer",
     variants: [{ id: "118sf", label: "118SF", specs: spec({ depth: "3〜5mレンジ" }) }],
     colors: [
-      { id: "demo-01", name: "DEMO COLOR 01", verified: false, palette: { back: "#203040", body: "#a8b8c6", belly: "#f3f5f7", accent: "#d9c7a0" } },
-      { id: "demo-02", name: "DEMO COLOR 02", verified: false, palette: { back: "#2e3324", body: "#9aa070", belly: "#f1ead0", accent: "#c8bb7a" } },
+      { id: "demo-01", name: "Color 01", verified: false, palette: { back: "#203040", body: "#a8b8c6", belly: "#f3f5f7", accent: "#d9c7a0" } },
+      { id: "demo-02", name: "Color 02", verified: false, palette: { back: "#2e3324", body: "#9aa070", belly: "#f1ead0", accent: "#c8bb7a" } },
     ],
     youtubeId: null,
     storeUrl: null,

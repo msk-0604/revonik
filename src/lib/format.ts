@@ -1,6 +1,6 @@
+/** "2026-09-10" → "2026.09.10"、"2026-09" → "2026.09" */
 export function formatDate(iso: string) {
-  const [y, m, d] = iso.split("-");
-  return `${y}.${m}.${d}`;
+  return iso.split("-").join(".");
 }
 
 export const verificationLabel = {

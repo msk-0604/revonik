@@ -52,18 +52,19 @@ export function Header() {
 
   return (
     <header className="fixed inset-x-0 top-0 z-50">
-      {/* 非公式デモ表示（全ページ共通） */}
-      <p className="relative z-10 flex h-7 items-center justify-center bg-bg-alt px-4 text-center font-jp text-[0.6875rem] text-muted">
-        {site.demoNotice}
-      </p>
-
       <div
         className={`relative z-10 border-b transition-colors duration-300 ${
           scrolled && !open ? "border-line bg-white/80 backdrop-blur-xl backdrop-saturate-150" : "border-line/70 bg-white"
         }`}
       >
         <div className="container-x flex h-[60px] items-center justify-between">
-          <Logo />
+          <div className="flex items-center gap-2.5">
+            <Logo />
+            {/* 非公式の営業提案であることを常に示す控えめな表示（詳細はフッター） */}
+            <span title={site.demoNotice} className="rounded-full border border-line px-2 py-0.5 text-[0.625rem] font-medium tracking-[0.06em] text-muted">
+              Proposal
+            </span>
+          </div>
 
           <nav aria-label="メインナビゲーション" className="hidden md:block">
             <ul className="flex items-center gap-7 lg:gap-9">
@@ -78,6 +79,19 @@ export function Header() {
                   </Link>
                 </li>
               ))}
+              <li>
+                <a
+                  href={site.links.store}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  data-track="store_click"
+                  data-track-placement="header"
+                  className="inline-flex min-h-8 items-center rounded-full bg-fg px-3.5 text-[0.75rem] text-white transition-colors hover:bg-fg/80"
+                >
+                  Online Store
+                  <span className="sr-only">（外部サイト）</span>
+                </a>
+              </li>
             </ul>
           </nav>
 
@@ -115,7 +129,7 @@ export function Header() {
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             transition={{ duration: 0.3, ease }}
-            className="fixed inset-0 z-0 overflow-y-auto bg-white pt-[88px] md:hidden"
+            className="fixed inset-0 z-0 overflow-y-auto bg-white pt-[60px] md:hidden"
           >
             <nav aria-label="モバイルナビゲーション" className="container-x pt-6 pb-12">
               <ul>
@@ -144,7 +158,24 @@ export function Header() {
                 className="mt-8 border-t border-line pt-6"
               >
                 <ul className="space-y-1">
-                  {[{ href: site.links.instagram, label: "Instagram" }].map((l) => (
+                  <li className="mb-4">
+                    <a
+                      href={site.links.store}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      data-track="store_click"
+                      data-track-placement="mobile_menu"
+                      className="flex min-h-12 items-center justify-center gap-1 rounded-full bg-fg text-[1rem] text-white"
+                    >
+                      オンラインストア
+                      <ArrowUpRight aria-hidden className="size-4" />
+                      <span className="sr-only">（外部サイト）</span>
+                    </a>
+                  </li>
+                  {[
+                    { href: site.links.instagram, label: "Instagram" },
+                    { href: site.links.youtube, label: "YouTube" },
+                  ].map((l) => (
                     <li key={l.href}>
                       <a
                         href={l.href}

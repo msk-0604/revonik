@@ -7,14 +7,28 @@
   --color-fg: #1d1d1f;
   --color-muted: #6e6e73;
   --color-line: #e5e5e7;
-  --color-link: #0071e3;
-  --color-link-hover: #0077ed;
+  /* リンク・主要アクション。#F5F5F7 背景でも WCAG AA（4.5:1）を満たす青 */
+  --color-link: #0066cc;
+  --color-link-hover: #0071e3;
 
-  --font-sans: var(--font-inter), var(--font-noto), -apple-system, BlinkMacSystemFont, "Hiragino Sans", "Hiragino Kaku Gothic ProN", Meiryo, sans-serif;
-  --font-serif: var(--font-serif), "Hiragino Mincho ProN", "Yu Mincho", serif;
-  --font-jp: var(--font-noto), "Hiragino Sans", "Hiragino Kaku Gothic ProN", Meiryo, sans-serif;
+  --font-sans: var(--font-inter), -apple-system, BlinkMacSystemFont, "Hiragino Sans", "Hiragino Kaku Gothic ProN", "Noto Sans JP", "Yu Gothic UI", "Yu Gothic", Meiryo, sans-serif;
+  --font-serif: "Hiragino Mincho ProN", "YuMincho", "Yu Mincho", "Noto Serif JP", "Noto Serif CJK JP", serif;
+  --font-jp: -apple-system, BlinkMacSystemFont, "Hiragino Sans", "Hiragino Kaku Gothic ProN", "Noto Sans JP", "Yu Gothic UI", "Yu Gothic", Meiryo, sans-serif;
 
   --ease-out-soft: cubic-bezier(0.25, 0.1, 0.25, 1);
+
+  /* ファーストビュー用：JavaScript を待たずに再生されるフェードイン */
+  --animate-fade-up: fade-up 0.9s cubic-bezier(0.25, 0.1, 0.25, 1) both;
+  @keyframes fade-up {
+    from {
+      opacity: 0;
+      transform: translateY(14px);
+    }
+    to {
+      opacity: 1;
+      transform: none;
+    }
+  }
 }
 
 @layer base {

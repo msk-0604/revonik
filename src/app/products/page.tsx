@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { PageHeader } from "@/components/PageHeader";
 import { ProductExplorer } from "@/components/products/ProductExplorer";
+import { RangeChart } from "@/components/home/RangeChart";
 
 export const metadata: Metadata = {
   title: "PRODUCTS",
@@ -13,11 +14,12 @@ export default function ProductsPage() {
       <PageHeader
         eyebrow="Lineup"
         title="Products"
-        lead="カテゴリーと商品名で絞り込めます。スペックは販売店・釣りメディアの掲載値をもとにした仮データで、公式情報との照合後に確定します。"
+        lead="タイプ・シーン・名前から、狙いに合う一本を。"
       />
       <section aria-label="商品一覧" className="container-x pb-24 md:pb-32">
         <ProductExplorer />
       </section>
+      <RangeChart />
     </>
   );
 }
