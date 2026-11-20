@@ -10,6 +10,7 @@ export const proposalPoints: { no: string; title: string; summary: string; items
     items: [
       "大きな製品ビジュアルと短い見出しで、最初の数秒でブランドの世界観を伝える",
       "装飾ではなく、タイポグラフィ・写真・レイアウトの精度で高級感をつくる",
+      "ホワイト・ライトグレー・ブラックで構成し、深い色は水中シーンなどの見せ場だけに",
       "提案コピー「ENGINEERED TO PROVOKE.」（公式スローガンではありません）",
     ],
     link: { href: "/", label: "HOME を見る" },

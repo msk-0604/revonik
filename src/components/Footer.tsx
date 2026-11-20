@@ -1,5 +1,4 @@
 import Link from "next/link";
-import { ThemeSwitch } from "@/components/ThemeSwitch";
 import { site } from "@/data/site";
 
 const internal = [
@@ -62,7 +61,7 @@ export function Footer() {
         </div>
 
         {/* 非公式の営業提案であることの表示（全ページ共通） */}
-        <section aria-labelledby="demo-notice" className="rounded-2xl border border-line bg-bg p-5 md:p-6">
+        <section aria-labelledby="demo-notice" className="rounded-2xl border border-line bg-panel p-5 md:p-6">
           <h2 id="demo-notice" className="font-jp text-[0.875rem] font-bold text-fg">
             {site.demoNotice}
           </h2>
@@ -83,12 +82,6 @@ export function Footer() {
           </p>
         </section>
 
-        <div className="mt-6 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-          <div className="flex items-center gap-3">
-            <span>デザイン案（比較用）</span>
-            <ThemeSwitch />
-          </div>
-        </div>
         <div className="mt-6 flex flex-col gap-2 sm:flex-row sm:justify-between">
           <p className="font-jp">{site.demoNoticeJa}</p>
           <p>Demo © {new Date().getFullYear()} Stark Lab</p>

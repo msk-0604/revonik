@@ -10,10 +10,17 @@ export const metadata: Metadata = {
   description: "Stark Lab から REVONIK への、公式ブランドサイトのご提案。",
 };
 
-const compare = [
+const shots = [
   { id: "home-pc", label: "HOME ファーストビュー（PC）" },
   { id: "detail-pc", label: "商品詳細（PC）" },
   { id: "home-sp", label: "HOME ファーストビュー（スマートフォン）" },
+];
+
+const principles = [
+  { title: "製品が主役", text: "大きな製品ビジュアルを中心に、情報は詰め込みすぎない。" },
+  { title: "大胆な余白", text: "白とライトグレーの面で空間を区切る、建築的なレイアウト。" },
+  { title: "精度で魅せる", text: "装飾ではなく、文字組み・写真・グリッドの精度で上質さを。" },
+  { title: "控えめな動き", text: "フェードインと軽いスライドだけ。表示の速さを優先。" },
 ];
 
 export default function ProposalPage() {
@@ -37,41 +44,39 @@ export default function ProposalPage() {
         </Reveal>
       </section>
 
-      <section aria-labelledby="design-compare" className="section-y bg-bg-alt">
+      <section aria-labelledby="design-direction" className="section-y bg-bg-alt">
         <div className="container-x">
           <Reveal className="max-w-3xl">
             <p className="eyebrow">Design Direction</p>
-            <h2 id="design-compare" className="headline mt-2 text-[2.25rem] sm:text-5xl">
-              2つのデザイン案
+            <h2 id="design-direction" className="headline mt-2 text-[2.25rem] sm:text-5xl">
+              余白と精度で、製品を主役に。
             </h2>
             <p className="mt-4 font-jp text-[1rem] leading-[1.9] text-fg/80">
-              同じ構成・同じ製品ビジュアルで、配色だけを変えた2案です。フッターの切り替え、または URL の <code className="rounded bg-panel px-1.5 py-0.5 text-[0.875rem]">?theme=minimal</code> で、全ページを実際に見比べられます。
+              ホワイト・ライトグレー・ブラックだけで構成し、装飾ではなく、タイポグラフィ・写真・レイアウトの精度で上質さをつくります。水中のシーンなど迫力を伝えたい場面にだけ、深い色を使います。
             </p>
           </Reveal>
-          <div className="mt-12 space-y-14">
-            {compare.map((c) => (
+          <ul className="mt-10 grid gap-x-10 gap-y-6 border-t border-line pt-8 sm:grid-cols-2 lg:grid-cols-4">
+            {principles.map((p) => (
+              <li key={p.title}>
+                <p className="font-jp text-[1rem] font-bold">{p.title}</p>
+                <p className="mt-1.5 font-jp text-[0.875rem] leading-relaxed text-fg/75">{p.text}</p>
+              </li>
+            ))}
+          </ul>
+          <div className="mt-14 space-y-12">
+            {shots.map((c) => (
               <Reveal key={c.id}>
                 <h3 className="text-[1rem] font-semibold">{c.label}</h3>
-                <div className={`mt-4 grid gap-4 ${c.id.endsWith("sp") ? "grid-cols-2 sm:max-w-2xl" : "md:grid-cols-2"}`}>
-                  {(["dark", "minimal"] as const).map((t) => (
-                    <figure key={t}>
-                      <div className={`relative overflow-hidden rounded-2xl border border-line bg-panel ${c.id.endsWith("sp") ? "aspect-[390/760]" : "aspect-[16/10]"}`}>
-                        <Image
-                          src={`/proposal/${c.id}-${t}.webp`}
-                          alt={`${c.label}：${t === "dark" ? "ダーク案" : "ミニマル案"}`}
-                          fill
-                          sizes="(min-width: 768px) 50vw, 100vw"
-                          className="object-cover object-top"
-                        />
-                      </div>
-                      <figcaption className="mt-2 text-[0.8125rem] text-muted">{t === "dark" ? "A. ダーク案" : "B. ミニマル案（ホワイト・ライトグレー・ブラック）"}</figcaption>
-                    </figure>
-                  ))}
+                <div
+                  className={`relative mt-4 overflow-hidden rounded-2xl border border-line bg-panel ${
+                    c.id.endsWith("sp") ? "aspect-[390/760] max-w-[320px]" : "aspect-[16/10] max-w-4xl"
+                  }`}
+                >
+                  <Image src={`/proposal/${c.id}-minimal.webp`} alt={c.label} fill sizes="(min-width: 896px) 896px, 100vw" className="object-cover object-top" />
                 </div>
               </Reveal>
             ))}
           </div>
-          <ComparisonTable />
         </div>
       </section>
 
@@ -113,49 +118,5 @@ export default function ProposalPage() {
         </div>
       </section>
     </>
-  );
-}
-
-function ComparisonTable() {
-  const rows = [
-    { k: "製品の存在感", a: "暗い背景に光沢が際立ち、ドラマチック。", b: "白い背景に製品の形と色がそのまま浮かぶ。造形と配色を正確に見せられる。" },
-    { k: "精密さ・技術感", a: "金属・水中の雰囲気が強く、技術の「迫力」が出る。", b: "図解や数値が読みやすく、技術資料のような「精度」が出る。" },
-    { k: "余白・建築的な印象", a: "余白が黒に沈み、空間の広がりは感じにくい。", b: "白とライトグレーの面で空間が分かれ、建築的なミニマリズムに近い。" },
-    { k: "情報の読みやすさ", a: "長文はやや疲れやすい。見出し中心のページ向き。", b: "スペック・年表・取扱店など、情報量の多いページでも読みやすい。" },
-    { k: "写真の扱いやすさ", a: "黒背景の撮影・切り抜きと相性がよい。", b: "白背景の製品写真をそのまま使える。撮影の運用コストが低い。" },
-  ];
-  return (
-    <Reveal className="mt-16">
-      <h3 className="headline text-[1.75rem] sm:text-[2.25rem]">比較と推奨</h3>
-      <div className="mt-6 overflow-x-auto rounded-2xl border border-line">
-        <table className="w-full min-w-[640px] text-left font-jp text-[0.875rem]">
-          <thead className="bg-panel text-[0.8125rem] text-muted">
-            <tr>
-              <th scope="col" className="w-[18%] px-5 py-3 font-medium">観点</th>
-              <th scope="col" className="px-5 py-3 font-medium">A. ダーク案</th>
-              <th scope="col" className="px-5 py-3 font-medium">B. ミニマル案</th>
-            </tr>
-          </thead>
-          <tbody>
-            {rows.map((r) => (
-              <tr key={r.k} className="border-t border-line align-top">
-                <th scope="row" className="px-5 py-4 font-medium">{r.k}</th>
-                <td className="px-5 py-4 leading-relaxed text-fg/80">{r.a}</td>
-                <td className="px-5 py-4 leading-relaxed text-fg/80">{r.b}</td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
-      <div className="mt-8 rounded-2xl border border-accent/40 p-6 md:p-8">
-        <p className="eyebrow !text-accent">Recommendation</p>
-        <p className="mt-3 font-jp text-[1.0625rem] leading-[1.9]">
-          <strong>B. ミニマル案をベースに、黒を「見せ場」に限定して使う構成</strong>をおすすめします。
-        </p>
-        <p className="mt-3 font-jp text-[0.9375rem] leading-[1.9] text-fg/80">
-          判断の基準は、派手さではなく「洗練・精密・余白・製品の存在感」です。白とライトグレーの面で空間を区切るミニマル案は、製品の造形と色を正確に見せ、図解や仕様も読みやすく、建築的なミニマリズムに近い印象になります。一方で、水中のシーンや実釣の映像など、迫力を伝えたい場面ではダークが効果的です。ベースはミニマル、黒は製品のヒーローや Field Experience などの限られた場面に——という使い分けが、REVONIK の設計思想とオフィスの美意識に最も近いと考えます。
-        </p>
-      </div>
-    </Reveal>
   );
 }

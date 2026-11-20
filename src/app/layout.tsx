@@ -1,5 +1,4 @@
 import type { Metadata, Viewport } from "next";
-import Script from "next/script";
 import { Archivo, Inter } from "next/font/google";
 import { AnalyticsListener } from "@/components/AnalyticsListener";
 import { Footer } from "@/components/Footer";
@@ -24,8 +23,6 @@ const archivo = Archivo({
 
 // 日本語は端末のシステムフォント（ヒラギノ／游ゴシック／Noto など）を使用。
 // Web フォントの日本語サブセットは CSS とフォントの転送量が大きく、表示速度を優先して読み込まない。
-
-const themeScript = `(function(){try{var q=new URLSearchParams(location.search).get("theme");if(q==="minimal"||q==="dark"){localStorage.setItem("revonik-theme",q)}var t=q||localStorage.getItem("revonik-theme");if(t==="minimal"){document.documentElement.dataset.theme="minimal";var m=document.querySelector('meta[name="theme-color"]');if(m)m.setAttribute("content","#FFFFFF")}}catch(e){}})();`;
 
 export const metadata: Metadata = {
   metadataBase: new URL(site.url),
@@ -60,18 +57,14 @@ export const metadata: Metadata = {
 };
 
 export const viewport: Viewport = {
-  themeColor: "#0A0B0D",
-  colorScheme: "dark",
+  themeColor: "#FFFFFF",
+  colorScheme: "light",
 };
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html lang="ja" className={`${inter.variable} ${archivo.variable}`} suppressHydrationWarning>
+    <html lang="ja" className={`${inter.variable} ${archivo.variable}`}>
       <body className="min-h-dvh antialiased">
-        {/* デザイン比較用：?theme=minimal|dark を描画前に反映（選択はこのブラウザに保存） */}
-        <Script id="theme" strategy="beforeInteractive">
-          {themeScript}
-        </Script>
         <a
           href="#main"
           className="sr-only z-[100] rounded-full bg-fg px-4 py-2 text-on-fg focus:not-sr-only focus:fixed focus:top-3 focus:left-3"
