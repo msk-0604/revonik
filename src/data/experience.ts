@@ -7,9 +7,10 @@
  * - details の anchor はコンセプト画像上の位置を示すだけで、実製品の構造図ではない。
  */
 
-export type Scene = "shallow" | "mid" | "deep" | "cover";
+export type Scene = "surface" | "shallow" | "mid" | "deep" | "cover";
 
 export const sceneLabels: Record<Scene, { label: string; en: string; text: string }> = {
+  surface: { label: "トップ・表層", en: "Surface", text: "水面〜表層" },
   shallow: { label: "シャロー", en: "Shallow", text: "水面直下〜1m前後" },
   mid: { label: "ミドルレンジ", en: "Mid range", text: "1〜3m前後" },
   deep: { label: "ディープ", en: "Deep", text: "3m以深" },
@@ -163,6 +164,81 @@ export const experience: Record<string, Experience> = {
     details: [
       { anchor: "lip", label: "3〜5mレンジ", text: "深いレンジに対応。" },
       { anchor: "body", label: "食わせ系", text: "食わせを重視したジャークベイト。" },
+    ],
+  },
+  zenda: {
+    tagline: "水面に、音を描く。",
+    keyFeature: "LOUD／SILENT を選べるペンシルベイト",
+    scenes: ["surface"],
+    fishing: "水面を引いて誘う、トップウォーターのペンシルベイトの釣り。",
+    action: "水面でのペンシルベイトのアクション。ラトルの有無で音を選べる。",
+    situation: "水面で魚を誘い出したいとき。ラトル音で寄せたいなら LOUD、静かに誘いたいなら SILENT。",
+    versus: "より小さく見せたいときは 85。ポッパーで誘うなら MOGOT。",
+    why: [
+      { title: "LOUD と SILENT", text: "ラトルインの LOUD と、ノンラトルの SILENT を展開。" },
+      { title: "ドライボーンの音", text: "硬質素材ドライボーンによる、硬質で抜けのよいサウンド。" },
+      { title: "100 と 85", text: "100 に続き、ダウンサイジングした 85 が登場。" },
+    ],
+    details: [
+      { anchor: "body", label: "LOUD／SILENT", text: "ラトルインとノンラトルを選べる。" },
+      { anchor: "belly", label: "ドライボーン", text: "硬質素材による抜けのよいサウンド（LOUD DryBone）。" },
+      { anchor: "nose", label: "100mm／85mm", text: "2サイズを展開。" },
+    ],
+  },
+  mogot: {
+    tagline: "浮き角度まで、操る。",
+    keyFeature: "浮き角度が変わるトップウォーターポッパー",
+    scenes: ["surface"],
+    fishing: "水面でアクションさせて誘う、ポッパーの釣り。",
+    action: "内部ウエイトが自由に動き、浮き角度が変化するマニュアル仕様。",
+    situation: "水面で、ポップ音やスプラッシュで魚を誘いたいとき。",
+    versus: "水面を引いて誘うならペンシルベイトの ZENDA。",
+    why: [
+      { title: "type FREE", text: "内部ウエイトが自由に動き、浮き角度が変化する。" },
+      { title: "薄肉コンセプト", text: "Dot SIX から受け継いだ薄肉コンセプトで設計。" },
+      { title: "ドライボーン", text: "硬質素材のドライボーンモデルも展開。" },
+    ],
+    details: [
+      { anchor: "nose", label: "ポッパーのカップ", text: "水面で音とスプラッシュを生むカップ形状。" },
+      { anchor: "body", label: "type FREE", text: "内部ウエイトが自由に動き、浮き角度が変わる。" },
+      { anchor: "belly", label: "68mm / 7.5g", text: "フローティング。" },
+    ],
+  },
+  muren: {
+    tagline: "群れで、誘う。",
+    keyFeature: "3つのルアーが連なるチェーンベイト",
+    scenes: ["shallow"],
+    fishing: "群れを演出して巻いて誘う、チェーンベイトの釣り。",
+    action: "異なる3つのルアーが、ひとつの集団としてルアーを形成する。",
+    situation: "ベイトの群れを演出したいとき。潜行深度は約1.0m。",
+    versus: "単体のシルエットで巻くなら Shekiller78 や SaraMoa。",
+    why: [
+      { title: "群れを演出", text: "3つのルアーが連なり、ひとつの群れを形成。" },
+      { title: "ハードルアーで", text: "「ハードルアー版のアラバマリグ」として紹介。" },
+      { title: "約1.0m", text: "118mm・18.7g のフローティング。" },
+    ],
+    details: [
+      { anchor: "body", label: "チェーン構造", text: "3つのルアーがひとつの集団を形成。" },
+      { anchor: "lip", label: "潜行深度 約1.0m", text: "フローティング。" },
+    ],
+  },
+  "pop-up-jig": {
+    tagline: "沈めて、跳ね上げる。",
+    keyFeature: "急速浮上する青物用キャスティングジグ",
+    scenes: ["surface"],
+    fishing: "表層付近を回遊する青物を狙う、ソルトのキャスティングの釣り。",
+    action: "独自のボディ形状と重心の設定による、急速な浮上。",
+    situation: "表層付近に回遊する青物を、キャスティングで狙いたいとき。",
+    versus: "重さで選ぶ：30g と 40g。",
+    why: [
+      { title: "急速浮上", text: "独自のボディ形状と重心設定で、素早く浮き上がる。" },
+      { title: "表層の回遊魚に", text: "表層付近の回遊魚をターゲットに開発。" },
+      { title: "ソルト第一弾", text: "REVONIK のソルトルアー第一弾として紹介。" },
+    ],
+    details: [
+      { anchor: "body", label: "独自のボディ形状", text: "浮上を生むボディ形状。" },
+      { anchor: "belly", label: "重心設定", text: "急速浮上のための重心の設定。" },
+      { anchor: "nose", label: "30g / 40g", text: "フック #1/0。" },
     ],
   },
 };

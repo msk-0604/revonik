@@ -82,7 +82,7 @@ export default function AboutPage() {
                 </div>
                 <div className="md:pt-8">
                   <p className="prose-jp text-[0.9375rem] text-fg/80 md:text-[1rem]">{p.text}</p>
-                  <p className="mt-4 rounded-xl bg-white px-4 py-3 font-jp text-[0.8125rem] leading-relaxed text-fg/75">{p.example}</p>
+                  <p className="mt-4 rounded-xl bg-panel px-4 py-3 font-jp text-[0.8125rem] leading-relaxed text-fg/75">{p.example}</p>
                 </div>
               </Reveal>
             ))}

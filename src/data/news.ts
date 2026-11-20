@@ -7,9 +7,67 @@ import type { NewsArticle } from "@/types";
  */
 export const news: NewsArticle[] = [
   {
+    slug: "muren-118",
+    date: "2026-10",
+    category: "PRODUCT",
+    title: "チェーンベイト MUREN（群連）発表",
+    excerpt: "3つのルアーが連なり、ひとつの群れを形づくるハードルアーのチェーンベイト。",
+    body: [
+      "異なる3つのルアーがひとつの集団としてルアーを形成する、チェーンベイト「MUREN（群連）118」が紹介されました。",
+      "118mm・18.7g のフローティングで、潜行深度は約1.0m。2026年10月下旬の発売予定と報じられています。",
+    ],
+    related: "muren",
+    source: { label: "釣りまとめアンテナ", url: "https://fishing.nanj-antenna.net/1001643/" },
+    sample: false,
+  },
+  {
+    slug: "zenda-85",
+    date: "2026-06",
+    category: "PRODUCT",
+    title: "ZENDA 85 LOUD 発表",
+    excerpt: "ペンシルベイト ZENDA のダウンサイジングモデル。",
+    body: ["ZENDA 100 に続く、ダウンサイジングモデル「ZENDA 85 LOUD」が発表され、デビューセットの予約受付が行われました。"],
+    related: "zenda",
+    source: { label: "ルアーニュースR", url: "https://www.lurenewsr.com/435317" },
+    sample: false,
+  },
+  {
+    slug: "zenda-100",
+    date: "2025-08",
+    category: "RELEASE",
+    title: "ペンシルベイト ZENDA 発売",
+    excerpt: "ラトルインの LOUD と、ノンラトルの SILENT。",
+    body: ["トップウォーターのペンシルベイト「ZENDA」が登場しました。ラトルインの LOUD とノンラトルの SILENT を展開しています。"],
+    related: "zenda",
+    source: { label: "吉や", url: "https://www.kitiya.jp/apps/note/archives/20458" },
+    sample: false,
+  },
+  {
+    slug: "luremaga-dot-six",
+    date: "2024-10-09",
+    category: "MEDIA",
+    title: "ルアマガプラスに Dot SIX の開発秘話が掲載",
+    excerpt: "「自分だけが釣れるルアーを作らない」——加藤誠司氏のルアーデザイナーとしての特異点。",
+    body: ["ルアマガプラスで、加藤誠司氏のインタビューと Dot SIX の開発背景が紹介されました。"],
+    related: "dot-six",
+    source: { label: "ルアマガプラス", url: "https://plus.luremaga.jp/2024/10/09/381965/" },
+    sample: false,
+  },
+  {
+    slug: "pop-up-jig",
+    date: "2024-03",
+    category: "RELEASE",
+    title: "ソルトルアー第一弾 POP UP JIG 発売",
+    excerpt: "表層付近の回遊魚を狙う、急速浮上のキャスティングジグ。",
+    body: ["REVONIK のソルトルアー第一弾として、キャスティングジグ「POP UP JIG」（30g・40g）が登場しました。"],
+    related: "pop-up-jig",
+    source: { label: "フィッシングサンイン", url: "https://item.rakuten.co.jp/fishingsanin/popupjig/" },
+    sample: false,
+  },
+  {
     slug: "dispa-118sf",
     date: "2026-09",
-    category: "PRODUCT",
+    category: "RELEASE",
     title: "Dispa 118SF 発売",
     excerpt: "3〜5mレンジを攻略する、食わせ系ジャークベイト。",
     body: [
@@ -37,7 +95,7 @@ export const news: NewsArticle[] = [
   {
     slug: "shekiller-78",
     date: "2026-01",
-    category: "PRODUCT",
+    category: "RELEASE",
     title: "Shekiller78 発売",
     excerpt: "日本のベイトフィッシュに合わせた、巻きで使うクランキングミノー。",
     body: [
@@ -65,7 +123,7 @@ export const news: NewsArticle[] = [
   {
     slug: "saramoa",
     date: "2025-02",
-    category: "PRODUCT",
+    category: "RELEASE",
     title: "SaraMoa 発売",
     excerpt: "フラットサイドクランクとシャッドの中間を狙った、フラットサイドシャッド。",
     body: [
@@ -79,7 +137,7 @@ export const news: NewsArticle[] = [
   {
     slug: "studio-otsu",
     date: "2023-12",
-    category: "BRAND",
+    category: "OTHER",
     title: "大津市に工房をオープン",
     excerpt: "工房のグランドオープンにあわせ、新作の先行販売も行われました。",
     body: ["滋賀県大津市に REVONIK の工房がグランドオープンしました。オープンにあわせて新作ルアーの先行販売も行われました。"],
@@ -89,3 +147,11 @@ export const news: NewsArticle[] = [
 ];
 
 export const sortedNews = [...news].sort((a, b) => b.date.localeCompare(a.date));
+
+export const newsCategoryLabel: Record<NewsArticle["category"], string> = {
+  PRODUCT: "新製品",
+  RELEASE: "発売情報",
+  EVENT: "イベント",
+  MEDIA: "メディア",
+  OTHER: "その他",
+};

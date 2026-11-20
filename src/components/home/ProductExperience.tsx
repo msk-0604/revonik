@@ -24,7 +24,7 @@ export function ProductExperience() {
           <section
             key={p.slug}
             aria-labelledby={`exp-${p.slug}`}
-            className={`overflow-hidden pt-20 pb-16 md:pt-28 md:pb-24 ${i % 2 === 0 ? "bg-bg-alt" : "bg-bg"}`}
+            className={`overflow-hidden pt-20 pb-16 md:pt-28 md:pb-24 ${i % 2 === 0 ? "bg-bg" : "bg-bg-alt"}`}
           >
             <Reveal className="container-x text-center">
               <p className="index-label">
@@ -59,7 +59,7 @@ export function ProductExperience() {
                   data-track="select_item"
                   data-track-item={p.slug}
                   data-track-list="home_experience"
-                  className="inline-flex min-h-11 items-center rounded-full bg-fg px-6 text-[0.9375rem] text-white hover:bg-fg/80"
+                  className="inline-flex min-h-11 items-center rounded-full bg-fg px-6 text-[0.9375rem] text-on-fg hover:bg-fg/80"
                 >
                   詳しく見る
                   <ChevronRight aria-hidden className="ml-0.5 size-4" />

@@ -12,7 +12,7 @@
  * | video_click       | 動画（YouTube）へのリンククリック   | video_id, item_id            |
  * | social_click      | Instagram などSNSへの遷移           | network, placement           |
  */
-export type TrackEvent = "view_item" | "select_item" | "store_click" | "video_click" | "social_click";
+export type TrackEvent = "view_item" | "select_item" | "store_click" | "video_click" | "social_click" | "dealer_search";
 
 type Gtag = (command: "event", name: string, params?: Record<string, string>) => void;
 

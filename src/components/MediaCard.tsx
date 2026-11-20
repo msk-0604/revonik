@@ -15,7 +15,7 @@ export function MediaCard({ item, surface = "gray" }: { item: MediaItem; surface
       data-track-video={item.kind === "youtube" ? item.id : undefined}
       className="group flex flex-col"
     >
-      <div className={`relative aspect-[16/10] overflow-hidden rounded-[1.25rem] ${surface === "white" ? "bg-white" : "bg-bg-alt"}`}>
+      <div className={`relative aspect-[16/10] overflow-hidden rounded-[1.25rem] ${surface === "white" ? "bg-panel" : "bg-bg-alt"}`}>
         <Image
           src={item.image ?? mediaImages[item.kind]}
           alt=""
@@ -25,7 +25,7 @@ export function MediaCard({ item, surface = "gray" }: { item: MediaItem; surface
         />
         {item.kind === "youtube" && (
           <span aria-hidden className="absolute inset-0 grid place-items-center">
-            <span className="grid size-14 place-items-center rounded-full bg-white/90 text-fg shadow-sm transition-transform duration-300 group-hover:scale-105">
+            <span className="grid size-14 place-items-center rounded-full bg-panel/90 text-fg shadow-sm transition-transform duration-300 group-hover:scale-105">
               <Play className="ml-0.5 size-5 fill-current" />
             </span>
           </span>

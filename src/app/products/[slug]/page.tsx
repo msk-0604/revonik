@@ -3,6 +3,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { ArrowUpRight, Play } from "lucide-react";
 import { ProductCard } from "@/components/ProductCard";
+import { JsonLd } from "@/components/JsonLd";
 import { ActionVideo } from "@/components/products/ActionVideo";
 import { LureDiagram } from "@/components/products/LureDiagram";
 import { ColorGallery, ProductColorProvider, ProductStage } from "@/components/products/ProductColors";
@@ -16,6 +17,7 @@ import { products } from "@/data/products";
 import { releases } from "@/data/releases";
 import { site } from "@/data/site";
 import { technologiesFor } from "@/data/technology";
+import { formatDate } from "@/lib/format";
 import { getCategory, getProduct, mainImage, relatedProducts, storeLink } from "@/lib/products";
 
 export const dynamicParams = false;
@@ -31,7 +33,8 @@ export async function generateMetadata({ params }: PageProps<"/products/[slug]">
   return {
     title: product.name,
     description: `${product.name}（${getCategory(product.category).labelJa}）｜${product.summary}`,
-    openGraph: { images: [{ url: mainImage(product), width: 1600, height: 1200 }] },
+    alternates: { canonical: `/products/${product.slug}` },
+    openGraph: { title: `${product.name} | REVONIK`, images: [{ url: mainImage(product), width: 1600, height: 1200 }] },
   };
 }
 
@@ -59,7 +62,7 @@ function StoreButton({ href, slug, placement, label = "オンラインストア�
       data-track="store_click"
       data-track-item={slug}
       data-track-placement={placement}
-      className="inline-flex min-h-12 items-center gap-1 rounded-full bg-fg px-7 text-[1rem] text-white transition-colors hover:bg-fg/80"
+      className="inline-flex min-h-12 items-center gap-1 rounded-full bg-fg px-7 text-[1rem] text-on-fg transition-colors hover:bg-fg/80"
     >
       {label}
       <ArrowUpRight aria-hidden className="size-4" />
@@ -81,8 +84,41 @@ export default async function ProductDetailPage({ params }: PageProps<"/products
   const storeHref = storeLink(product, site.links.store);
   const videos = media.filter((m) => m.kind === "youtube" && (m.related?.includes(product.slug) || m.relatedCategory === product.category));
 
+  const base = site.url.replace(/\/$/, "");
+  const jsonLd = {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "Product",
+        name: product.name,
+        description: product.summary,
+        brand: { "@type": "Brand", name: "REVONIK" },
+        category: category.labelJa,
+        image: `${base}${mainImage(product)}`,
+        url: `${base}/products/${product.slug}`,
+        additionalProperty: [
+          { name: "全長", value: product.length },
+          { name: "重量", value: product.weight },
+          { name: "潜行深度", value: product.depth },
+          { name: "浮力", value: product.buoyancy },
+        ]
+          .filter((p) => p.value)
+          .map((p) => ({ "@type": "PropertyValue", ...p })),
+      },
+      {
+        "@type": "BreadcrumbList",
+        itemListElement: [
+          { "@type": "ListItem", position: 1, name: "Home", item: `${base}/` },
+          { "@type": "ListItem", position: 2, name: "Products", item: `${base}/products` },
+          { "@type": "ListItem", position: 3, name: product.name, item: `${base}/products/${product.slug}` },
+        ],
+      },
+    ],
+  };
+
   return (
     <ProductColorProvider product={product}>
+      <JsonLd data={jsonLd} />
       {/* 01. PRODUCT HERO */}
       <section aria-labelledby="product-name" className="pt-[92px] md:pt-[110px]">
         <div className="container-x">
@@ -101,7 +137,7 @@ export default async function ProductDetailPage({ params }: PageProps<"/products
           </nav>
           <div className="mt-8 animate-fade-up text-center md:mt-12">
             <p className="eyebrow">
-              {release && <span className="mr-2 rounded-full bg-fg px-2 py-0.5 text-[0.6875rem] text-white">NEW</span>}
+              {release && <span className="mr-2 rounded-full bg-fg px-2 py-0.5 text-[0.6875rem] text-on-fg">NEW</span>}
               {category.label}
             </p>
             <h1 id="product-name" className="headline mt-2 text-[3rem] break-words min-[375px]:text-[3.5rem] sm:text-7xl lg:text-[6rem]">
@@ -118,11 +154,33 @@ export default async function ProductDetailPage({ params }: PageProps<"/products
         <Reveal className="mx-auto max-w-2xl">
           <h2 id="intro" className="sr-only">製品紹介</h2>
           <p className="font-jp text-[1.125rem] leading-[1.85] md:text-[1.3125rem]">{product.summary}</p>
+          <dl className="mx-auto mt-10 grid max-w-3xl grid-cols-2 gap-px overflow-hidden rounded-2xl bg-line text-left sm:grid-cols-5">
+            {[
+              { k: "全長", v: product.length },
+              { k: "重量", v: product.weight },
+              { k: "潜行深度", v: product.depth },
+              { k: "浮力", v: product.buoyancy },
+              {
+                k: "発売",
+                v:
+                  product.status === "announced"
+                    ? `${product.plannedRelease ? formatDate(product.plannedRelease) : ""} 予定`
+                    : product.releaseDate
+                      ? formatDate(product.releaseDate)
+                      : "発売中",
+              },
+            ].map((s) => (
+              <div key={s.k} className="bg-panel px-4 py-3">
+                <dt className="font-jp text-[0.6875rem] text-muted">{s.k}</dt>
+                <dd className="mt-1 font-jp text-[0.9375rem] font-medium">{s.v ?? "—"}</dd>
+              </div>
+            ))}
+          </dl>
           <div className="mt-8 flex flex-col items-center justify-center gap-3 min-[420px]:flex-row min-[420px]:gap-6">
             <StoreButton href={storeHref} slug={product.slug} placement="product_hero" />
-            <a href="#specs" className="inline-flex min-h-11 items-center text-[1rem] text-link hover:underline underline-offset-4">
-              スペックを見る ›
-            </a>
+            <Link href="/dealers" data-track="dealer_search" data-track-item={product.slug} className="inline-flex min-h-11 items-center text-[1rem] text-link hover:underline underline-offset-4">
+              取扱店を探す ›
+            </Link>
           </div>
         </Reveal>
       </section>
@@ -133,7 +191,7 @@ export default async function ProductDetailPage({ params }: PageProps<"/products
           <Heading id="why" no="01" eyebrow="Why this lure" title="このルアーを選ぶ理由。" />
           <ol className="mx-auto mt-12 grid max-w-5xl gap-4 md:grid-cols-3">
             {x.why.map((w, i) => (
-              <Reveal as="li" key={w.title} delay={i * 0.06} className="rounded-[1.25rem] bg-white p-7 md:p-8">
+              <Reveal as="li" key={w.title} delay={i * 0.06} className="rounded-[1.25rem] bg-panel p-7 md:p-8">
                 <p className="text-[2.25rem] font-semibold leading-none tracking-tight text-fg/15">{String(i + 1).padStart(2, "0")}</p>
                 <h3 className="mt-5 font-jp text-[1.1875rem] font-bold">{w.title}</h3>
                 <p className="mt-2 font-jp text-[0.9375rem] leading-[1.8] text-fg/75">{w.text}</p>
@@ -172,17 +230,23 @@ export default async function ProductDetailPage({ params }: PageProps<"/products
               ))}
             </ul>
           </Reveal>
+          {product.youtubeId && (
+            <Reveal className="mx-auto mt-12 max-w-4xl">
+              <ActionVideo youtubeId={product.youtubeId} title={product.name} />
+              <p className="mt-3 text-center text-[0.75rem] text-muted">REVONIK 公式 YouTube</p>
+            </Reveal>
+          )}
           <Reveal className="mx-auto mt-12 max-w-4xl">
-            {videos.length > 0 ? (
+            {videos.filter((v) => !(product.youtubeId && v.url.includes(product.youtubeId))).length > 0 ? (
               <ul className="grid gap-6 sm:grid-cols-2">
-                {videos.map((v) => (
+                {videos.filter((v) => !(product.youtubeId && v.url.includes(product.youtubeId))).map((v) => (
                   <li key={v.id}>
                     <a href={v.url} target="_blank" rel="noopener noreferrer" data-track="video_click" data-track-video={v.id} data-track-item={product.slug} className="group block">
                       <span className="relative block aspect-video overflow-hidden rounded-[1.25rem] bg-bg-alt">
                         {/* eslint-disable-next-line @next/next/no-img-element -- 小さなサムネイル */}
                         <img src={v.image} alt="" className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-[1.03]" loading="lazy" />
                         <span aria-hidden className="absolute inset-0 grid place-items-center">
-                          <span className="grid size-14 place-items-center rounded-full bg-white/90">
+                          <span className="grid size-14 place-items-center rounded-full bg-panel/90">
                             <Play className="ml-0.5 size-5 fill-current" />
                           </span>
                         </span>
@@ -194,8 +258,8 @@ export default async function ProductDetailPage({ params }: PageProps<"/products
                   </li>
                 ))}
               </ul>
-            ) : (
-              <ActionVideo youtubeId={product.youtubeId} title={product.name} />
+            ) : product.youtubeId ? null : (
+              <ActionVideo youtubeId={null} title={product.name} />
             )}
           </Reveal>
         </div>
@@ -211,7 +275,7 @@ export default async function ProductDetailPage({ params }: PageProps<"/products
           {techs.length > 0 && (
             <ul className={`mx-auto mt-14 grid gap-4 ${techs.length > 1 ? "max-w-5xl sm:grid-cols-2" : "max-w-xl"}`}>
               {techs.map((t) => (
-                <Reveal as="li" key={t.id} className="rounded-[1.25rem] bg-white p-6">
+                <Reveal as="li" key={t.id} className="rounded-[1.25rem] bg-panel p-6">
                   <p className="text-[0.6875rem] font-semibold tracking-[0.14em] text-muted">{t.en}</p>
                   <p className="mt-1 font-jp text-[1.0625rem] font-bold">{t.title}</p>
                   <p className="mt-2 font-jp text-[0.875rem] leading-relaxed text-fg/75">{t.text}</p>
@@ -268,9 +332,12 @@ export default async function ProductDetailPage({ params }: PageProps<"/products
           <h2 id="buy" className="headline mt-2 text-[2.25rem] sm:text-5xl">
             {product.name} を、手に。
           </h2>
-          <p className="mt-4 font-jp text-[0.9375rem] text-muted">在庫・価格は公式オンラインストアでご確認いただけます。</p>
-          <div className="mt-8">
+          <p className="mt-4 font-jp text-[0.9375rem] text-muted">公式オンラインストア、または取扱店でお求めいただけます。</p>
+          <div className="mt-8 flex flex-col items-center justify-center gap-3 min-[420px]:flex-row min-[420px]:gap-6">
             <StoreButton href={storeHref} slug={product.slug} placement="product_bottom" />
+            <Link href="/dealers" data-track="dealer_search" data-track-item={product.slug} className="inline-flex min-h-11 items-center text-[1rem] text-link hover:underline underline-offset-4">
+              取扱店を探す ›
+            </Link>
           </div>
         </Reveal>
       </section>

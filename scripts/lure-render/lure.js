@@ -42,6 +42,36 @@ const SHAPES = {
     hooks: [{ t: 0.47 }, { t: 1 }],
     hookScale: 1.4,
   },
+  pencil: {
+    top: 9.8, bot: 9.0, w: 6.6, tmTop: 0.42, tmBot: 0.38, tmW: 0.4, tail: 0.1, nose: 0.5, tp: 1.8, tq: 0.7,
+    n: 2.2,
+    eye: { t: 0.08, v: 0.6, r: 2.8 },
+    gill: 0.17,
+    tie: "nose",
+    hooks: [{ t: 0.4 }, { t: 1 }],
+    hookScale: 0.9,
+  },
+  popper: {
+    top: 15, bot: 13, w: 11, tmTop: 0.36, tmBot: 0.32, tmW: 0.34, tail: 0.1, nose: 0.18, tp: 2.0, tq: 0.6,
+    n: 2.2,
+    eye: { t: 0.12, v: 0.62, r: 3.6 },
+    gill: 0.22,
+    cup: true,
+    tie: "nose",
+    hooks: [{ t: 0.46 }, { t: 1 }],
+    hookScale: 1.0,
+  },
+  jig: {
+    top: 8.5, bot: 8.5, w: 3.4, tmTop: 0.42, tmBot: 0.5, tmW: 0.45, tail: 0.16, nose: 0.6, tp: 1.6, tq: 0.8,
+    n: 3.2,
+    eye: { t: 0.1, v: 0.58, r: 2.6 },
+    gill: 0.18,
+    metal: true,
+    tie: "nose",
+    tailRing: true,
+    hooks: [],
+    hookScale: 1.0,
+  },
   vibration: {
     top: 26.5, bot: 20, w: 5.8, tmTop: 0.44, tmBot: 0.5, tmW: 0.4, tail: 0.1, nose: 0.75, tp: 2.0, tq: 0.65,
     n: 3.2,
@@ -195,7 +225,7 @@ function buildBody(shape, palette, mats) {
   geo.setAttribute("uv", new THREE.Float32BufferAttribute(uv, 2));
   geo.setIndex(idx);
   geo.computeVertexNormals();
-  const mesh = new THREE.Mesh(geo, palette.clear ? mats.clearBody : mats.body);
+  const mesh = new THREE.Mesh(geo, shape.metal ? mats.metalBody : palette.clear ? mats.clearBody : mats.body);
   mesh.castShadow = true;
   return { mesh, f };
 }
@@ -414,6 +444,18 @@ function setup(w, h) {
       attenuationDistance: 3,
       envMapIntensity: 1.6,
     });
+    mats.metalBody = new THREE.MeshPhysicalMaterial({
+      vertexColors: true,
+      roughness: 0.18,
+      metalness: 0.75,
+      clearcoat: 1,
+      clearcoatRoughness: 0.03,
+      bumpMap: scales,
+      bumpScale: 0.4,
+      iridescence: 0.5,
+      iridescenceIOR: 1.3,
+      envMapIntensity: 1.4,
+    });
     mats.metal = new THREE.MeshStandardMaterial({ color: 0x8a9096, metalness: 1, roughness: 0.24 });
     mats.wire = new THREE.MeshStandardMaterial({ color: 0xc9ced3, metalness: 1, roughness: 0.15 });
     texturesReady = true;
@@ -445,11 +487,28 @@ window.renderLure = function renderLure(spec) {
   const tie = torus(1.1, 0.32, mats.metal);
   if (shape.tie === "back") {
     tie.position.set(0.3 * L, f.top(0.3) + 0.9, 0);
+  } else if (shape.tie === "nose") {
+    tie.position.set(-1.3, (f.top(0.02) + f.bot(0.02)) / 2, 0);
+    tie.rotation.y = Math.PI / 2;
   } else if (tiePos) {
     tie.position.copy(tiePos);
     tie.rotation.y = Math.PI / 2;
   }
   lure.add(tie);
+  if (shape.tailRing) {
+    const ring = torus(1.4, 0.34, mats.metal);
+    ring.position.set(L + 1.6, (f.top(1) + f.bot(1)) / 2, 0);
+    ring.rotation.y = Math.PI / 2;
+    lure.add(ring);
+  }
+  if (shape.cup) {
+    // ポッパーのカップ（口のくぼみ）を暗い円で表現
+    const r = Math.min(f.top(0.03) - f.bot(0.03), f.w(0.03) * 2) * 0.42;
+    const cup = new THREE.Mesh(new THREE.CircleGeometry(r, 48), new THREE.MeshStandardMaterial({ color: 0x2a2c30, roughness: 0.5 }));
+    cup.position.set(0.15, (f.top(0.03) + f.bot(0.03)) / 2, 0);
+    cup.rotation.y = -Math.PI / 2;
+    lure.add(cup);
+  }
 
   // 鼻先を少し上げ、こちらへ向ける
   lure.position.set(-L / 2, 0, 0);

@@ -12,7 +12,7 @@ type Props = {
 
 const variants = {
   primary:
-    "min-h-11 rounded-full bg-link px-6 text-[0.9375rem] text-white hover:bg-link-hover",
+    "min-h-11 rounded-full bg-link px-6 text-[0.9375rem] text-fg hover:bg-link-hover",
   secondary:
     "min-h-11 rounded-full border border-fg/15 px-6 text-[0.9375rem] text-fg hover:border-fg/40",
   link: "min-h-11 text-[1.0625rem] text-link hover:underline underline-offset-4",

@@ -1,6 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { newsImages } from "@/data/images";
+import { newsCategoryLabel } from "@/data/news";
 import { formatDate } from "@/lib/format";
 import type { NewsArticle } from "@/types";
 import { getProduct, mainImage } from "@/lib/products";
@@ -14,7 +15,7 @@ export function newsImage(article: NewsArticle) {
 export function NewsCard({ article, surface = "gray" }: { article: NewsArticle; surface?: "gray" | "white" }) {
   return (
     <Link href={`/news/${article.slug}`} className="group flex h-full flex-col">
-      <div className={`relative aspect-[16/10] overflow-hidden rounded-[1.25rem] ${surface === "white" ? "bg-white" : "bg-bg-alt"}`}>
+      <div className={`relative aspect-[16/10] overflow-hidden rounded-[1.25rem] ${surface === "white" ? "bg-panel" : "bg-bg-alt"}`}>
         <Image
           src={newsImage(article)}
           alt=""
@@ -26,7 +27,7 @@ export function NewsCard({ article, surface = "gray" }: { article: NewsArticle; 
       <p className="mt-4 text-[0.75rem] font-medium tracking-[0.04em] text-muted">
         <time dateTime={article.date}>{formatDate(article.date)}</time>
         <span className="mx-2">·</span>
-        {article.category}
+        <span className="font-jp">{newsCategoryLabel[article.category]}</span>
       </p>
       <h3 className="mt-1 font-jp text-[1.0625rem] font-bold leading-relaxed group-hover:underline underline-offset-4">{article.title}</h3>
       <p className="mt-1 font-jp text-[0.8125rem] leading-relaxed text-muted line-clamp-2">{article.excerpt}</p>

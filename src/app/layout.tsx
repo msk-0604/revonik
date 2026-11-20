@@ -1,5 +1,6 @@
 import type { Metadata, Viewport } from "next";
-import { Inter } from "next/font/google";
+import Script from "next/script";
+import { Archivo, Inter } from "next/font/google";
 import { AnalyticsListener } from "@/components/AnalyticsListener";
 import { Footer } from "@/components/Footer";
 import { Header } from "@/components/Header";
@@ -13,14 +14,24 @@ const inter = Inter({
   display: "swap",
 });
 
+// 英字の見出し：太くワイドなサンセリフ（英字のみなので軽量）
+const archivo = Archivo({
+  subsets: ["latin"],
+  axes: ["wdth"],
+  variable: "--font-archivo",
+  display: "swap",
+});
+
 // 日本語は端末のシステムフォント（ヒラギノ／游ゴシック／Noto など）を使用。
 // Web フォントの日本語サブセットは CSS とフォントの転送量が大きく、表示速度を優先して読み込まない。
+
+const themeScript = `(function(){try{var q=new URLSearchParams(location.search).get("theme");if(q==="minimal"||q==="dark"){localStorage.setItem("revonik-theme",q)}var t=q||localStorage.getItem("revonik-theme");if(t==="minimal"){document.documentElement.dataset.theme="minimal";var m=document.querySelector('meta[name="theme-color"]');if(m)m.setAttribute("content","#FFFFFF")}}catch(e){}})();`;
 
 export const metadata: Metadata = {
   metadataBase: new URL(site.url),
   title: {
-    default: "REVONIK | The Art of Precision.（提案用デモ）",
-    template: "%s | REVONIK（提案用デモ）",
+    default: "REVONIK | ENGINEERED TO PROVOKE.（Unofficial concept）",
+    template: "%s | REVONIK（Unofficial concept）",
   },
   description: site.description,
   applicationName: "REVONIK Proposal Demo",
@@ -35,7 +46,7 @@ export const metadata: Metadata = {
     type: "website",
     locale: "ja_JP",
     siteName: "REVONIK（提案用デモ）",
-    title: "REVONIK | The Art of Precision.（提案用デモ）",
+    title: "REVONIK | ENGINEERED TO PROVOKE.（Unofficial concept）",
     description: site.description,
     images: [{ url: "/placeholders/og.png", width: 1200, height: 630, alt: "REVONIK 提案用デモ" }],
   },
@@ -49,17 +60,21 @@ export const metadata: Metadata = {
 };
 
 export const viewport: Viewport = {
-  themeColor: "#FFFFFF",
-  colorScheme: "light",
+  themeColor: "#0A0B0D",
+  colorScheme: "dark",
 };
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html lang="ja" className={inter.variable}>
+    <html lang="ja" className={`${inter.variable} ${archivo.variable}`} suppressHydrationWarning>
       <body className="min-h-dvh antialiased">
+        {/* デザイン比較用：?theme=minimal|dark を描画前に反映（選択はこのブラウザに保存） */}
+        <Script id="theme" strategy="beforeInteractive">
+          {themeScript}
+        </Script>
         <a
           href="#main"
-          className="sr-only z-[100] rounded-full bg-fg px-4 py-2 text-white focus:not-sr-only focus:fixed focus:top-3 focus:left-3"
+          className="sr-only z-[100] rounded-full bg-fg px-4 py-2 text-on-fg focus:not-sr-only focus:fixed focus:top-3 focus:left-3"
         >
           本文へスキップ
         </a>

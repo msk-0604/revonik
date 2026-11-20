@@ -33,7 +33,7 @@ export function SpecTable({ product }: { product: Product }) {
                   document.getElementById(`${baseId}-tab-${n}`)?.focus();
                 }}
                 className={`min-h-10 shrink-0 rounded-full px-4 text-[0.8125rem] whitespace-nowrap transition-colors duration-300 ${
-                  i === active ? "bg-white text-fg shadow-[0_1px_2px_rgba(0,0,0,0.08)]" : "text-muted hover:text-fg"
+                  i === active ? "bg-panel text-fg shadow-[0_1px_2px_rgba(0,0,0,0.08)]" : "text-muted hover:text-fg"
                 }`}
               >
                 {v.label}

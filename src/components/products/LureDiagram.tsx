@@ -11,6 +11,9 @@ const anchors: Record<LureShape, Record<Anchor, [number, number]>> = {
   minnow: { nose: [22, 46], lip: [17, 55], body: [52, 42], back: [52, 36], belly: [44, 59], tail: [88, 38] },
   shad: { nose: [20, 45], lip: [17, 57], body: [45, 38], back: [45, 24], belly: [49, 63], tail: [81, 38] },
   crankbait: { nose: [25, 42], lip: [22, 53], body: [56, 38], back: [56, 19], belly: [51, 63], tail: [88, 40] },
+  pencil: { nose: [12, 46], lip: [12, 46], body: [45, 40], back: [45, 32], belly: [43, 53], tail: [83, 37] },
+  popper: { nose: [14, 44], lip: [14, 44], body: [55, 40], back: [55, 29], belly: [48, 56], tail: [88, 37] },
+  jig: { nose: [13, 54], lip: [13, 54], body: [45, 48], back: [45, 40], belly: [45, 57], tail: [85, 44] },
 };
 
 type Props = {
@@ -32,7 +35,7 @@ export function LureDiagram({ src, alt, shape, details }: Props) {
             <span
               key={d.label}
               aria-hidden
-              className="absolute grid size-7 -translate-1/2 place-items-center rounded-full bg-fg text-[0.75rem] font-semibold text-white ring-4 ring-white/70 md:size-8"
+              className="absolute grid size-7 -translate-1/2 place-items-center rounded-full bg-fg text-[0.75rem] font-semibold text-on-fg ring-4 ring-bg/70 md:size-8"
               style={{ left: `${x}%`, top: `${y}%` }}
             >
               {i + 1}

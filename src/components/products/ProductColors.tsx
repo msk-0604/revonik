@@ -152,7 +152,7 @@ export function ColorGallery() {
             className="group block w-full text-center"
           >
             <span
-              className={`relative block aspect-[4/3] overflow-hidden rounded-[1rem] bg-white transition-shadow duration-300 ${
+              className={`relative block aspect-[4/3] overflow-hidden rounded-[1rem] bg-panel transition-shadow duration-300 ${
                 i === index ? "ring-2 ring-fg" : ""
               }`}
             >

@@ -7,7 +7,13 @@
  */
 export type VerificationStatus = "official" | "retailer" | "unverified" | "draft";
 
-export type CategoryId = "vibration" | "crankbait" | "shad" | "minnow" | "other";
+export type CategoryId = "vibration" | "crankbait" | "shad" | "minnow" | "topwater" | "chain" | "metal-jig" | "other";
+
+/** 釣りのジャンル */
+export type Segment = "bass" | "salt";
+
+/** 販売状況。released：販売店での取扱いを確認／announced：発表済み・発売前または発売時期未確認 */
+export type ReleaseStatus = "released" | "announced";
 
 export interface Category {
   id: CategoryId;
@@ -53,7 +59,7 @@ export interface ProductColor {
   verified: boolean;
 }
 
-export type LureShape = "vibration" | "minnow" | "shad" | "crankbait";
+export type LureShape = "vibration" | "minnow" | "shad" | "crankbait" | "pencil" | "popper" | "jig";
 
 export interface SourceLink {
   label: string;
@@ -61,7 +67,25 @@ export interface SourceLink {
 }
 
 export interface Product {
+  /** 一意のID（slug と同じ値で運用） */
+  id: string;
   slug: string;
+  segment: Segment;
+  /** 代表モデルの主要スペック（詳細はバリエーションごとの variants） */
+  length: string | null;
+  weight: string | null;
+  depth: string | null;
+  /** 浮力タイプ（フローティング／シンキングなど） */
+  buoyancy: string | null;
+  /** 発表日（YYYY / YYYY-MM / YYYY-MM-DD）。確認できない場合は null */
+  announcementDate: string | null;
+  /** 発売日。発表日と区別し、確認できた場合のみ入力 */
+  releaseDate: string | null;
+  /** 発売予定（報道ベース）。確定した発売日ではない */
+  plannedRelease?: string | null;
+  status: ReleaseStatus;
+  /** 主な出典URL（その他の出典は sources） */
+  sourceUrl: string;
   name: string;
   nameKana?: string;
   category: CategoryId;
@@ -86,7 +110,8 @@ export interface Product {
   keywords?: string[];
 }
 
-export type NewsCategory = "PRODUCT" | "EVENT" | "BRAND" | "MEDIA";
+/** PRODUCT：新製品／RELEASE：発売情報／EVENT：イベント／MEDIA：メディア／OTHER：その他 */
+export type NewsCategory = "PRODUCT" | "RELEASE" | "EVENT" | "MEDIA" | "OTHER";
 
 export interface NewsArticle {
   slug: string;

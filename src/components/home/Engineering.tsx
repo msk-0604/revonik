@@ -9,7 +9,7 @@ import { products } from "@/data/products";
 import { technologies } from "@/data/technology";
 import { mainImage } from "@/lib/products";
 
-const slugs = ["dot-six", "volbeat", "shekiller-78", "ramzy"];
+const slugs = ["dot-six", "zenda", "volbeat", "shekiller-78", "mogot"];
 
 /** SECTION 03 — PRODUCT ENGINEERING：製品ごとの確認済みの設計上の特徴を図解 */
 export function Engineering() {
@@ -17,16 +17,19 @@ export function Engineering() {
   const [active, setActive] = useState(0);
   const p = items[active];
   return (
-    <section id="engineering" aria-labelledby="eng-title" className="section-y bg-bg">
+    <section id="engineering" aria-labelledby="eng-title" className="section-y bg-bg-alt">
       <div className="container-x">
         <div className="mx-auto max-w-3xl text-center">
           <p className="eyebrow">Engineering</p>
           <h2 id="eng-title" className="headline mt-2 text-[2.25rem] sm:text-5xl lg:text-[3.5rem]">
             動きは、設計から生まれる。
           </h2>
+          <Link href="/technology" className="mt-5 inline-flex min-h-11 items-center text-[1rem] text-link hover:underline underline-offset-4">
+            テクノロジーを詳しく ›
+          </Link>
         </div>
         <div className="mt-10 flex justify-center">
-          <div role="tablist" aria-label="製品を選択" className="inline-flex max-w-full gap-1 overflow-x-auto rounded-full bg-bg-alt p-1 [scrollbar-width:none]">
+          <div role="tablist" aria-label="製品を選択" className="inline-flex max-w-full gap-1 overflow-x-auto rounded-full bg-panel p-1 [scrollbar-width:none]">
             {items.map((it, i) => (
               <button
                 key={it.slug}
@@ -35,7 +38,7 @@ export function Engineering() {
                 aria-selected={i === active}
                 onClick={() => setActive(i)}
                 className={`min-h-10 shrink-0 rounded-full px-4 text-[0.8125rem] whitespace-nowrap transition-colors duration-300 ${
-                  i === active ? "bg-white text-fg shadow-[0_1px_2px_rgba(0,0,0,0.08)]" : "text-muted hover:text-fg"
+                  i === active ? "bg-fg text-on-fg" : "text-muted hover:text-fg"
                 }`}
               >
                 {it.name}

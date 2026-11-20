@@ -42,7 +42,7 @@ export function Collection() {
                   <span>
                     <span className="flex items-center gap-2 text-[0.6875rem] font-medium tracking-[0.06em] text-muted">
                       {getCategory(p.category).label}
-                      {newSlugs.has(p.slug) && <span className="rounded-full bg-fg px-1.5 py-px text-[0.5625rem] text-white">NEW</span>}
+                      {newSlugs.has(p.slug) && <span className="rounded-full bg-fg px-1.5 py-px text-[0.5625rem] text-on-fg">NEW</span>}
                     </span>
                     <span className="mt-0.5 block text-[1.1875rem] font-semibold tracking-tight md:text-[1.375rem]">{p.name}</span>
                     <span className="mt-1 block font-jp text-[0.8125rem] text-fg/75 sm:hidden">{x.keyFeature}</span>

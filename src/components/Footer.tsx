@@ -1,12 +1,16 @@
 import Link from "next/link";
+import { ThemeSwitch } from "@/components/ThemeSwitch";
 import { site } from "@/data/site";
 
 const internal = [
   { href: "/products", label: "Products" },
+  { href: "/technology", label: "Technology" },
   { href: "/about", label: "About" },
-  { href: "/media", label: "Media" },
   { href: "/news", label: "News" },
+  { href: "/media", label: "Media" },
+  { href: "/dealers", label: "Dealers" },
   { href: "/contact", label: "Contact" },
+  { href: "/proposal", label: "Proposal（Stark Lab）" },
 ];
 
 const external = [
@@ -22,7 +26,7 @@ export function Footer() {
         <div className="grid gap-10 pb-10 sm:grid-cols-[1.5fr_1fr_1fr]">
           <div>
             <p className="text-[0.9375rem] font-semibold tracking-[0.24em] text-fg">REVONIK</p>
-            <p className="mt-2">Precision × Innovation × Performance</p>
+            <p className="mt-2">Engineered to provoke.</p>
           </div>
           <nav aria-label="サイト内リンク">
             <p className="font-semibold text-fg">Explore</p>
@@ -58,7 +62,7 @@ export function Footer() {
         </div>
 
         {/* 非公式の営業提案であることの表示（全ページ共通） */}
-        <section aria-labelledby="demo-notice" className="rounded-2xl border border-line bg-white p-5 md:p-6">
+        <section aria-labelledby="demo-notice" className="rounded-2xl border border-line bg-bg p-5 md:p-6">
           <h2 id="demo-notice" className="font-jp text-[0.875rem] font-bold text-fg">
             {site.demoNotice}
           </h2>
@@ -79,8 +83,14 @@ export function Footer() {
           </p>
         </section>
 
+        <div className="mt-6 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+          <div className="flex items-center gap-3">
+            <span>デザイン案（比較用）</span>
+            <ThemeSwitch />
+          </div>
+        </div>
         <div className="mt-6 flex flex-col gap-2 sm:flex-row sm:justify-between">
-          <p className="font-jp">{site.demoNotice}</p>
+          <p className="font-jp">{site.demoNoticeJa}</p>
           <p>Demo © {new Date().getFullYear()} Stark Lab</p>
         </div>
       </div>

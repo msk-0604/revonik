@@ -12,7 +12,7 @@ export function VerificationBadge({ status, className = "" }: { status: Verifica
 
 export function SampleBadge({ className = "" }: { className?: string }) {
   return (
-    <span className={`inline-flex items-center rounded-full bg-white/90 px-2.5 py-0.5 text-[0.6875rem] font-semibold tracking-wide text-muted ${className}`}>
+    <span className={`inline-flex items-center rounded-full bg-panel/90 px-2.5 py-0.5 text-[0.6875rem] font-semibold tracking-wide text-muted ${className}`}>
       SAMPLE
     </span>
   );

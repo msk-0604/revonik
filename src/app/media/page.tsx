@@ -85,7 +85,7 @@ export default function MediaPage() {
           rel="noopener noreferrer"
           data-track="video_click"
           data-track-video="channel"
-          className="inline-flex min-h-12 items-center rounded-full bg-fg px-7 text-[1rem] text-white hover:bg-fg/80"
+          className="inline-flex min-h-12 items-center rounded-full bg-fg px-7 text-[1rem] text-on-fg hover:bg-fg/80"
         >
           公式 YouTube チャンネルへ ↗<span className="sr-only">（外部サイト）</span>
         </a>

@@ -1,26 +1,26 @@
-import { BrandStory } from "@/components/home/BrandStory";
-import { Collection } from "@/components/home/Collection";
 import { Engineering } from "@/components/home/Engineering";
 import { Hero } from "@/components/home/Hero";
+import { InstagramDealers } from "@/components/home/InstagramDealers";
+import { NewReleases } from "@/components/home/NewReleases";
 import { OnTheWater } from "@/components/home/OnTheWater";
+import { Philosophy } from "@/components/home/Philosophy";
 import { ProductExperience } from "@/components/home/ProductExperience";
-import { Shop } from "@/components/home/Shop";
 
 /**
- * TOP の構成（認知 → 興味 → 比較 → 信頼 → 購入）
- * 01 Hero → 02 Product Experience → 03 Engineering → 04 On the Water
- * → 05 Brand Story → 06 Collection → 07 Shop
+ * HOME
+ * HERO → BRAND PHILOSOPHY → FEATURED PRODUCTS → TECHNOLOGY → NEW RELEASES
+ * → FIELD EXPERIENCE → INSTAGRAM / DEALERS
  */
 export default function HomePage() {
   return (
     <>
       <Hero />
+      <Philosophy />
       <ProductExperience />
       <Engineering />
+      <NewReleases />
       <OnTheWater />
-      <BrandStory />
-      <Collection />
-      <Shop />
+      <InstagramDealers />
     </>
   );
 }

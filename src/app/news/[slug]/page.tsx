@@ -4,7 +4,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { ChevronLeft } from "lucide-react";
 import { NewsCard, newsImage } from "@/components/NewsCard";
-import { news, sortedNews } from "@/data/news";
+import { news, newsCategoryLabel, sortedNews } from "@/data/news";
 import { formatDate } from "@/lib/format";
 
 export const dynamicParams = false;
@@ -36,7 +36,7 @@ export default async function NewsDetailPage({ params }: PageProps<"/news/[slug]
           <div className="mt-8 flex flex-wrap items-center gap-3 text-[0.8125rem] text-muted">
             <time dateTime={article.date}>{formatDate(article.date)}</time>
             <span aria-hidden>·</span>
-            <span>{article.category}</span>
+            <span className="font-jp">{newsCategoryLabel[article.category]}</span>
           </div>
           <h1 className="mt-4 font-jp text-[1.75rem] leading-[1.5] font-bold md:text-[2.5rem] md:leading-[1.4]">{article.title}</h1>
         </div>
@@ -54,7 +54,7 @@ export default async function NewsDetailPage({ params }: PageProps<"/news/[slug]
                 data-track="select_item"
                 data-track-item={article.related}
                 data-track-list="news"
-                className="inline-flex min-h-11 items-center rounded-full bg-fg px-6 text-[0.9375rem] text-white hover:bg-fg/80"
+                className="inline-flex min-h-11 items-center rounded-full bg-fg px-6 text-[0.9375rem] text-on-fg hover:bg-fg/80"
               >
                 製品を見る ›
               </Link>

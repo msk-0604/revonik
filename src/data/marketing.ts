@@ -37,6 +37,7 @@ export const proofNumbers: { value: string; unit?: string; label: string; detail
 /** 潜行レンジ（m）。メディア・販売店に数値が掲載されている製品のみ */
 export const ranges: { slug: string; model: string; min: number; max: number; note: string }[] = [
   { slug: "shindy-110", model: "SHINDY 110SS", min: 0.3, max: 0.5, note: "約30〜50cm" },
+  { slug: "muren", model: "MUREN 118", min: 0, max: 1.0, note: "約1.0m" },
   { slug: "shindy-110", model: "SHINDY 110SF-M", min: 0, max: 1.5, note: "約1.5m" },
   { slug: "saramoa", model: "SaraMoa", min: 0, max: 1.5, note: "約1.5m" },
   { slug: "shekiller-78", model: "Shekiller78", min: 2.5, max: 3, note: "約2.5〜3m（リトリーブ時）" },

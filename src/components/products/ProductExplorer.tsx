@@ -4,11 +4,11 @@ import { useEffect, useMemo, useState } from "react";
 import { AnimatePresence, motion } from "motion/react";
 import { Search, X } from "lucide-react";
 import { ProductCard } from "@/components/ProductCard";
-import { categories } from "@/data/categories";
+import { categories, segments } from "@/data/categories";
 import { experience, sceneLabels, type Scene } from "@/data/experience";
 import { products } from "@/data/products";
 import { matchesQuery } from "@/lib/products";
-import type { CategoryId } from "@/types";
+import type { CategoryId, Segment } from "@/types";
 
 type Filter = CategoryId | "all";
 
@@ -16,6 +16,7 @@ export function ProductExplorer() {
   const [category, setCategory] = useState<Filter>("all");
   const [query, setQuery] = useState("");
   const [scene, setScene] = useState<Scene | "all">("all");
+  const [segment, setSegment] = useState<Segment | "all">("all");
   const [ready, setReady] = useState(false);
 
   // URL（?category= & ?q=）から初期状態を復元（共有・戻る操作に対応）
@@ -25,6 +26,8 @@ export function ProductExplorer() {
     /* eslint-disable react-hooks/set-state-in-effect -- マウント時に一度だけ URL から復元する */
     if (c && categories.some((x) => x.id === c)) setCategory(c as CategoryId);
     setQuery(params.get("q") ?? "");
+    const sg = params.get("segment");
+    if (sg === "bass" || sg === "salt") setSegment(sg);
     const sc = params.get("scene");
     if (sc && sc in sceneLabels) setScene(sc as Scene);
     setReady(true);
@@ -35,11 +38,12 @@ export function ProductExplorer() {
     if (!ready) return;
     const params = new URLSearchParams();
     if (category !== "all") params.set("category", category);
+    if (segment !== "all") params.set("segment", segment);
     if (scene !== "all") params.set("scene", scene);
     if (query.trim()) params.set("q", query.trim());
     const qs = params.toString();
     window.history.replaceState(null, "", qs ? `?${qs}` : window.location.pathname);
-  }, [category, scene, query, ready]);
+  }, [category, scene, segment, query, ready]);
 
   const counts = useMemo(() => {
     const map = new Map<Filter, number>([["all", products.length]]);
@@ -50,6 +54,7 @@ export function ProductExplorer() {
   const visibleCategories = categories.filter((c) => counts.get(c.id));
   const filtered = products.filter(
     (p) =>
+      (segment === "all" || p.segment === segment) &&
       (category === "all" || p.category === category) &&
       (scene === "all" || experience[p.slug]?.scenes.includes(scene)) &&
       matchesQuery(p, query),
@@ -57,14 +62,30 @@ export function ProductExplorer() {
 
   const reset = () => {
     setCategory("all");
+    setSegment("all");
     setScene("all");
     setQuery("");
   };
 
   return (
     <div>
-      <div className="sticky top-[60px] z-20 -mx-5 bg-white/85 px-5 py-3 backdrop-blur-xl backdrop-saturate-150 md:-mx-10 md:px-10">
+      <div className="sticky top-[60px] z-20 -mx-5 bg-panel/85 px-5 py-3 backdrop-blur-xl backdrop-saturate-150 md:-mx-10 md:px-10">
         <div className="flex flex-col gap-3 lg:flex-row lg:items-center lg:justify-between">
+          <div role="group" aria-label="ジャンルで絞り込む" className="flex shrink-0 gap-1 rounded-full bg-panel p-1">
+            {[{ id: "all" as const, label: "ALL" }, ...segments].map((sg) => (
+              <button
+                key={sg.id}
+                type="button"
+                aria-pressed={segment === sg.id}
+                onClick={() => setSegment(sg.id)}
+                className={`min-h-9 rounded-full px-4 text-[0.75rem] font-semibold tracking-[0.12em] transition-colors ${
+                  segment === sg.id ? "bg-fg text-on-fg" : "text-fg/70 hover:text-fg"
+                }`}
+              >
+                {sg.label}
+              </button>
+            ))}
+          </div>
           <div role="group" aria-label="カテゴリーで絞り込む" className="-mx-5 flex gap-2 overflow-x-auto px-5 py-1 [scrollbar-width:none] lg:mx-0 lg:flex-wrap lg:px-0">
             {[{ id: "all" as const, label: "All" }, ...visibleCategories].map((c) => {
               const active = category === c.id;
@@ -75,11 +96,11 @@ export function ProductExplorer() {
                   onClick={() => setCategory(c.id)}
                   aria-pressed={active}
                   className={`flex min-h-10 shrink-0 items-center gap-1.5 rounded-full px-4 text-[0.8125rem] whitespace-nowrap transition-colors duration-300 ${
-                    active ? "bg-fg text-white" : "bg-bg-alt text-fg hover:bg-line"
+                    active ? "bg-fg text-on-fg" : "bg-bg-alt text-fg hover:bg-line"
                   }`}
                 >
                   {c.label}
-                  <span className={active ? "text-white/60" : "text-muted"}>{counts.get(c.id)}</span>
+                  <span className={active ? "text-fg/60" : "text-muted"}>{counts.get(c.id)}</span>
                 </button>
               );
             })}
@@ -96,7 +117,7 @@ export function ProductExplorer() {
               onChange={(e) => setQuery(e.target.value)}
               placeholder="商品名で検索"
               autoComplete="off"
-              className="h-11 w-full rounded-xl border border-transparent bg-bg-alt pr-10 pl-10 font-jp text-base text-fg placeholder:text-[0.8125rem] placeholder:text-muted focus:border-link focus:bg-white focus:outline-none [&::-webkit-search-cancel-button]:hidden"
+              className="h-11 w-full rounded-xl border border-transparent bg-bg-alt pr-10 pl-10 font-jp text-base text-fg placeholder:text-[0.8125rem] placeholder:text-muted focus:border-link focus:bg-panel focus:outline-none [&::-webkit-search-cancel-button]:hidden"
             />
             {query && (
               <button
@@ -123,7 +144,7 @@ export function ProductExplorer() {
               onClick={() => setScene(sc)}
               aria-pressed={active}
               className={`min-h-9 rounded-full border px-3.5 font-jp text-[0.8125rem] transition-colors ${
-                active ? "border-fg bg-white text-fg" : "border-line text-fg/75 hover:border-fg/40"
+                active ? "border-fg bg-panel text-fg" : "border-line text-fg/75 hover:border-fg/40"
               }`}
             >
               {sc === "all" ? "すべて" : sceneLabels[sc].label}
@@ -134,6 +155,7 @@ export function ProductExplorer() {
 
       <p role="status" aria-live="polite" className="mt-8 text-[0.8125rem] text-muted">
         {filtered.length} 件
+        {segment !== "all" && <span className="ml-2">／ {segment.toUpperCase()}</span>}
         {category !== "all" && <span className="ml-2 font-jp">／ {categories.find((c) => c.id === category)?.labelJa}</span>}
         {scene !== "all" && <span className="ml-2 font-jp">／ {sceneLabels[scene].label}</span>}
         {query.trim() && <span className="ml-2 font-jp">／「{query.trim()}」</span>}
@@ -160,7 +182,7 @@ export function ProductExplorer() {
         <div className="mt-8 rounded-[1.25rem] bg-bg-alt px-6 py-20 text-center">
           <p className="font-jp text-[1.0625rem] font-bold">該当する商品が見つかりませんでした。</p>
           <p className="mt-2 font-jp text-sm text-muted">別のキーワードをお試しいただくか、条件をリセットしてください。</p>
-          <button type="button" onClick={reset} className="mt-6 inline-flex min-h-11 items-center rounded-full bg-link px-6 text-[0.9375rem] text-white hover:bg-link-hover">
+          <button type="button" onClick={reset} className="mt-6 inline-flex min-h-11 items-center rounded-full bg-link px-6 text-[0.9375rem] text-fg hover:bg-link-hover">
             条件をリセット
           </button>
         </div>

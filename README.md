@@ -9,6 +9,37 @@
 - 全ページの上部とフッターに「非公式・営業提案用デモ／制作：Stark Lab」を表示
 - 検索エンジン対策：`<meta name="robots" content="noindex, nofollow">`、`X-Robots-Tag` ヘッダー、`robots.txt`（`Disallow: /`）の3重で設定
 
+## 2026年11月の改訂（ダーク基調・提案ページ・2案比較）
+
+- **デザイン**：黒基調（ENGINEERED TO PROVOKE.）を標準に。比較用に、ホワイト・ライトグレー・ブラックの**ミニマル案**へ切り替え可能
+  - 切り替え：URL に `?theme=minimal`（ダークは `?theme=dark`）、またはフッターの「Dark／Minimal」ボタン。選択はブラウザに保存
+  - 配色は `src/app/globals.css` の設計値（`--color-bg` など）で一元管理。`:root[data-theme="minimal"]` がミニマル案
+- **ページ**：HOME／PRODUCTS／PRODUCT DETAIL（11製品）／TECHNOLOGY／ABOUT／NEWS（カテゴリー絞り込み）／MEDIA／DEALERS（都道府県・販売形態・店名で絞り込み）／CONTACT（送信なし）／**/proposal**（営業用の提案ページ・2案の比較と推奨）
+- **製品データ**：`src/data/products.ts`。`id`・`segment`（bass／salt）・`length`・`weight`・`depth`・`buoyancy`・`colors`・`announcementDate`・`releaseDate`・`plannedRelease`・`status`・`sourceUrl` を持つ。日付は確認できたものだけ（未確認は `null`）。発表日と発売日は別の項目
+- **SEO**：ページごとのメタ情報・OGP・canonical、商品ページの構造化データ（Product・BreadcrumbList）、`/sitemap.xml`。デモのため noindex と robots.txt の全拒否は維持
+- **表記**：ヘッダーとフッターに「Unofficial concept website / Proposed by Stark Lab」
+- **調査メモ**：[docs/research.md](docs/research.md)（確認できた事実・未確認情報・調査の制約）
+
+## ローカルでの起動
+
+```bash
+npm install
+npm run dev          # http://localhost:3000
+# 本番ビルドで確認する場合
+npm run build && npx next start -p 3100
+BASE_URL=http://localhost:3100 npm run verify   # 自動検証（約700項目）
+```
+
+## 本番公開前に必要な確認事項
+
+1. 製品情報（スペック・カラー・発表日／発売日）を REVONIK 公式情報と照合
+2. 写真・ロゴ・動画の使用許諾と差し替え（`src/data/images.ts`、各カラーの `image`）
+3. 公式の取扱店リストの受領（`src/data/dealers.ts` を置き換え）
+4. ブランドカラー・キャッチコピー・開発思想の文章の確定（加藤誠司氏の監修）
+5. 採用するデザイン案の決定（ダーク／ミニマル／組み合わせ）と、比較用の切り替えボタンの削除
+6. お問い合わせのメール送信、GA4 の導入、独自ドメイン
+7. noindex・robots.txt・デモ表記の解除
+
 ## 提案資料
 
 - [ブランド戦略の整理](docs/brand-strategy.md)（独自性・顧客・製品の強み・購入理由・差別化・伝えるべき価値）

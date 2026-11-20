@@ -19,7 +19,7 @@ export function Shop() {
             rel="noopener noreferrer"
             data-track="store_click"
             data-track-placement="home_shop"
-            className="inline-flex min-h-12 items-center gap-1 rounded-full bg-fg px-8 text-[1rem] text-white transition-colors hover:bg-fg/80"
+            className="inline-flex min-h-12 items-center gap-1 rounded-full bg-fg px-8 text-[1rem] text-on-fg transition-colors hover:bg-fg/80"
           >
             オンラインストアへ
             <ArrowUpRight aria-hidden className="size-4" />

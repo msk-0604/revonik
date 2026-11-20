@@ -19,7 +19,8 @@ export const site = {
     company: "株式会社Stark Lab",
     url: "https://starklab.jp/",
   },
-  demoNotice: "非公式・営業提案用デモ／制作：Stark Lab",
+  demoNotice: "Unofficial concept website / Proposed by Stark Lab",
+  demoNoticeJa: "非公式・営業提案用デモ／制作：Stark Lab",
   demoNoticeLong:
     "本サイトは、株式会社Stark Lab が REVONIK への公式サイト制作をご提案するために作成した非公式のデモです。REVONIK の公式サイトではありません。",
   /** フッターに表示する、デモの取り扱いに関する3点 */
@@ -33,8 +34,9 @@ export const site = {
 export const navItems = [
   { href: "/", label: "Home" },
   { href: "/products", label: "Products" },
+  { href: "/technology", label: "Technology" },
   { href: "/about", label: "About" },
-  { href: "/media", label: "Media" },
   { href: "/news", label: "News" },
+  { href: "/dealers", label: "Dealers" },
   { href: "/contact", label: "Contact" },
 ] as const;

@@ -21,7 +21,8 @@ export const siteImages = {
 export const newsImages: Record<string, string> = {
   PRODUCT: "/placeholders/news-product.webp",
   EVENT: "/placeholders/news-event.webp",
-  BRAND: "/placeholders/news-brand.webp",
+  RELEASE: "/placeholders/news-product.webp",
+  OTHER: "/placeholders/news-brand.webp",
   MEDIA: "/placeholders/news-media.webp",
 };
 

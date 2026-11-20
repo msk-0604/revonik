@@ -14,7 +14,7 @@ export function StickyStoreBar({ name, href, slug }: { name: string; href: strin
   }, []);
   return (
     <div
-      className={`fixed inset-x-0 bottom-0 z-40 border-t border-line bg-white/90 px-4 pt-3 pb-[max(0.75rem,env(safe-area-inset-bottom))] backdrop-blur-xl transition-transform duration-300 md:hidden ${
+      className={`fixed inset-x-0 bottom-0 z-40 border-t border-line bg-panel/90 px-4 pt-3 pb-[max(0.75rem,env(safe-area-inset-bottom))] backdrop-blur-xl transition-transform duration-300 md:hidden ${
         show ? "translate-y-0" : "translate-y-full"
       }`}
       aria-hidden={!show}
@@ -29,7 +29,7 @@ export function StickyStoreBar({ name, href, slug }: { name: string; href: strin
           data-track="store_click"
           data-track-item={slug}
           data-track-placement="sticky_bar"
-          className="inline-flex min-h-11 shrink-0 items-center gap-1 rounded-full bg-fg px-5 text-[0.875rem] text-white"
+          className="inline-flex min-h-11 shrink-0 items-center gap-1 rounded-full bg-fg px-5 text-[0.875rem] text-on-fg"
         >
           ストアで見る
           <ArrowUpRight aria-hidden className="size-4" />

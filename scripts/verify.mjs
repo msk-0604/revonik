@@ -28,6 +28,11 @@ const pages = [
   "/products/saramoa",
   "/products/dot-six",
   "/products/ramzy",
+  "/products/zenda",
+  "/products/pop-up-jig",
+  "/technology",
+  "/dealers",
+  "/proposal",
   "/about",
   "/media",
   "/news",
@@ -44,7 +49,7 @@ const viewports = {
   w430: { width: 430, height: 932, ...mobile },
   w768: { width: 768, height: 1024, ...mobile },
 };
-const keyPages = ["/", "/products", "/products/volbeat"];
+const keyPages = ["/", "/products", "/products/volbeat", "/technology", "/proposal"];
 
 const failures = [];
 const ok = (cond, msg) => {

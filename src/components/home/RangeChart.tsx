@@ -20,12 +20,12 @@ export function RangeChart() {
           lead="水面直下から5mまで。レンジで比べて、選ぶ。"
         />
         <Reveal className="mx-auto mt-12 max-w-5xl overflow-x-auto [scrollbar-width:thin]">
-          <div className="relative min-w-[560px] rounded-[1.5rem] bg-gradient-to-b from-[#e6f1f4] to-[#c9dde3] px-4 pt-6 pb-4 sm:px-8">
-            <div className="grid grid-cols-[2.5rem_repeat(5,minmax(0,1fr))] gap-2 sm:gap-4">
+          <div className="relative min-w-[640px] rounded-[1.5rem] bg-gradient-to-b from-[#1b3a44] to-[#0b1a1f] px-4 pt-6 pb-4 sm:px-8">
+            <div className="grid gap-2 sm:gap-4" style={{ gridTemplateColumns: `2.5rem repeat(${ranges.length}, minmax(0, 1fr))` }}>
               {/* 水深の目盛り */}
               <div className="relative h-[360px]">
                 {ticks.map((t) => (
-                  <span key={t} className="absolute right-1 -translate-y-1/2 text-[0.6875rem] text-fg/60 tabular-nums" style={{ top: `${(t / MAX) * 100}%` }}>
+                  <span key={t} className="absolute right-1 -translate-y-1/2 text-[0.6875rem] text-fg/70 tabular-nums" style={{ top: `${(t / MAX) * 100}%` }}>
                     {t}m
                   </span>
                 ))}
@@ -38,7 +38,7 @@ export function RangeChart() {
                 return (
                   <div key={r.model} className="relative h-[360px]">
                     {ticks.map((t) => (
-                      <span key={t} aria-hidden className="absolute inset-x-0 border-t border-dashed border-fg/10" style={{ top: `${(t / MAX) * 100}%` }} />
+                      <span key={t} aria-hidden className="absolute inset-x-0 border-t border-dashed border-fg/15" style={{ top: `${(t / MAX) * 100}%` }} />
                     ))}
                     <div
                       className="absolute inset-x-[30%] rounded-full bg-gradient-to-b from-link/70 to-link"
@@ -59,7 +59,7 @@ export function RangeChart() {
                 );
               })}
             </div>
-            <div className="mt-3 grid grid-cols-[2.5rem_repeat(5,minmax(0,1fr))] gap-2 sm:gap-4">
+            <div className="mt-3 grid gap-2 sm:gap-4" style={{ gridTemplateColumns: `2.5rem repeat(${ranges.length}, minmax(0, 1fr))` }}>
               <span />
               {ranges.map((r) => (
                 <div key={r.model} className="text-center">

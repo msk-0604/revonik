@@ -1,30 +1,19 @@
 import type { Metadata } from "next";
-import { NewsCard } from "@/components/NewsCard";
+import { NewsList } from "@/components/news/NewsList";
 import { PageHeader } from "@/components/PageHeader";
-import { Reveal } from "@/components/Reveal";
-import { sortedNews } from "@/data/news";
 
 export const metadata: Metadata = {
   title: "NEWS",
-  description: "新製品・イベント・ブランドニュースの掲載イメージ（提案用デモ・サンプル記事）。",
+  description: "新製品・発売情報・イベント・メディア掲載など、REVONIK の最新情報。",
+  alternates: { canonical: "/news" },
 };
 
 export default function NewsPage() {
   return (
     <>
-      <PageHeader
-        eyebrow="Information"
-        title="News"
-        lead="新製品やブランドの最新情報。"
-      />
+      <PageHeader eyebrow="News" title="Latest." lead="新製品・発売情報・メディア掲載。" />
       <section aria-label="記事一覧" className="container-x pb-24 md:pb-32">
-        <ul className="grid gap-x-6 gap-y-14 sm:grid-cols-2 lg:grid-cols-3 lg:gap-x-8">
-          {sortedNews.map((a, i) => (
-            <Reveal as="li" key={a.slug} delay={(i % 3) * 0.06}>
-              <NewsCard article={a} />
-            </Reveal>
-          ))}
-        </ul>
+        <NewsList />
       </section>
     </>
   );

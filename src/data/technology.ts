@@ -10,7 +10,7 @@ export const technologies: { id: string; en: string; title: string; text: string
     en: "DRY BONE",
     title: "ドライボーン",
     text: "独自の硬質ボーン素材。こだわりの一つである「音」を引き出すため、採用モデルが増えています。",
-    products: ["shindy-110", "ramzy"],
+    products: ["shindy-110", "ramzy", "zenda", "mogot"],
     source: { label: "ルアーニュースR", url: "https://www.lurenewsr.com/450340" },
   },
   {
