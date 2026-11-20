@@ -4,7 +4,7 @@ import { notFound } from "next/navigation";
 import { ArrowUpRight, Play } from "lucide-react";
 import { ProductCard } from "@/components/ProductCard";
 import { JsonLd } from "@/components/JsonLd";
-import { ActionVideo } from "@/components/products/ActionVideo";
+import { OfficialFilm } from "@/components/OfficialFilm";
 import { DesignDetails } from "@/components/products/DesignDetails";
 import { ColorGallery, ProductColorProvider, ProductStage } from "@/components/products/ProductColors";
 import { SpecTable } from "@/components/products/SpecTable";
@@ -17,8 +17,9 @@ import { products } from "@/data/products";
 import { releases } from "@/data/releases";
 import { site } from "@/data/site";
 import { technologiesFor } from "@/data/technology";
+import { videosFor } from "@/data/videos";
 import { formatDate } from "@/lib/format";
-import { getCategory, getProduct, mainImage, relatedProducts, storeLink } from "@/lib/products";
+import { displayColors, getCategory, getProduct, mainImage, relatedProducts, storeLink } from "@/lib/products";
 
 export const dynamicParams = false;
 
@@ -82,7 +83,12 @@ export default async function ProductDetailPage({ params }: PageProps<"/products
   const techs = technologiesFor(product.slug);
   const release = releases.find((r) => r.slug === product.slug);
   const storeHref = storeLink(product, site.links.store);
-  const videos = media.filter((m) => m.kind === "youtube" && !m.url.includes(product.youtubeId ?? "__none__") && (m.related?.includes(product.slug) || m.relatedCategory === product.category));
+  const videos = media.filter((m) => m.kind === "youtube" && (m.related?.includes(product.slug) || m.relatedCategory === product.category));
+  // 公式動画：写真が未掲載の間は、1本目を上部のステージに大きく表示し、残りをアクションの項目に並べる
+  const films = videosFor(product.slug);
+  const hasPhotos = Boolean(mainImage(product)) || displayColors(product).some((c) => c.image);
+  const stageFilm = hasPhotos ? undefined : films[0];
+  const moreFilms = stageFilm ? films.slice(1) : films;
   const base = site.url.replace(/\/$/, "");
   const image = mainImage(product);
   const jsonLd = {
@@ -153,7 +159,7 @@ export default async function ProductDetailPage({ params }: PageProps<"/products
           </nav>
         </div>
         <div className="mt-6 px-3 md:px-6">
-          <ProductStage />
+          <ProductStage film={stageFilm} />
         </div>
         <div className="container-x pt-10 pb-16 text-center md:pt-14 md:pb-24">
           <div className="animate-fade-up">
@@ -175,7 +181,7 @@ export default async function ProductDetailPage({ params }: PageProps<"/products
               </div>
             ))}
           </dl>
-          <p className="mt-4 font-jp text-[0.75rem] text-muted">掲載の仕様・発売情報は確認中です。公式写真は許諾後に掲載します。</p>
+          <p className="mt-4 font-jp text-[0.75rem] text-muted">{stageFilm ? "上の映像は REVONIK 公式 YouTube の埋め込みです。" : ""}掲載の仕様・発売情報は確認中です。製品写真は許諾後に掲載します。</p>
           <div className="mt-8 flex flex-col items-center justify-center gap-3 min-[420px]:flex-row min-[420px]:gap-6">
             <StoreButton href={storeHref} slug={product.slug} placement="product_hero" />
             <Link href="/dealers" data-track="dealer_search" data-track-item={product.slug} className="inline-flex min-h-11 items-center text-[1rem] text-link hover:underline underline-offset-4">
@@ -229,10 +235,16 @@ export default async function ProductDetailPage({ params }: PageProps<"/products
               ))}
             </ul>
           </Reveal>
-          {product.youtubeId && (
-            <Reveal className="mx-auto mt-12 max-w-4xl">
-              <ActionVideo youtubeId={product.youtubeId} title={product.name} />
-              <p className="mt-3 text-center text-[0.75rem] text-muted">REVONIK 公式 YouTube</p>
+          {moreFilms.length > 0 && (
+            <Reveal className="mx-auto mt-14 max-w-5xl">
+              <p className="text-center text-[0.75rem] font-semibold tracking-[0.2em] text-muted">OFFICIAL FILMS</p>
+              <ul className={`mt-6 grid gap-x-6 gap-y-10 ${moreFilms.length > 1 ? "sm:grid-cols-2" : "mx-auto max-w-3xl"}`}>
+                {moreFilms.map((v) => (
+                  <li key={v.id}>
+                    <OfficialFilm video={v} size={moreFilms.length > 1 ? "card" : "large"} placement="product_action" />
+                  </li>
+                ))}
+              </ul>
             </Reveal>
           )}
           {videos.length > 0 && (

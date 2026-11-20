@@ -1,17 +1,27 @@
 import Link from "next/link";
 import { ArrowUpRight, ChevronRight } from "lucide-react";
-import { ProductVisual } from "@/components/ProductVisual";
+import { OfficialFilm } from "@/components/OfficialFilm";
 import { Reveal } from "@/components/Reveal";
 import { experience } from "@/data/experience";
+import { getVideo } from "@/data/videos";
 import { site } from "@/data/site";
-import { featuredProducts, getCategory, mainImage, storeLink } from "@/lib/products";
+import { getCategory, getProduct, storeLink } from "@/lib/products";
 
-/** SECTION 02 — PRODUCT EXPERIENCE：1製品につき1つの大きなセクション */
+/**
+ * 代表製品（SHINDY・VOLBEAT・Dot SIX）。1製品につき1つの大きなセクション。
+ * 製品写真の許諾が得られるまでは、REVONIK 公式 YouTube の製品動画を埋め込んで実物を見せる。
+ */
+export const homeFeatured = [
+  { slug: "shindy-110", film: "hCZ_EZSgyo8" },
+  { slug: "volbeat", film: "NdrQ-lwjKQg" },
+  { slug: "dot-six", film: "nzwyTXcXeGc" },
+] as const;
+
 export function ProductExperience() {
-  const items = featuredProducts();
+  const items = homeFeatured.map((f) => ({ p: getProduct(f.slug)!, film: getVideo(f.film)! }));
   return (
     <div id="products">
-      {items.map((p, i) => {
+      {items.map(({ p, film }, i) => {
         const x = experience[p.slug];
         const category = getCategory(p.category);
         const facts = [
@@ -24,7 +34,7 @@ export function ProductExperience() {
           <section
             key={p.slug}
             aria-labelledby={`exp-${p.slug}`}
-            className={`overflow-hidden pt-20 pb-16 md:pt-28 md:pb-24 ${i % 2 === 0 ? "bg-bg-alt" : "bg-bg"}`}
+            className={`overflow-hidden pt-20 pb-20 md:pt-32 md:pb-28 ${i % 2 === 0 ? "bg-bg-alt" : "bg-bg"}`}
           >
             <Reveal className="container-x text-center">
               <p className="index-label">
@@ -38,15 +48,7 @@ export function ProductExperience() {
               <p className="statement mt-3 text-[1.125rem] text-fg/80 md:text-[1.5rem]">{x.tagline}</p>
             </Reveal>
             <Reveal delay={0.1} y={24} className="mx-auto mt-10 max-w-[1080px] px-3 md:px-6">
-              <Link href={`/products/${p.slug}`} data-track="select_item" data-track-item={p.slug} data-track-list="home_experience" className="block">
-                <ProductVisual
-                  product={p}
-                  src={mainImage(p)}
-                  size="large"
-                  sizes="(min-width: 1080px) 1080px, 100vw"
-                  className={`aspect-[4/3] w-full rounded-[2rem] md:aspect-[16/9]`}
-                />
-              </Link>
+              <OfficialFilm video={film} size="large" label={`${p.name} — 公式動画`} placement="home_experience" />
             </Reveal>
             <div className="container-x">
               <Reveal>

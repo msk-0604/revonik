@@ -18,17 +18,6 @@ export const media: MediaItem[] = [
     thirdParty: false,
   },
   {
-    id: "video-zenda",
-    kind: "youtube",
-    title: "ペンシルベイト ZENDA を加藤誠司が実釣解説",
-    description: "2025年の新製品 ZENDA を、加藤誠司氏が実釣の様子とともに解説（REVONIK 公式）。",
-    url: "https://www.youtube.com/watch?v=SJ-ducb5dUU",
-    source: "YouTube @RevonikFishing",
-    embeddable: true,
-    thirdParty: false,
-    related: ["zenda"],
-  },
-  {
     id: "youtube-lab",
     kind: "youtube",
     title: "SaraMoa 実釣テスト",

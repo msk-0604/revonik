@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { ThemeSwitch } from "@/components/ThemeSwitch";
 import { site } from "@/data/site";
 
 const internal = [
@@ -82,6 +83,10 @@ export function Footer() {
           </p>
         </section>
 
+        <div className="mt-6 flex items-center gap-3">
+          <span>表示テーマ</span>
+          <ThemeSwitch />
+        </div>
         <div className="mt-6 flex flex-col gap-2 sm:flex-row sm:justify-between">
           <p className="font-jp">{site.demoNoticeJa}</p>
           <p>Demo © {new Date().getFullYear()} Stark Lab</p>

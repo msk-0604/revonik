@@ -30,6 +30,7 @@ const pages = [
   "/products/ramzy",
   "/products/zenda",
   "/products/pop-up-jig",
+  "/products/shekiller-78",
   "/technology",
   "/dealers",
   "/proposal",
@@ -48,6 +49,9 @@ const viewports = {
   w375: { width: 375, height: 812, ...mobile },
   w430: { width: 430, height: 932, ...mobile },
   w768: { width: 768, height: 1024, ...mobile },
+  // 黒基調（第二案）も主要ページで確認
+  pcDark: { width: 1440, height: 900, theme: "dark" },
+  spDark: { width: 390, height: 844, ...mobile, theme: "dark" },
 };
 const keyPages = ["/", "/products", "/products/volbeat", "/technology", "/proposal"];
 
@@ -76,16 +80,18 @@ await mkdir("screenshots", { recursive: true });
 const browser = await chromium.launch();
 
 for (const [vpName, vp] of Object.entries(viewports)) {
-  const { isMobile, hasTouch, deviceScaleFactor, full, ...size } = vp;
+  const { isMobile, hasTouch, deviceScaleFactor, full, theme, ...size } = vp;
   const context = await browser.newContext({ viewport: size, isMobile, hasTouch, deviceScaleFactor });
   const page = await context.newPage();
   const consoleErrors = [];
-  page.on("console", (m) => m.type() === "error" && consoleErrors.push(m.text()));
+  // YouTube の埋め込みプレーヤー内のエラーは対象外（サイトのコードではない）
+  page.on("console", (m) => m.type() === "error" && !/youtube|ytimg|googlevideo|google\.com/.test(m.location().url + m.text()) && consoleErrors.push(m.text()));
   page.on("pageerror", (e) => consoleErrors.push(e.message));
 
   for (const path of full ? pages : keyPages) {
     console.log(`\n[${vpName}] ${path}`);
-    const res = await page.goto(BASE + path, { waitUntil: "networkidle" });
+    const res = await page.goto(BASE + path + (theme ? `?theme=${theme}` : ""), { waitUntil: "networkidle" });
+    if (theme) ok((await page.locator("html").getAttribute("data-theme")) === theme, `テーマ ${theme}`);
     ok(res?.status() === 200, `HTTP 200 (${res?.status()})`);
     ok((res?.headers()["x-robots-tag"] ?? "").includes("noindex"), "X-Robots-Tag: noindex");
     const robots = await page.locator('meta[name="robots"]').getAttribute("content");
@@ -163,21 +169,40 @@ for (const [vpName, vp] of Object.entries(viewports)) {
   await page.waitForURL("**/products/volbeat");
   ok(true, "商品詳細へ遷移");
 
-  const counter = page.locator("p[data-counter]");
-  const before = await counter.textContent();
-  await page.getByRole("radio", { name: "オーロラグリーン" }).click();
-  await page.waitForTimeout(700);
-  ok((await counter.textContent()) !== before, `カラー切り替え (${before} → ${await counter.textContent()})`);
-  ok((await page.locator("[aria-label$='公式写真を掲載予定']").count()) > 0 || (await page.locator("main img").count()) > 0, "写真未登録の製品は撮影台を表示");
-  await page.getByRole("radio", { name: "キンクロ" }).click();
-  await page.waitForTimeout(700);
-  ok((await page.getByRole("radio", { name: "キンクロ" }).getAttribute("aria-checked")) === "true", "カラー選択");
+  // 写真が未掲載の製品：公式動画をステージに表示 → クリックで YouTube の公式プレーヤーを読み込む
+  const play = page.locator("#product-stage").getByRole("button", { name: /^動画を再生：/ });
+  ok((await play.count()) === 1, "写真未掲載の製品は公式動画をステージに表示");
+  ok((await page.locator('iframe[src*="youtube-nocookie.com"]').count()) === 0, "再生前は iframe を読み込まない");
+  await play.click();
+  await page.waitForTimeout(500);
+  ok((await page.locator('#product-stage iframe[src*="youtube-nocookie.com/embed/"]').count()) === 1, "再生ボタンで公式プレーヤーを読み込む");
+  // カラー：写真が届くまでは番号・名称・対応モデルの一覧
+  const colorList = page.getByRole("list", { name: "VOLBEAT のカラー一覧" });
+  ok(await colorList.getByText("オーロラグリーン").isVisible(), "カラー一覧（名称）");
+  ok((await colorList.locator("li").count()) === 24, `カラー一覧 24色 (${await colorList.locator("li").count()})`);
+  ok(await colorList.getByText("60S · 70S").first().isVisible(), "カラーの対応モデル表示");
   await page.getByRole("tab", { name: "70S" }).click();
   ok(await page.getByRole("cell", { name: "69mm" }).isVisible(), "スペックのモデル切り替え（70S → 69mm）");
   ok(await page.getByText("「—」の項目は確認中です。").first().isVisible(), "不明スペックは「—」＋説明");
   const storeLinks = page.locator('a[data-track="store_click"][href^="https://revonik.stores.jp"]');
   ok((await storeLinks.count()) >= 2, `商品詳細のストア導線 (${await storeLinks.count()} 件)`);
   await page.screenshot({ path: `screenshots/${vpName}_interaction_volbeat.png` });
+
+  // 写真も動画もない製品は撮影台
+  await page.goto(BASE + "/products/pop-up-jig", { waitUntil: "networkidle" });
+  ok((await page.locator("[aria-label$='公式写真を掲載予定']").count()) > 0, "写真・動画がない製品は撮影台を表示");
+
+  // 表示テーマ（White 標準／Black 第二案）
+  await page.goto(BASE + "/", { waitUntil: "networkidle" });
+  ok((await page.locator("html").getAttribute("data-theme")) === null, "標準はホワイト");
+  await page.getByRole("group", { name: "表示テーマ" }).getByRole("button", { name: "Black" }).click();
+  ok((await page.locator("html").getAttribute("data-theme")) === "dark", "Black に切り替え");
+  await page.reload({ waitUntil: "networkidle" });
+  ok((await page.locator("html").getAttribute("data-theme")) === "dark", "テーマの選択を保持");
+  const bg = await page.evaluate(() => getComputedStyle(document.body).backgroundColor);
+  ok(bg === "rgb(10, 10, 11)", `Black の背景色 (${bg})`);
+  await page.getByRole("group", { name: "表示テーマ" }).getByRole("button", { name: "White" }).click();
+  ok((await page.locator("html").getAttribute("data-theme")) === null, "White に戻す");
 
   if (vpName === "sp") {
     await page.goto(BASE + "/", { waitUntil: "networkidle" });

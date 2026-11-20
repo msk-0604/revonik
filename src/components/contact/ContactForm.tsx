@@ -16,7 +16,7 @@ const topics = ["製品について", "取扱店・購入について", "取材�
 type Errors = Partial<Record<"topic" | "name" | "email" | "message" | "agree", string>>;
 
 const field =
-  "mt-2 block w-full rounded-xl border border-[#d2d2d7] bg-panel px-4 py-3.5 font-jp text-base text-fg placeholder:text-muted/70 transition-colors focus:border-link focus:outline-none aria-[invalid=true]:border-[#e30000]";
+  "mt-2 block w-full rounded-xl border border-field bg-panel px-4 py-3.5 font-jp text-base text-fg placeholder:text-muted/70 transition-colors focus:border-link focus:outline-none aria-[invalid=true]:border-danger";
 const labelCls = "flex items-center gap-2 font-jp text-[0.875rem]";
 const req = <span className="font-jp text-[0.6875rem] text-muted">必須</span>;
 
@@ -50,7 +50,7 @@ export function ContactForm() {
 
   const err = (k: keyof Errors) =>
     errors[k] ? (
-      <p id={`c-${k}-error`} className="mt-2 font-jp text-[0.75rem] text-[#e30000]">
+      <p id={`c-${k}-error`} className="mt-2 font-jp text-[0.75rem] text-danger">
         {errors[k]}
       </p>
     ) : null;

@@ -51,9 +51,13 @@ export interface ColorPalette {
 export interface ProductColor {
   id: string;
   name: string;
-  /** プレースホルダー画像生成用の近似色（実物の色味ではない） */
-  palette: ColorPalette;
-  /** 許諾済みの正式画像パス。指定すると自動生成の仮画像より優先される */
+  /** 公式のカラー番号（例：#04）。販売店の表記で確認できたもの */
+  code?: string;
+  /** このカラーがあるモデル（例：60F, 70S）。販売店の取扱表記で確認できたもの */
+  models?: string[];
+  /** 旧・仮画像生成用の近似色（実物の色味ではない。表示には使わない） */
+  palette?: ColorPalette;
+  /** 許諾済みの公式写真のパス。未許諾の間は指定しない */
   image?: string;
   /** false の場合はデモ用の仮カラー名 */
   verified: boolean;
@@ -99,8 +103,6 @@ export interface Product {
   colors: ProductColor[];
   /** 正式素材のギャラリー画像（任意）。未指定時はカラー画像で代替 */
   gallery?: { src: string; alt: string }[];
-  /** 公式に埋め込み可能な YouTube 動画 ID。未確認の間は null */
-  youtubeId: string | null;
   /** 個別商品ページURL。未確認の間は null（ストアTOPへ誘導） */
   storeUrl: string | null;
   featured: boolean;

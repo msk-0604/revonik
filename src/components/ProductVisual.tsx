@@ -34,11 +34,11 @@ export function ProductVisual({ product, src, alt, sizes = "100vw", priority, si
     <div
       role="img"
       aria-label={`${product.name}：公式写真を掲載予定`}
-      className={`relative flex flex-col items-center justify-center overflow-hidden bg-[radial-gradient(ellipse_60%_40%_at_50%_58%,#ffffff,#eeeef1_70%)] ${className}`}
+      className={`relative flex flex-col items-center justify-center overflow-hidden bg-[radial-gradient(ellipse_60%_40%_at_50%_58%,var(--stage-hi),var(--stage-lo)_70%)] ${className}`}
     >
       {/* 撮影台の床と影 */}
-      <span aria-hidden className="absolute inset-x-[18%] bottom-[22%] h-[10%] rounded-[50%] bg-black/[0.06] blur-xl" />
-      <span aria-hidden className={`display relative max-w-[92%] select-none text-center leading-none break-words text-black/[0.07] ${nameSize}`}>
+      <span aria-hidden className="absolute inset-x-[18%] bottom-[22%] h-[10%] rounded-[50%] bg-[var(--stage-floor)] blur-xl" />
+      <span aria-hidden className={`display relative max-w-[92%] select-none text-center leading-none break-words text-[color:var(--stage-ink)] ${nameSize}`}>
         {product.name}
       </span>
       {size !== "thumb" && (

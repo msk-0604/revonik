@@ -7,6 +7,8 @@ import { Reveal } from "@/components/Reveal";
 import { designAspects } from "@/data/engineering";
 import { technologies } from "@/data/technology";
 import { getProduct } from "@/lib/products";
+import { OfficialFilm } from "@/components/OfficialFilm";
+import { getVideo } from "@/data/videos";
 
 export const metadata: Metadata = {
   title: "TECHNOLOGY",
@@ -67,22 +69,86 @@ export default function TechnologyPage() {
       <Engineering />
       <RangeChart />
 
+      {/* 搭載技術：構造の説明と、採用製品の公式動画 */}
       <section aria-labelledby="tech-index" className="section-y">
         <div className="container-x">
-          <h2 id="tech-index" className="headline text-center text-[2.25rem] sm:text-5xl">
-            搭載技術
-          </h2>
-          <ul className="mx-auto mt-12 grid max-w-5xl gap-4 sm:grid-cols-2 lg:grid-cols-3">
-            {technologies.map((t) => (
-              <li key={t.id} className="rounded-[1.25rem] bg-panel p-7">
-                <p className="text-[0.6875rem] font-semibold tracking-[0.16em] text-accent">{t.en}</p>
-                <p className="mt-2 font-jp text-[1.125rem] font-bold">{t.title}</p>
-                <p className="mt-2 font-jp text-[0.875rem] leading-relaxed text-fg/75">{t.text}</p>
-              </li>
-            ))}
-          </ul>
+          <Reveal className="text-center">
+            <p className="eyebrow">Inside the lure</p>
+            <h2 id="tech-index" className="headline mt-2 text-[2.25rem] sm:text-5xl">
+              構造を、映像で。
+            </h2>
+            <p className="mx-auto mt-4 max-w-xl font-jp text-[0.9375rem] leading-relaxed text-muted">
+              搭載技術ごとに、採用製品の公式解説動画（REVONIK 公式 YouTube）を並べています。
+            </p>
+          </Reveal>
+          <ol className="mx-auto mt-14 max-w-6xl divide-y divide-line border-y border-line">
+            {technologies.map((t, i) => {
+              const film = t.film ? getVideo(t.film) : undefined;
+              return (
+                <Reveal as="li" key={t.id} className="grid gap-8 py-12 md:grid-cols-[minmax(0,5fr)_minmax(0,7fr)] md:items-center md:gap-14 md:py-16">
+                  <div className={!film ? "md:col-span-2 md:max-w-2xl" : i % 2 === 1 ? "md:order-2" : ""}>
+                    <p className="text-[0.75rem] font-semibold tracking-[0.2em] text-accent tabular-nums">
+                      {String(i + 1).padStart(2, "0")} — {t.en}
+                    </p>
+                    <h3 className="headline mt-3 text-[1.75rem] sm:text-[2.25rem]">{t.title}</h3>
+                    <p className="mt-3 font-jp text-[1rem] leading-[1.85] text-fg/80">{t.text}</p>
+                    <p className="mt-5 flex flex-wrap gap-x-4 gap-y-1 text-[0.875rem]">
+                      <span className="text-muted">採用製品</span>
+                      {t.products.map((slug) => {
+                        const p = getProduct(slug);
+                        return p ? (
+                          <Link key={slug} href={`/products/${slug}`} data-track="select_item" data-track-item={slug} data-track-list="technology" className="text-link hover:underline">
+                            {p.name}
+                          </Link>
+                        ) : null;
+                      })}
+                    </p>
+                    <p className="mt-3 text-[0.75rem] text-muted">
+                      出典：
+                      <a href={t.source.url} target="_blank" rel="noopener noreferrer" className="hover:text-fg hover:underline">
+                        {t.source.label}
+                        <span className="sr-only">（外部サイト）</span>
+                      </a>
+                    </p>
+                  </div>
+                  {film && (
+                    <OfficialFilm
+                      video={film}
+                      size="large"
+                      label={`採用製品の公式解説：${getProduct(film.products[0])?.name ?? ""}`}
+                      placement="technology"
+                      className={i % 2 === 1 ? "md:order-1" : ""}
+                    />
+                  )}
+                </Reveal>
+              );
+            })}
+          </ol>
         </div>
       </section>
+
+      {/* 開発の現場（公式ショート動画） */}
+      {(() => {
+        const short = getVideo("IckW2YdUmU8");
+        return short ? (
+          <section aria-labelledby="lab-title" className="section-y bg-bg-alt">
+            <div className="container-x grid items-center gap-10 md:grid-cols-[minmax(0,5fr)_minmax(0,7fr)] md:gap-16 lg:max-w-5xl lg:mx-auto">
+              <Reveal>
+                <p className="eyebrow">From the field</p>
+                <h2 id="lab-title" className="headline mt-2 text-[2.25rem] sm:text-5xl">
+                  開発の現場から。
+                </h2>
+                <p className="mt-4 max-w-md font-jp text-[1rem] leading-[1.85] text-fg/80">
+                  設計図の上だけでは終わらせない。2026 年の新製品の開発テストの様子を、REVONIK 公式のショート動画で。
+                </p>
+              </Reveal>
+              <Reveal delay={0.08} className="w-full">
+                <OfficialFilm video={short} size="large" label="2026 新製品 開発現場から（ショート動画）" placement="technology_short" />
+              </Reveal>
+            </div>
+          </section>
+        ) : null;
+      })()}
     </>
   );
 }

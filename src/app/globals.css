@@ -17,6 +17,9 @@
   /* リンク・主要アクション（白・ライトグレー背景で WCAG AA を満たす） */
   --color-link: #7a5a1c;
   --color-link-hover: #5c4313;
+  /* フォームの枠・エラー */
+  --color-field: #d2d2d7;
+  --color-danger: #c4001a;
 
   --font-sans: var(--font-inter), -apple-system, BlinkMacSystemFont, "Hiragino Sans", "Hiragino Kaku Gothic ProN", "Noto Sans JP", "Yu Gothic UI", "Yu Gothic", Meiryo, sans-serif;
   --font-display: var(--font-archivo), var(--font-inter), "Hiragino Sans", "Noto Sans JP", sans-serif;
@@ -42,6 +45,38 @@
 :root {
   --hero-ring: rgb(0 0 0 / 0.035);
   --hero-glow: rgb(201 164 92 / 0.08);
+  /* 撮影台（写真未掲載の製品の仮表示） */
+  --stage-hi: #ffffff;
+  --stage-lo: #eeeef1;
+  --stage-ink: rgb(0 0 0 / 0.07);
+  --stage-floor: rgb(0 0 0 / 0.06);
+}
+
+/*
+ * ダーク（黒基調）：第二案として維持。フッターの切り替え、または ?theme=dark で表示。
+ * 同じ設計値の名前を差し替えるだけで、全ページの配色が切り替わる。
+ * 黒は #000 ではなくわずかに持ち上げ、製品写真・動画の暗部が背景に沈まないようにしている。
+ */
+:root[data-theme="dark"] {
+  --color-bg: #0a0a0b;
+  --color-bg-alt: #121214;
+  --color-panel: #1b1b1e;
+  --color-fg: #f5f5f7;
+  --color-muted: #a1a1a6;
+  --color-line: rgb(255 255 255 / 0.12);
+  --color-on-fg: #0a0a0b;
+  --color-accent: #c9a45c;
+  --color-link: #d9b66c;
+  --color-link-hover: #ecca82;
+  --color-field: rgb(255 255 255 / 0.24);
+  --color-danger: #ff6b6b;
+  --hero-ring: rgb(255 255 255 / 0.035);
+  --hero-glow: rgb(201 164 92 / 0.1);
+  --stage-hi: #202024;
+  --stage-lo: #0e0e10;
+  --stage-ink: rgb(255 255 255 / 0.07);
+  --stage-floor: rgb(0 0 0 / 0.55);
+  color-scheme: dark;
 }
 
 @layer base {

@@ -13,7 +13,7 @@ export function NewsVisual({ article, surface = "gray", className = "aspect-[16/
   }
   return (
     <div className={`flex items-center justify-center rounded-[1.25rem] ${surface === "white" ? "bg-panel" : "bg-bg-alt"} ${className}`}>
-      <span className="display text-[2.5rem] text-black/[0.07]">{newsCategoryLabel[article.category] ? article.category : "NEWS"}</span>
+      <span className="display text-[2.5rem] text-[color:var(--stage-ink)]">{newsCategoryLabel[article.category] ? article.category : "NEWS"}</span>
     </div>
   );
 }

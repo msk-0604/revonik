@@ -1,5 +1,7 @@
 import type { Metadata } from "next";
 import { MediaCard } from "@/components/MediaCard";
+import { OfficialFilm } from "@/components/OfficialFilm";
+import { officialChannel, officialVideos } from "@/data/videos";
 import { PageHeader } from "@/components/PageHeader";
 import { Reveal } from "@/components/Reveal";
 import Link from "next/link";
@@ -63,11 +65,31 @@ export default function MediaPage() {
         title="Media"
         lead="動画と記事で、ルアーの動きと考え方を。"
       />
+      <section aria-labelledby="media-official" className="bg-bg pb-20 md:pb-28">
+        <div className="container-x">
+          <h2 id="media-official" className="headline text-[1.75rem] sm:text-[2.25rem]">
+            公式動画
+          </h2>
+          <p className="mt-3 max-w-2xl font-jp text-[0.875rem] leading-relaxed text-muted">
+            {officialChannel.name}（{officialChannel.handle}）の動画を、YouTube の公式プレーヤーで埋め込んでいます（{officialVideos.length} 本・{officialChannel.checkedAt.replaceAll("-", ".")} 時点）。
+          </p>
+          <ul className="mt-8 grid gap-x-6 gap-y-10 sm:grid-cols-2 lg:grid-cols-3">
+            {officialVideos
+              .filter((v) => !v.short)
+              .map((v) => (
+                <li key={v.id}>
+                  <OfficialFilm video={v} size="card" placement="media" />
+                  <RelatedLinks item={{ id: v.id, kind: "youtube", title: v.title, description: "", url: "", source: "", embeddable: true, thirdParty: false, related: v.products }} />
+                </li>
+              ))}
+          </ul>
+        </div>
+      </section>
       <Group
         id="media-videos"
         tone="gray"
-        title="動画"
-        lead="公式チャンネルと、加藤誠司氏が語る動画。"
+        title="関連する動画"
+        lead="公式チャンネルと、加藤誠司氏が語る動画（YouTube へのリンク）。"
         items={media.filter((m) => m.kind === "youtube")}
       />
       <Group

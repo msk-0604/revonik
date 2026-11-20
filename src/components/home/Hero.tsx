@@ -1,11 +1,16 @@
 import Link from "next/link";
-import { ProductVisual } from "@/components/ProductVisual";
+import { OfficialFilm } from "@/components/OfficialFilm";
 import { experience } from "@/data/experience";
-import { getProduct, mainImage } from "@/lib/products";
+import { getVideo } from "@/data/videos";
+import { getCategory, getProduct } from "@/lib/products";
 
-/** HERO：製品を1点だけ大きく。短いコピーと製品への導線 */
-export function Hero({ slug = "zenda" }: { slug?: string }) {
+/**
+ * HERO：代表製品を1点だけ大きく。
+ * 製品写真の許諾が得られるまでは、REVONIK 公式 YouTube の製品解説動画（埋め込み）を主役にする。
+ */
+export function Hero({ slug = "shindy-110", film = "DjC-qzHz_NQ" }: { slug?: string; film?: string }) {
   const p = getProduct(slug)!;
+  const video = getVideo(film)!;
   return (
     <section aria-labelledby="hero-title" className="overflow-hidden bg-bg pt-[92px] md:pt-[116px]">
       <div className="container-x text-center">
@@ -17,11 +22,11 @@ export function Hero({ slug = "zenda" }: { slug?: string }) {
           設計し、確かめ、魚を動かす。
         </p>
       </div>
-      <div className="mx-auto mt-10 max-w-[1200px] px-3 md:mt-12 md:px-6">
-        <ProductVisual product={p} src={mainImage(p)} size="hero" priority sizes="(min-width: 1200px) 1200px, 100vw" className="aspect-[4/3] w-full rounded-[2rem] md:aspect-[2/1]" />
+      <div className="mx-auto mt-10 max-w-[1200px] animate-fade-up px-3 [animation-delay:200ms] md:mt-14 md:px-6">
+        <OfficialFilm video={video} size="hero" priority label="SHINDY 110SF-M DRYBONE — 公式解説" placement="hero" />
       </div>
-      <div className="container-x pt-8 pb-16 text-center md:pb-24">
-        <p className="eyebrow">New · Topwater</p>
+      <div className="container-x pt-10 pb-20 text-center md:pt-12 md:pb-28">
+        <p className="eyebrow">2026 New · {getCategory(p.category).label}</p>
         <p className="mt-1 text-[1.75rem] font-semibold tracking-tight md:text-[2.25rem]">{p.name}</p>
         <p className="mt-1 font-jp text-[0.9375rem] text-fg/75">{experience[p.slug].tagline}</p>
         <div className="mt-6 flex flex-col items-center justify-center gap-3 min-[420px]:flex-row min-[420px]:gap-6">

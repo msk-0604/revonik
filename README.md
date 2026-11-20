@@ -13,9 +13,18 @@
 
 - 製品画像は**利用許諾を確認できた公式写真のみ**を掲載する。現在は該当がないため、写真の位置には「撮影台」（製品名と「Official photo — coming soon」）を表示
 - 自作の 3D／CG（`scripts/render-lures.mjs`）は、実物と形状・カラー・質感が一致しないため、製品画像としては使用しない。将来、CAD データなど十分な資料がある場合の追加機能として保留（`npm run images:3d`）
-- 必要な素材・出典候補・許諾状況は **[docs/assets.md](docs/assets.md)**（素材管理表）
+- 写真が未掲載の製品は、**REVONIK 公式 YouTube の動画**を YouTube の公式プレーヤー（`youtube-nocookie.com`）で埋め込んで実物を紹介。再生ボタンを押すまではサムネイルだけを表示し、サムネイルも YouTube から直接読み込む（サイト側に保存・加工しない）
+- 必要な素材・出典候補・許諾状況は **[docs/assets.md](docs/assets.md)**（素材管理表）と **[docs/asset-ledger.csv](docs/asset-ledger.csv)**（素材台帳：製品・モデル・カラー・画像URL・出典・許諾状況）
 - 写真の登録：`src/data/products.ts` の各カラーに `image` を追加 → 撮影台が写真に替わり、カラー切り替えと拡大表示が有効になる
 - カラーは名称を確認できたものだけを表示（仮のカラー名は表示しない）
+
+## 2026年11月20日の改訂（画像と商品体験）
+
+- 素材台帳（`docs/asset-ledger.csv`）を作成。販売店・公式 EC・公式 SNS・公式 YouTube を調査し、画像は URL と出典の記録のみ
+- 公式 YouTube の16本を `src/data/videos.ts` に登録し、HOME（SHINDY・VOLBEAT・Dot SIX 中心）・商品詳細・TECHNOLOGY・MEDIA に埋め込み
+- カラー名・番号・対応モデルを販売店の表記で確認して拡充（VOLBEAT 24色ほか）
+- 配色はホワイトを標準とし、黒基調を第二案として維持（フッターの「表示テーマ」、または `?theme=dark`）
+- `/proposal` に White／Black の比較と、製品ごとの素材の状況を追加
 
 ## 2026年11月の改訂（ダーク基調・提案ページ・2案比較 → ミニマルに決定）
 
@@ -167,7 +176,7 @@ scripts/
 
 **ロゴ** — 仮のテキストロゴは `src/components/Logo.tsx` に集約しています。正式ロゴ（SVG）を `public/images/logo.svg` に置き、このコンポーネントを `<Image>` に置き換えてください。
 
-**動画** — `products.ts` の `youtubeId` に公式動画の ID を入れると、商品詳細にクリック再生型（`youtube-nocookie.com`）の埋め込みが表示されます。
+**動画** — `src/data/videos.ts` に公式動画の ID・タイトル・関連製品を追加すると、商品詳細（写真がない間は最上部）・MEDIA にクリック再生型（`youtube-nocookie.com`）の埋め込みが表示されます。
 
 ## 商品の追加
 
@@ -234,8 +243,8 @@ REVONIK 公式オンラインストア（revonik.stores.jp）と公式 Instagram
 1. **素材の受領と差し替え**：フィールド写真（水中・釣り場・工房）、正式ロゴ（SVG）、商品写真（カラー別・ギャラリー）、メインビジュアル、ブランド写真、動画の使用許諾
 2. **商品情報の確定**：全商品のスペック（全長・重量・タイプ・潜行深度・推奨ライン・フック）、カラーの全ラインナップと正式名称、価格表示の要否、廃番・限定品の扱い
 3. **文章の確定**：加藤誠司氏への取材・監修のうえで、開発思想・経歴・年表を確定（要約・仮文章の差し替え）
-4. **ストア連携**：各商品の個別ページURL（`storeUrl`）を設定。公式 YouTube の動画と製品の対応づけ（`src/data/media.ts` の `related`）
-5. **SNS・動画**：公式 YouTube の有無確認、Instagram 埋め込みの方針決定
+4. **ストア連携**：各商品の個別ページURL（`storeUrl`）を設定。公式 YouTube の動画と製品の対応づけの確認（`src/data/videos.ts`）
+5. **SNS・動画**：公式 YouTube 動画の掲載方針の確認、Instagram 埋め込みの方針決定
 6. **ニュース運用**：サンプル記事の削除、更新方法の決定（データファイル更新／microCMS 等のヘッドレス CMS 連携）
 7. **お問い合わせ**：Server Action + メール送信（Resend 等）、スパム対策（Turnstile 等）、自動返信、プライバシーポリシー
 8. **計測**：GA4 の導入（[docs/analytics.md](docs/analytics.md)）
