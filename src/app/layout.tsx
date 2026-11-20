@@ -68,6 +68,10 @@ export const viewport: Viewport = {
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   return (
     <html lang="ja" className={`${inter.variable} ${archivo.variable}`} suppressHydrationWarning>
+      <head>
+        {/* 公式動画のサムネイル（YouTube 配信）を早く表示するための事前接続 */}
+        <link rel="preconnect" href="https://i.ytimg.com" />
+      </head>
       <body className="min-h-dvh antialiased">
         <Script id="theme" strategy="beforeInteractive">
           {themeScript}

@@ -22,7 +22,7 @@ export function Hero({ slug = "shindy-110", film = "DjC-qzHz_NQ" }: { slug?: str
           設計し、確かめ、魚を動かす。
         </p>
       </div>
-      <div className="mx-auto mt-10 max-w-[1200px] animate-fade-up px-3 [animation-delay:200ms] md:mt-14 md:px-6">
+      <div className="mx-auto mt-10 max-w-[1200px] px-3 md:mt-14 md:px-6">
         <OfficialFilm video={video} size="hero" priority label="SHINDY 110SF-M DRYBONE — 公式解説" placement="hero" />
       </div>
       <div className="container-x pt-10 pb-20 text-center md:pt-12 md:pb-28">
