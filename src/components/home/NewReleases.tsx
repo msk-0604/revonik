@@ -1,13 +1,13 @@
-import Image from "next/image";
 import Link from "next/link";
+import { ProductVisual } from "@/components/ProductVisual";
 import { Reveal } from "@/components/Reveal";
 import { releaseKindLabel, releases } from "@/data/releases";
 import { formatDate } from "@/lib/format";
 import { getProduct, mainImage } from "@/lib/products";
 
-/** NEW RELEASES：新製品を時系列で。発売・発表・発売予定を区別して表示 */
-export function NewReleases({ limit = 6 }: { limit?: number }) {
-  const items = releases.slice(0, limit);
+/** NEW RELEASES：最新の4件だけ。年表は ABOUT に */
+export function NewReleases() {
+  const items = releases.slice(0, 4);
   return (
     <section id="new" aria-labelledby="new-title" className="section-y bg-bg">
       <div className="container-x">
@@ -18,49 +18,35 @@ export function NewReleases({ limit = 6 }: { limit?: number }) {
               新製品
             </h2>
           </div>
-          <Link href="/news?category=PRODUCT" className="inline-flex min-h-11 items-center text-[1rem] text-link hover:underline underline-offset-4">
-            新製品のニュース ›
+          <Link href="/news" className="inline-flex min-h-11 items-center text-[1rem] text-link hover:underline underline-offset-4">
+            すべてのニュース ›
           </Link>
         </Reveal>
-        <ol className="relative mt-12 border-l border-line pl-6 md:pl-10">
+        <ul className="mt-12 grid gap-x-6 gap-y-12 sm:grid-cols-2 lg:grid-cols-4">
           {items.map((r, i) => {
             const p = getProduct(r.slug);
             if (!p) return null;
             return (
-              <Reveal as="li" key={r.name + r.date} delay={i * 0.04} className="relative pb-10 last:pb-0">
-                <span
-                  aria-hidden
-                  className={`absolute top-2 -left-[calc(1.5rem+5px)] size-[9px] rounded-full md:-left-[calc(2.5rem+5px)] ${r.kind === "released" ? "bg-fg" : "border border-accent bg-bg"}`}
-                />
-                <Link
-                  href={`/products/${p.slug}`}
-                  data-track="select_item"
-                  data-track-item={p.slug}
-                  data-track-list="new_releases"
-                  className="group grid items-center gap-4 sm:grid-cols-[1fr_12rem] md:grid-cols-[1fr_16rem] md:gap-10"
-                >
-                  <div>
-                    <p className="flex flex-wrap items-center gap-3 text-[0.8125rem] text-muted tabular-nums">
-                      <time dateTime={r.date}>{formatDate(r.date)}</time>
-                      <span
-                        className={`rounded-full px-2.5 py-0.5 font-jp text-[0.6875rem] font-medium ${
-                          r.kind === "released" ? "bg-fg text-on-fg" : "border border-accent/60 text-accent"
-                        }`}
-                      >
-                        {releaseKindLabel[r.kind]}
-                      </span>
-                    </p>
-                    <h3 className="mt-2 text-[1.5rem] font-semibold tracking-tight group-hover:underline underline-offset-4 md:text-[1.75rem]">{r.name}</h3>
-                    <p className="mt-1 font-jp text-[0.9375rem] text-fg/75">{r.text}</p>
-                  </div>
-                  <span className="relative hidden aspect-[4/3] rounded-2xl bg-panel sm:block">
-                    <Image src={mainImage(p)} alt="" fill sizes="256px" className="object-contain p-2 transition-transform duration-700 group-hover:scale-[1.04]" />
-                  </span>
+              <Reveal as="li" key={r.name + r.date} delay={i * 0.05}>
+                <Link href={`/products/${p.slug}`} data-track="select_item" data-track-item={p.slug} data-track-list="new_releases" className="group block">
+                  <ProductVisual product={p} src={mainImage(p)} size="card" sizes="(min-width: 1024px) 25vw, 50vw" className="aspect-square rounded-[1.25rem]" />
+                  <p className="mt-4 flex items-center gap-2 text-[0.75rem] text-muted tabular-nums">
+                    <time dateTime={r.date}>{formatDate(r.date)}</time>
+                    <span
+                      className={`rounded-full px-2 py-0.5 font-jp text-[0.6875rem] ${
+                        r.kind === "released" ? "bg-fg text-on-fg" : "border border-accent/60 text-accent"
+                      }`}
+                    >
+                      {releaseKindLabel[r.kind]}
+                    </span>
+                  </p>
+                  <p className="mt-1.5 text-[1.125rem] font-semibold tracking-tight group-hover:underline underline-offset-4">{r.name}</p>
+                  <p className="mt-1 font-jp text-[0.8125rem] leading-relaxed text-muted">{r.text}</p>
                 </Link>
               </Reveal>
             );
           })}
-        </ol>
+        </ul>
       </div>
     </section>
   );

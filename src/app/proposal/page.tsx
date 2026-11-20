@@ -39,7 +39,7 @@ export default function ProposalPage() {
             engineered.
           </h1>
           <p className="mt-8 max-w-2xl font-jp text-[1.0625rem] leading-[1.9] text-fg/80">
-            {site.producer.company} から REVONIK への、公式ブランドサイトのご提案です。本サイトは提案用の非公式デモで、画像はすべてオリジナルのコンセプトビジュアル、製品情報は公開情報をもとにした確認中の内容です。
+            {site.producer.company} から REVONIK への、公式ブランドサイトのご提案です。本サイトは提案用の非公式デモです。製品写真は許諾をいただいた後に掲載するため、現在は製品名を示す枠で表示しています。製品情報は公開情報をもとにした確認中の内容です。
           </p>
         </Reveal>
       </section>

@@ -1,6 +1,6 @@
-import Image from "next/image";
 import Link from "next/link";
 import { ArrowUpRight, ChevronRight } from "lucide-react";
+import { ProductVisual } from "@/components/ProductVisual";
 import { Reveal } from "@/components/Reveal";
 import { experience } from "@/data/experience";
 import { site } from "@/data/site";
@@ -24,7 +24,7 @@ export function ProductExperience() {
           <section
             key={p.slug}
             aria-labelledby={`exp-${p.slug}`}
-            className={`overflow-hidden pt-20 pb-16 md:pt-28 md:pb-24 ${i % 2 === 0 ? "bg-bg" : "bg-bg-alt"}`}
+            className={`overflow-hidden pt-20 pb-16 md:pt-28 md:pb-24 ${i % 2 === 0 ? "bg-bg-alt" : "bg-bg"}`}
           >
             <Reveal className="container-x text-center">
               <p className="index-label">
@@ -37,14 +37,20 @@ export function ProductExperience() {
               </h2>
               <p className="statement mt-3 text-[1.125rem] text-fg/80 md:text-[1.5rem]">{x.tagline}</p>
             </Reveal>
-            <Reveal delay={0.1} y={32} className="mx-auto max-w-[1080px] px-1">
-              <Link href={`/products/${p.slug}`} data-track="select_item" data-track-item={p.slug} data-track-list="home_experience" className="relative block aspect-[4/3]">
-                <Image src={mainImage(p)} alt={`${p.name}（コンセプトビジュアル）`} fill sizes="(min-width: 1080px) 1080px, 100vw" className="object-contain" />
+            <Reveal delay={0.1} y={24} className="mx-auto mt-10 max-w-[1080px] px-3 md:px-6">
+              <Link href={`/products/${p.slug}`} data-track="select_item" data-track-item={p.slug} data-track-list="home_experience" className="block">
+                <ProductVisual
+                  product={p}
+                  src={mainImage(p)}
+                  size="large"
+                  sizes="(min-width: 1080px) 1080px, 100vw"
+                  className={`aspect-[4/3] w-full rounded-[2rem] md:aspect-[16/9]`}
+                />
               </Link>
             </Reveal>
             <div className="container-x">
               <Reveal>
-                <dl className="mx-auto grid max-w-5xl gap-x-10 gap-y-6 border-t border-line pt-8 sm:grid-cols-2 lg:grid-cols-4">
+                <dl className="mx-auto mt-12 grid max-w-5xl gap-x-10 gap-y-6 border-t border-line pt-8 sm:grid-cols-2 lg:grid-cols-4">
                   {facts.map((f) => (
                     <div key={f.label}>
                       <dt className="text-[0.75rem] font-semibold text-muted">{f.label}</dt>

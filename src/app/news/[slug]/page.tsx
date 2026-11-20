@@ -1,9 +1,8 @@
 import type { Metadata } from "next";
-import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { ChevronLeft } from "lucide-react";
-import { NewsCard, newsImage } from "@/components/NewsCard";
+import { NewsCard, NewsVisual } from "@/components/NewsCard";
 import { news, newsCategoryLabel, sortedNews } from "@/data/news";
 import { formatDate } from "@/lib/format";
 
@@ -40,8 +39,8 @@ export default async function NewsDetailPage({ params }: PageProps<"/news/[slug]
           </div>
           <h1 className="mt-4 font-jp text-[1.75rem] leading-[1.5] font-bold md:text-[2.5rem] md:leading-[1.4]">{article.title}</h1>
         </div>
-        <div className="relative mx-auto mt-12 aspect-[16/9] max-w-5xl overflow-hidden rounded-[1.5rem] bg-bg-alt">
-          <Image src={newsImage(article)} alt="記事（コンセプトビジュアル）" fill preload sizes="(min-width: 1024px) 64rem, 100vw" className={article.related ? "object-contain p-6" : "object-cover"} />
+        <div className="mx-auto mt-12 max-w-5xl">
+          <NewsVisual article={article} className="aspect-[16/9]" />
         </div>
         <div className="mx-auto mt-12 max-w-3xl">
           {article.body.map((p) => (

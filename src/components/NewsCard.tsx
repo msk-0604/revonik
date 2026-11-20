@@ -1,29 +1,27 @@
-import Image from "next/image";
 import Link from "next/link";
-import { newsImages } from "@/data/images";
 import { newsCategoryLabel } from "@/data/news";
 import { formatDate } from "@/lib/format";
 import type { NewsArticle } from "@/types";
+import { ProductVisual } from "@/components/ProductVisual";
 import { getProduct, mainImage } from "@/lib/products";
 
-export function newsImage(article: NewsArticle) {
-  if (article.image) return article.image;
+/** 記事のビジュアル：関連製品があれば製品ビジュアル、なければカテゴリー名の面 */
+export function NewsVisual({ article, surface = "gray", className = "aspect-[16/10]" }: { article: NewsArticle; surface?: "gray" | "white"; className?: string }) {
   const p = article.related ? getProduct(article.related) : undefined;
-  return p ? mainImage(p) : newsImages[article.category];
+  if (p) {
+    return <ProductVisual product={p} src={mainImage(p)} size="card" sizes="(min-width: 1024px) 380px, 50vw" className={`${className} rounded-[1.25rem]`} />;
+  }
+  return (
+    <div className={`flex items-center justify-center rounded-[1.25rem] ${surface === "white" ? "bg-panel" : "bg-bg-alt"} ${className}`}>
+      <span className="display text-[2.5rem] text-black/[0.07]">{newsCategoryLabel[article.category] ? article.category : "NEWS"}</span>
+    </div>
+  );
 }
 
 export function NewsCard({ article, surface = "gray" }: { article: NewsArticle; surface?: "gray" | "white" }) {
   return (
     <Link href={`/news/${article.slug}`} className="group flex h-full flex-col">
-      <div className={`relative aspect-[16/10] overflow-hidden rounded-[1.25rem] ${surface === "white" ? "bg-panel" : "bg-bg-alt"}`}>
-        <Image
-          src={newsImage(article)}
-          alt=""
-          fill
-          sizes="(min-width: 1024px) 380px, (min-width: 640px) 50vw, 100vw"
-          className={`${article.related ? "object-contain p-3" : "object-cover"} transition-transform duration-700 ease-out-soft group-hover:scale-[1.03]`}
-        />
-      </div>
+      <NewsVisual article={article} surface={surface} />
       <p className="mt-4 text-[0.75rem] font-medium tracking-[0.04em] text-muted">
         <time dateTime={article.date}>{formatDate(article.date)}</time>
         <span className="mx-2">·</span>

@@ -15,14 +15,23 @@ export function getCategory(id: CategoryId) {
 
 export const featuredProducts = () => products.filter((p) => p.featured);
 
-/** 許諾済み画像があればそれを、なければ自動生成の仮画像を返す */
-export function colorImage(product: Product, color: ProductColor): string {
-  return color.image ?? `/placeholders/products/${product.slug}/${color.id}.webp`;
+/**
+ * 製品写真（許諾済みの公式写真のみ）。未登録なら null。
+ * 自作の3D／CG は実物と形・色が一致しないため、製品画像としては使わない（README「画像の方針」）。
+ */
+export function colorImage(_product: Product, color: ProductColor): string | null {
+  return color.image ?? null;
 }
 
-export function mainImage(product: Product): string {
+export function mainImage(product: Product): string | null {
   if (product.gallery?.[0]) return product.gallery[0].src;
-  return colorImage(product, product.colors[0]);
+  for (const c of product.colors) if (c.image) return c.image;
+  return null;
+}
+
+/** 画面に表示するカラー（名称を確認できたもののみ。仮のカラー名は出さない） */
+export function displayColors(product: Product): ProductColor[] {
+  return product.colors.filter((c) => c.verified);
 }
 
 export const specLabels: { key: keyof ProductSpecs; label: string; en: string }[] = [

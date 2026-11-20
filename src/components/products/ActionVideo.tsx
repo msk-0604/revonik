@@ -26,7 +26,7 @@ export function ActionVideo({ youtubeId, title }: { youtubeId: string | null; ti
           />
         ) : (
           <button type="button" onClick={() => setPlay(true)} className="group absolute inset-0" aria-label={`${title} のアクション動画を再生`}>
-            <Image src="/placeholders/scene-movie-1.webp" alt="" fill sizes="(min-width: 896px) 896px, 100vw" className="object-cover" />
+            <Image src={siteImages.video.src} alt="" fill sizes="(min-width: 896px) 896px, 100vw" className="object-cover" />
             <span className="absolute top-1/2 left-1/2 grid size-16 -translate-1/2 place-items-center rounded-full bg-panel/90 text-fg transition-transform group-hover:scale-105">
               <Play aria-hidden className="ml-1 size-7 fill-current" />
             </span>

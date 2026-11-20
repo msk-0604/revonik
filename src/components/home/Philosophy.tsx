@@ -26,7 +26,7 @@ const process = [
 /** BRAND PHILOSOPHY：設計 → 技術 → 実釣での検証 というプロセスを伝える */
 export function Philosophy() {
   return (
-    <section id="philosophy" aria-labelledby="philosophy-title" className="section-y scroll-mt-16 bg-bg-alt">
+    <section id="philosophy" aria-labelledby="philosophy-title" className="section-y scroll-mt-16 bg-bg">
       <div className="container-x">
         <Reveal className="mx-auto max-w-4xl text-center">
           <p className="index-label">
@@ -41,7 +41,7 @@ export function Philosophy() {
         </Reveal>
         <ol className="mx-auto mt-16 grid max-w-6xl gap-px overflow-hidden rounded-[1.5rem] bg-line md:grid-cols-3">
           {process.map((p, i) => (
-            <Reveal as="li" key={p.no} delay={i * 0.06} className="bg-bg-alt p-8 md:p-10">
+            <Reveal as="li" key={p.no} delay={i * 0.06} className="bg-bg p-8 md:p-10">
               <p className="text-[0.75rem] font-semibold tracking-[0.2em] text-accent">
                 {p.no} — {p.en.toUpperCase()}
               </p>

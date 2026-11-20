@@ -152,6 +152,19 @@ async function siteImages() {
   }
 }
 
+/* ---------- OGP（文字のみ。製品画像は使わない） ---------- */
+async function ogImage() {
+  const W = 1200;
+  const H = 630;
+  const inner = `
+    <rect width="${W}" height="${H}" fill="#FFFFFF"/>
+    ${label(W / 2, 250, "REVONIK", { size: 34, anchor: "middle", color: "#1D1D1F", weight: 600, spacing: 14 })}
+    ${label(W / 2, 340, "Engineered to provoke.", { size: 64, anchor: "middle", color: "#1D1D1F", weight: 700, spacing: -1 })}
+    ${label(W / 2, H - 40, "UNOFFICIAL CONCEPT WEBSITE — PROPOSED BY STARK LAB", { size: 14, anchor: "middle", spacing: 3 })}`;
+  await render("og.png", W, H, inner, { format: "png" });
+}
+
 console.log("Generating DEMO placeholder images…");
 await siteImages();
+await ogImage();
 console.log("Done.");

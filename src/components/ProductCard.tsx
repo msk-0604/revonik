@@ -1,6 +1,6 @@
-import Image from "next/image";
 import Link from "next/link";
 import { ChevronRight } from "lucide-react";
+import { ProductVisual } from "@/components/ProductVisual";
 import { experience } from "@/data/experience";
 import { newSlugs } from "@/data/releases";
 import { formatDate } from "@/lib/format";
@@ -17,13 +17,13 @@ export function ProductCard({ product, sizes = "(min-width: 1024px) 380px, (min-
   const category = getCategory(product.category);
   return (
     <Link href={`/products/${product.slug}`} data-track="select_item" data-track-item={product.slug} className="group flex h-full flex-col text-center">
-      <div className="relative aspect-[4/3] overflow-hidden rounded-[1.25rem] bg-bg-alt">
-        <Image
+      <div className="relative overflow-hidden rounded-[1.25rem]">
+        <ProductVisual
+          product={product}
           src={mainImage(product)}
-          alt={`${product.name}（コンセプトビジュアル）`}
-          fill
+          size="card"
           sizes={sizes}
-          className="object-contain p-4 transition-transform duration-700 ease-out-soft group-hover:scale-[1.03]"
+          className="aspect-[4/3] transition-transform duration-700 ease-out-soft group-hover:scale-[1.02]"
         />
         {newSlugs.has(product.slug) && (
           <span className="absolute top-3 left-3 rounded-full bg-panel px-2.5 py-1 text-[0.6875rem] font-semibold tracking-wide">NEW</span>

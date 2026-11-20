@@ -1,18 +1,19 @@
 "use client";
 
 import Image from "next/image";
-import { createContext, useContext, useState } from "react";
+import { createContext, useContext, useEffect, useRef, useState } from "react";
 import { AnimatePresence, motion } from "motion/react";
-import { ChevronLeft, ChevronRight } from "lucide-react";
-import { colorImage } from "@/lib/products";
-import type { Product } from "@/types";
+import { ChevronLeft, ChevronRight, Maximize2, X } from "lucide-react";
+import { ProductVisual } from "@/components/ProductVisual";
+import { colorImage, displayColors, mainImage } from "@/lib/products";
+import type { Product, ProductColor } from "@/types";
 
 /**
- * 商品画像とカラーバリエーションの表示。選択中のカラーを Context で共有し、
- * 「大きな商品写真」と「カラーバリエーション」のどちらから選んでも連動する。
+ * 商品画像とカラー。選択中のカラーを Context で共有し、上部の画像とカラー一覧のどちらから選んでも連動する。
+ * 画像は許諾済みの公式写真のみ（未登録のカラーは撮影台を表示）。写真がある場合は拡大表示できる。
  */
 
-type Ctx = { product: Product; index: number; direction: number; select: (i: number) => void };
+type Ctx = { product: Product; colors: ProductColor[]; index: number; direction: number; select: (i: number) => void };
 const ColorContext = createContext<Ctx | null>(null);
 
 const useColor = () => {
@@ -22,68 +23,101 @@ const useColor = () => {
 };
 
 export function ProductColorProvider({ product, children }: { product: Product; children: React.ReactNode }) {
+  const colors = displayColors(product);
   const [index, setIndex] = useState(0);
   const [direction, setDirection] = useState(1);
   const select = (next: number) => {
-    const n = (next + product.colors.length) % product.colors.length;
+    if (colors.length === 0) return;
+    const n = (next + colors.length) % colors.length;
     setDirection(next > index ? 1 : -1);
     setIndex(n);
   };
-  return <ColorContext.Provider value={{ product, index, direction, select }}>{children}</ColorContext.Provider>;
+  return <ColorContext.Provider value={{ product, colors, index, direction, select }}>{children}</ColorContext.Provider>;
 }
 
-const SWIPE = 50;
 const ease = [0.25, 0.1, 0.25, 1] as const;
 
-/** 大きな商品写真（スワイプ・前後ボタン）＋ 小さなサムネイルのカラー選択 */
+/** 拡大表示（写真がある場合のみ）。タップで 2 倍に拡大し、スクロールで細部を確認できる */
+function Zoom({ src, alt, onClose }: { src: string; alt: string; onClose: () => void }) {
+  const [zoomed, setZoomed] = useState(false);
+  const closeRef = useRef<HTMLButtonElement>(null);
+  useEffect(() => {
+    closeRef.current?.focus();
+    const onKey = (e: KeyboardEvent) => e.key === "Escape" && onClose();
+    const prev = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    window.addEventListener("keydown", onKey);
+    return () => {
+      document.body.style.overflow = prev;
+      window.removeEventListener("keydown", onKey);
+    };
+  }, [onClose]);
+  return (
+    <div role="dialog" aria-modal="true" aria-label={`${alt}（拡大表示）`} className="fixed inset-0 z-[60] overflow-auto bg-white">
+      <button
+        ref={closeRef}
+        type="button"
+        onClick={onClose}
+        aria-label="拡大表示を閉じる"
+        className="fixed top-4 right-4 z-10 grid size-11 place-items-center rounded-full bg-bg-alt text-fg hover:bg-line"
+      >
+        <X aria-hidden className="size-5" />
+      </button>
+      <button
+        type="button"
+        onClick={() => setZoomed((z) => !z)}
+        aria-label={zoomed ? "縮小する" : "さらに拡大する"}
+        className={`block ${zoomed ? "w-[200%] max-w-none cursor-zoom-out" : "mx-auto w-full max-w-[1600px] cursor-zoom-in"}`}
+      >
+        {/* eslint-disable-next-line @next/next/no-img-element -- 拡大表示は元画像をそのまま表示 */}
+        <img src={src} alt={alt} className="h-auto w-full" />
+      </button>
+    </div>
+  );
+}
+
+/** 大きな商品写真（カラー切り替え・スワイプ・拡大表示） */
 export function ProductStage() {
-  const { product, index, direction, select } = useColor();
-  const colors = product.colors;
+  const { product, colors, index, direction, select } = useColor();
   const color = colors[index];
+  const src = color ? colorImage(product, color) : mainImage(product);
   const multiple = colors.length > 1;
+  // 写真が1枚もない間は、画像を送る矢印は出さない（カラー名の選択だけ）
+  const hasPhotos = colors.some((c) => colorImage(product, c));
+  const [zoom, setZoom] = useState(false);
+  const alt = color ? `${product.name}（${color.name}）` : product.name;
 
   return (
     <div id="product-stage" className="scroll-mt-28">
-      <div
-        className="relative mx-auto aspect-[4/3] max-w-[1100px] touch-pan-y overflow-hidden md:aspect-[16/10]"
-        aria-roledescription="カルーセル"
-        aria-label={`${product.name} のカラー画像`}
-      >
+      <div className="relative mx-auto max-w-[1200px]" aria-roledescription="カルーセル" aria-label={`${product.name} の画像`}>
         <AnimatePresence initial={false} custom={direction} mode="popLayout">
           <motion.div
-            key={color.id}
-            className="absolute inset-0"
-            initial={{ opacity: 0, x: direction * 24 }}
+            key={color?.id ?? "main"}
+            initial={{ opacity: 0, x: direction * 20 }}
             animate={{ opacity: 1, x: 0 }}
-            exit={{ opacity: 0, x: direction * -24 }}
-            transition={{ duration: 0.5, ease }}
-            drag={multiple ? "x" : false}
-            dragConstraints={{ left: 0, right: 0 }}
-            dragElastic={0.15}
-            onDragEnd={(_, info) => {
-              if (info.offset.x < -SWIPE) select(index + 1);
-              else if (info.offset.x > SWIPE) select(index - 1);
-            }}
+            exit={{ opacity: 0, x: direction * -20 }}
+            transition={{ duration: 0.45, ease }}
           >
-            <Image
-              src={colorImage(product, color)}
-              alt={`${product.name}（${color.name}）（コンセプトビジュアル）`}
-              fill
-              preload={index === 0}
-              draggable={false}
-              sizes="(min-width: 1100px) 1100px, 100vw"
-              className="pointer-events-none object-contain select-none"
-            />
+            {src ? (
+              <button type="button" onClick={() => setZoom(true)} aria-label={`${alt}を拡大表示`} className="group relative block w-full cursor-zoom-in">
+                <ProductVisual product={product} src={src} alt={alt} size="hero" priority sizes="(min-width: 1200px) 1200px, 100vw" className="aspect-[4/3] w-full rounded-[2rem] bg-bg-alt md:aspect-[16/10]" />
+                <span className="absolute right-4 bottom-4 grid size-11 place-items-center rounded-full bg-white/90 text-fg shadow-sm">
+                  <Maximize2 aria-hidden className="size-4" />
+                </span>
+              </button>
+            ) : (
+              <ProductVisual product={product} size="hero" className="aspect-[4/3] w-full rounded-[2rem] md:aspect-[16/10]" />
+            )}
           </motion.div>
         </AnimatePresence>
 
-        {multiple && (
+        {multiple && hasPhotos && (
           <>
             <button
               type="button"
               onClick={() => select(index - 1)}
               aria-label="前のカラー"
-              className="absolute top-1/2 left-1 grid size-11 -translate-y-1/2 place-items-center rounded-full bg-bg-alt/90 text-fg/70 transition-colors hover:bg-line hover:text-fg md:left-2"
+              className="absolute top-1/2 left-3 grid size-11 -translate-y-1/2 place-items-center rounded-full bg-white/90 text-fg/70 shadow-sm hover:text-fg"
             >
               <ChevronLeft aria-hidden className="size-5" />
             </button>
@@ -91,7 +125,7 @@ export function ProductStage() {
               type="button"
               onClick={() => select(index + 1)}
               aria-label="次のカラー"
-              className="absolute top-1/2 right-1 grid size-11 -translate-y-1/2 place-items-center rounded-full bg-bg-alt/90 text-fg/70 transition-colors hover:bg-line hover:text-fg md:right-2"
+              className="absolute top-1/2 right-3 grid size-11 -translate-y-1/2 place-items-center rounded-full bg-white/90 text-fg/70 shadow-sm hover:text-fg"
             >
               <ChevronRight aria-hidden className="size-5" />
             </button>
@@ -99,17 +133,21 @@ export function ProductStage() {
         )}
       </div>
 
-      <div className="mt-4 text-center">
-        <p className="font-jp text-[0.9375rem]" aria-live="polite">
-          {color.name}
-          <span className="sr-only">
-            （{index + 1} / {colors.length}）
-          </span>
-        </p>
-        <p data-counter className="mt-1 text-[0.75rem] text-muted tabular-nums">
-          {index + 1} / {colors.length}
-        </p>
-      </div>
+      {color && (
+        <div className="mt-5 text-center">
+          <p className="font-jp text-[0.9375rem]" aria-live="polite">
+            {color.name}
+            <span className="sr-only">
+              （{index + 1} / {colors.length}）
+            </span>
+          </p>
+          {multiple && (
+            <p data-counter className="mt-1 text-[0.75rem] text-muted tabular-nums">
+              {index + 1} / {colors.length}
+            </p>
+          )}
+        </div>
+      )}
 
       {multiple && (
         <div role="radiogroup" aria-label="カラーを選択" className="mt-5 flex flex-wrap justify-center gap-2 px-2">
@@ -120,56 +158,57 @@ export function ProductStage() {
               role="radio"
               aria-checked={i === index}
               aria-label={c.name}
-              title={c.name}
               onClick={() => select(i)}
-              className={`relative size-14 overflow-hidden rounded-xl bg-bg-alt transition-shadow duration-300 sm:size-16 ${
-                i === index ? "ring-2 ring-fg ring-offset-2" : "hover:ring-1 hover:ring-line hover:ring-offset-2"
+              className={`min-h-10 rounded-full border px-4 font-jp text-[0.8125rem] transition-colors ${
+                i === index ? "border-fg bg-fg text-on-fg" : "border-line text-fg/80 hover:border-fg/40"
               }`}
             >
-              <Image src={colorImage(product, c)} alt="" fill sizes="64px" className="scale-125 object-contain" />
+              {c.name}
             </button>
           ))}
         </div>
       )}
+
+      {zoom && src && <Zoom src={src} alt={alt} onClose={() => setZoom(false)} />}
     </div>
   );
 }
 
 /** カラーバリエーション一覧。選ぶと上の商品写真に反映してスクロールする */
 export function ColorGallery() {
-  const { product, index, select } = useColor();
+  const { product, colors, index, select } = useColor();
+  if (colors.length === 0) {
+    return <p className="text-center font-jp text-[0.9375rem] text-muted">カラーの情報は確認中です。</p>;
+  }
   return (
     <ul className="grid grid-cols-2 gap-x-4 gap-y-8 min-[600px]:grid-cols-3 lg:grid-cols-4">
-      {product.colors.map((c, i) => (
-        <li key={c.id}>
-          <button
-            type="button"
-            onClick={() => {
-              select(i);
-              document.getElementById("product-stage")?.scrollIntoView({ behavior: "smooth", block: "start" });
-            }}
-            aria-label={`${c.name} を表示`}
-            className="group block w-full text-center"
-          >
-            <span
-              className={`relative block aspect-[4/3] overflow-hidden rounded-[1rem] bg-panel transition-shadow duration-300 ${
-                i === index ? "ring-2 ring-fg" : ""
-              }`}
+      {colors.map((c, i) => {
+        const src = colorImage(product, c);
+        return (
+          <li key={c.id}>
+            <button
+              type="button"
+              onClick={() => {
+                select(i);
+                document.getElementById("product-stage")?.scrollIntoView({ behavior: "smooth", block: "start" });
+              }}
+              aria-label={`${c.name} を表示`}
+              className="group block w-full text-center"
             >
-              <Image
-                src={colorImage(product, c)}
-                alt=""
-                fill
-                sizes="(min-width: 1024px) 260px, (min-width: 600px) 30vw, 50vw"
-                className="object-contain p-2 transition-transform duration-700 group-hover:scale-[1.03]"
-              />
-            </span>
-            <span className="mt-3 block font-jp text-[0.8125rem]">
-              {c.name}
-            </span>
-          </button>
-        </li>
-      ))}
+              <span className={`relative block overflow-hidden rounded-[1rem] ${i === index ? "ring-2 ring-fg" : ""}`}>
+                {src ? (
+                  <span className="relative block aspect-[4/3] bg-bg-alt">
+                    <Image src={src} alt="" fill sizes="(min-width: 1024px) 260px, 50vw" className="object-contain p-2" />
+                  </span>
+                ) : (
+                  <span className="flex aspect-[4/3] items-center justify-center bg-bg-alt px-3 font-jp text-[0.75rem] text-muted">写真を掲載予定</span>
+                )}
+              </span>
+              <span className="mt-3 block font-jp text-[0.8125rem]">{c.name}</span>
+            </button>
+          </li>
+        );
+      })}
     </ul>
   );
 }

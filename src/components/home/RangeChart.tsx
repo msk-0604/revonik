@@ -1,9 +1,8 @@
-import Image from "next/image";
 import Link from "next/link";
 import { Reveal } from "@/components/Reveal";
 import { SectionHeading } from "@/components/SectionHeading";
 import { ranges } from "@/data/marketing";
-import { getProduct, mainImage } from "@/lib/products";
+import { getProduct } from "@/lib/products";
 
 const MAX = 5; // 表示する最大水深（m）
 const ticks = [0, 1, 2, 3, 4, 5];
@@ -51,9 +50,7 @@ export function RangeChart() {
                       style={{ top: `${top + height / 2}%` }}
                       aria-label={`${r.model}：${r.note}`}
                     >
-                      <span className="relative block aspect-[4/3]">
-                        <Image src={mainImage(p)} alt="" fill sizes="120px" className="object-contain drop-shadow-sm" />
-                      </span>
+                      <span className="mx-auto block size-3.5 rounded-full border-2 border-white bg-fg shadow" />
                     </Link>
                   </div>
                 );

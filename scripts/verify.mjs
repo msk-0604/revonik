@@ -165,9 +165,10 @@ for (const [vpName, vp] of Object.entries(viewports)) {
 
   const counter = page.locator("p[data-counter]");
   const before = await counter.textContent();
-  await page.getByRole("button", { name: "次のカラー" }).click();
+  await page.getByRole("radio", { name: "オーロラグリーン" }).click();
   await page.waitForTimeout(700);
-  ok((await counter.textContent()) !== before, `画像切り替え (${before} → ${await counter.textContent()})`);
+  ok((await counter.textContent()) !== before, `カラー切り替え (${before} → ${await counter.textContent()})`);
+  ok((await page.locator("[aria-label$='公式写真を掲載予定']").count()) > 0 || (await page.locator("main img").count()) > 0, "写真未登録の製品は撮影台を表示");
   await page.getByRole("radio", { name: "キンクロ" }).click();
   await page.waitForTimeout(700);
   ok((await page.getByRole("radio", { name: "キンクロ" }).getAttribute("aria-checked")) === "true", "カラー選択");

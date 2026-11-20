@@ -8,7 +8,8 @@
     "start": "next start",
     "lint": "eslint",
     "typecheck": "next typegen && tsc --noEmit",
-    "images": "node scripts/generate-placeholders.mjs && node scripts/render-lures.mjs",
+    "images": "node scripts/generate-placeholders.mjs",
+    "images:3d": "node scripts/render-lures.mjs",
     "verify": "node scripts/verify.mjs"
   },
   "dependencies": {
